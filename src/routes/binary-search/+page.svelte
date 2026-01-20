@@ -1,59 +1,46 @@
 <script lang="ts">
-  import { t, locale } from 'svelte-i18n';
+  import { onMount } from 'svelte';
   import CodeEditor from '$lib/CodeEditor.svelte';
-  
-  // Vite "raw" import: This reads the .py file and gives us the text
   import pythonCode from './binary-search.py?raw';
+
+  const PAGE_ID = "binary-search";
+  const DEFAULT_FILE = "binary-search.py";
+
+  // 1. Az oldalhoz tartozó nyitott tabok listája
+  let openFiles = $state<string[]>(
+    JSON.parse(localStorage.getItem(`tabs_${PAGE_ID}`) || "[]")
+  );
+  
+  let activeFile = $state<string>("");
+
+  // 2. Mentés: ha az oldal tabjai változnak, elmentjük
+  $effect(() => {
+    localStorage.setItem(`tabs_${PAGE_ID}`, JSON.stringify(openFiles));
+  });
+
+  onMount(() => {
+    // Globális fájltár ellenőrzése
+    const db = JSON.parse(localStorage.getItem("global_files_db") || "{}");
+    
+    // Ha a binary-search.py még soha nem volt bent a globális tárban, betöltjük a nyers kódot
+    if (!db[DEFAULT_FILE]) {
+      db[DEFAULT_FILE] = pythonCode;
+      localStorage.setItem("global_files_db", JSON.stringify(db));
+    }
+
+    // Ha még nincsenek elmentett tabok ehhez az oldalhoz, alapértelmezett beállítása
+    if (openFiles.length === 0) {
+      openFiles = [DEFAULT_FILE];
+    }
+    activeFile = openFiles[0];
+  });
 </script>
 
-<article class="algo-page">
-  <header>
-    <h1>{$t('algos.binary-search.title')}</h1>
-    <p class="desc">{$t('algos.binary-search.desc')}</p>
-  </header>
-
-  <div class="code-section">
-    <CodeEditor code={pythonCode} />
+<article>
+  <h1>Binary Search</h1>
+  
+  <div class="editor-section">
+    <!-- Kétirányú bindelés: az editor módosíthatja a listát (pl. törlés/átnevezés) -->
+    <CodeEditor bind:openNames={openFiles} bind:activeName={activeFile} />
   </div>
-
 </article>
-
-<style>
-
-  h1 {
-    font-size: 2.5rem;
-    margin: 0 0 0.5rem 0;
-  }
-
-  .desc {
-    color: #586069;
-    font-size: 1.1rem;
-  }
-
-  .code-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #f6f8fa;
-    padding: 0.5rem 1rem;
-    border: 1px solid #e1e4e8;
-    border-bottom: none;
-    border-radius: 8px 8px 0 0;
-    font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
-    font-size: 0.85rem;
-  }
-
-  .copy-btn {
-    background: white;
-    border: 1px solid #d1d5da;
-    padding: 3px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.75rem;
-    transition: background 0.2s;
-  }
-
-  .copy-btn:hover {
-    background: #f3f4f6;
-  }
-</style>
