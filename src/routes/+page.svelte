@@ -19,7 +19,7 @@
       <AlgorithmCard
         title={$t(`algos.${algo.id}.title`)}
         description={$t(`algos.${algo.id}.desc`)}
-        href="/algorithms/{algo.slug}"
+        href="/{algo.slug}"
       />
     {/each}
   </AlgorithmGrid>
