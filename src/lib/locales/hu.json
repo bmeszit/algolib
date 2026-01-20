@@ -3,17 +3,13 @@
     "title": "Algoritmus könyvtár"
   },
   "algos": {
-    "binary-search": {
-      "title": "Bináris keresés",
-      "desc": "Hatékony keresés rendezett tömbökben."
+    "search": {
+      "title": "Keresés",
+      "desc": "Keresés tömbökben: lineáris keresés (rendezetlen tömbben) vs bináris keresés (rendezett tömbben)."
     },
-    "dijkstra": {
-      "title": "Dijkstra-algoritmus",
-      "desc": "A legrövidebb út megkeresésére szolgáló algoritmus."
-    },
-    "quick-sort": {
-      "title": "Gyorsrendezés",
-      "desc": "Oszd meg és uralkodj elvű rendezőalgoritmus."
+    "sort": {
+      "title": "Rendezés",
+      "desc": "Rendező algoritmusok."
     }
   }
 }

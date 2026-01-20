@@ -3,17 +3,13 @@
     "title": "Algorithms library"
   },
   "algos": {
-    "binary-search": {
-      "title": "Binary Search",
-      "desc": "Efficient search in sorted arrays."
+    "search": {
+      "title": "Search",
+      "desc": "Searching in arrays: linear search (unordered array) vs binary search (ordered array)."
     },
-    "dijkstra": {
-      "title": "Dijkstra",
-      "desc": "Shortest path algorithm."
-    },
-    "quick-sort": {
-      "title": "Quick Sort",
-      "desc": "Divide-and-conquer sorting algorithm."
+    "sort": {
+      "title": "Sort",
+      "desc": "Sorting algorithms."
     }
   }
 }
