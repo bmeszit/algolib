@@ -1,24 +1,22 @@
 <script lang="ts">
   import { EditorView, basicSetup } from "codemirror";
   import { python } from "@codemirror/lang-python";
+  import { tick } from "svelte";
 
-  // PROPS: openNames (milyen tabok vannak nyitva), activeName (melyik látszik)
   let { 
     openNames = $bindable([]), 
     activeName = $bindable("") 
   } = $props<{ openNames: string[], activeName: string }>();
 
-  // Globális tárhely betöltése
   let allFiles = $state<Record<string, string>>(
     JSON.parse(localStorage.getItem("global_files_db") || "{}")
   );
 
   let view: EditorView | null = null;
+  let editingName = $state<string | null>(null); // Tárolja, melyik tabot szerkesztjük éppen
 
-  // Az éppen szerkesztett fájl tartalma a globális tárból
-  let activeContent = $derived(activeName ? allFiles[activeName] ?? "" : "");
+  const activeContent = $derived(activeName ? allFiles[activeName] ?? "" : "");
 
-  // Mentés a globális tárba, ha bármi változik
   $effect(() => {
     localStorage.setItem("global_files_db", JSON.stringify(allFiles));
   });
@@ -40,7 +38,6 @@
     return { destroy: () => view?.destroy() };
   }
 
-  // Tartalom frissítése tab váltáskor
   $effect(() => {
     if (view && activeName && view.state.doc.toString() !== activeContent) {
       view.dispatch({
@@ -51,26 +48,34 @@
 
   function add() {
     const newName = `uj_file_${openNames.length + 1}.py`;
-    allFiles[newName] = ""; // Beírjuk a globálisba
-    openNames.push(newName); // Hozzáadjuk a látható tabokhoz
+    allFiles[newName] = "";
+    openNames.push(newName);
     activeName = newName;
   }
 
   function remove(name: string, e: MouseEvent) {
     e.stopPropagation();
-    openNames = openNames.filter(n => n !== name); // Csak a listából vesszük ki
+    openNames = openNames.filter(n => n !== name);
     if (activeName === name) activeName = openNames[0] || "";
   }
 
-  function rename(oldName: string, e: Event) {
-    const newName = (e.target as HTMLInputElement).value;
-    if (newName === oldName || !newName) return;
+  async function startEditing(name: string) {
+    editingName = name;
+    await tick();
+    const input = document.querySelector('.tab-input-active') as HTMLInputElement;
+    input?.focus();
+    input?.select();
+  }
+
+  function finishRename(oldName: string, e: Event) {
+    const newName = (e.target as HTMLInputElement).value.trim();
+    editingName = null;
     
-    // Áthelyezzük az adatot a globális tárban
+    if (!newName || newName === oldName) return;
+    
     allFiles[newName] = allFiles[oldName];
     delete allFiles[oldName];
 
-    // Frissítjük a látható listát
     const idx = openNames.indexOf(oldName);
     openNames[idx] = newName;
     if (activeName === oldName) activeName = newName;
@@ -78,51 +83,140 @@
 </script>
 
 <div class="container">
-  <nav class="tabs">
+  <nav class="tabs-bar">
     {#each openNames as name (name)}
       <div
         class="tab"
         class:active={activeName === name}
         onclick={() => activeName = name}
+        ondblclick={() => startEditing(name)}
         onkeydown={(e) => e.key === 'Enter' && (activeName = name)}
         role="button"
         tabindex="0"
       >
-        <input 
-          value={name} 
-          onchange={(e) => rename(name, e)} 
-          onclick={e => e.stopPropagation()} 
-        />
-        <button onclick={(e) => remove(name, e)}>×</button>
+        {#if editingName === name}
+          <input 
+            class="tab-input-active"
+            value={name} 
+            onblur={(e) => finishRename(name, e)}
+            onkeydown={(e) => e.key === 'Enter' && finishRename(name, e)}
+            onclick={e => e.stopPropagation()} 
+          />
+        {:else}
+          <span class="tab-label">{name}</span>
+        {/if}
+        <button class="close-btn" onclick={(e) => remove(name, e)}>×</button>
       </div>
     {/each}
-    <button class="add" onclick={add}>+</button>
+    <button class="add-btn" onclick={add} title="Új fájl">+</button>
   </nav>
 
-  <div class="editor">
+  <div class="editor-body">
     {#if activeName}
       {#key activeName}
-        <div use:setupEditor></div>
-      {/key}  <!-- Itt volt a hiba: a perjel (/) hiányzott -->
+        <div class="cm-wrapper" use:setupEditor></div>
+      {/key}
     {:else}
-      <div class="empty">Nincs megnyitott fájl</div>
+      <div class="empty">Nincs megnyitott fájl. Kattints a + gombra.</div>
     {/if}
   </div>
 </div>
 
 <style lang="scss">
   .container {
-    display: flex; flex-direction: column; height: 450px; border: 1px solid #333;
-    .tabs {
-      display: flex; gap: 2px; padding: 4px; background: #222;
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+    border: 1px solid #ddd;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    font-family: Roboto, sans-serif;
+
+    .tabs-bar {
+      display: flex;
+      align-items: center;
+      background: #f5f5f5; // Szürkébb háttér a tab sávnak
+      border-bottom: 1px solid #ddd;
+
       .tab {
-        display: flex; align-items: center; padding: 4px 8px; background: #444; color: #ccc; cursor: pointer;
-        &.active { background: #fff; color: #000; input { color: #000; } }
-        input { border: none; background: transparent; width: 100px; font-size: 12px; color: inherit; outline: none; }
-        button { border: none; background: transparent; color: inherit; cursor: pointer; margin-left: 5px; }
+        display: flex;
+        align-items: center;
+        padding: 6px 12px;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-bottom: none;
+        cursor: pointer;
+        min-width: 100px;
+        height: 28px;
+        max-width: 180px;
+        box-shadow: 0 -1px 2px rgba(0,0,0,0.03);
+
+        &.active {
+          background: #fff;
+          border-bottom: 2px solid #3776ab; // Python-kék jelzés
+          .tab-label { font-weight: 600; color: #000; }
+        }
+
+        .tab-label {
+          font-size: 13px;
+          color: #666;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          user-select: none;
+        }
+
+        input {
+          border: 1px solid #3776ab;
+          background: #fff;
+          width: 100%;
+          font-size: 13px;
+          outline: none;
+          padding: 0 2px;
+        }
+
+        .close-btn {
+          border: none;
+          background: transparent;
+          color: #999;
+          font-size: 16px;
+          margin-left: 8px;
+          cursor: pointer;
+          &:hover { color: #d00; }
+        }
       }
-      .add { background: #3776ab; color: #fff; border: none; padding: 0 10px; cursor: pointer; }
+
+      .add-btn {
+        background: #fff;
+        border: 1px solid #ddd;
+        color: #3776ab;
+        border-radius: 4px;
+        width: 28px;
+        height: 28px;
+        margin-left: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover { background: #f0f0f0; border-color: #ccc; }
+      }
     }
-    .editor { flex: 1; overflow: hidden; :global(.cm-editor) { height: 100%; } .empty { padding: 20px; color: #888; } }
+
+    .editor-body {
+      flex: 1;
+      overflow: hidden;
+      background: #fff;
+
+      .empty {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        color: #999;
+        font-size: 14px;
+      }
+    }
   }
 </style>
