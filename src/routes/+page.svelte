@@ -7,7 +7,6 @@
   const algorithms = [
     { id: 'search', slug: 'search' },
     { id: 'sort', slug: 'sort' },
-    { id: 'dijkstra', slug: 'dijkstra' },
   ];
 </script>
 
