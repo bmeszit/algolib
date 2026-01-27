@@ -11,26 +11,19 @@
   type Props = {
     value: string
     onChange?: (next: string) => void
-    readOnly?: boolean
     extraExtensions?: any[]
   }
 
   const {
     value,
     onChange = () => {},
-    readOnly = false,
     extraExtensions = []
   } = $props() as Props
 
   let host: HTMLDivElement | null = null
   let view: EditorView | null = null
 
-  const ro = new Compartment()
   const extras = new Compartment()
-
-  function roExt(v: boolean) {
-    return EditorState.readOnly.of(v)
-  }
 
   function makeState(doc: string) {
     return EditorState.create({
@@ -48,7 +41,6 @@
           const next = u.state.doc.toString()
           if (next !== value) onChange(next)
         }),
-        ro.of(roExt(readOnly)),
         extras.of(extraExtensions)
       ]
     })
@@ -78,12 +70,6 @@
     })
   })
 
-  // readOnly sync
-  $effect(() => {
-    if (!view) return
-    view.dispatch({ effects: ro.reconfigure(roExt(readOnly)) })
-  })
-
   // extraExtensions sync
   $effect(() => {
     if (!view) return
@@ -99,5 +85,8 @@
   :global(.cm-scroller) {
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
       "Liberation Mono", "Courier New", monospace;
+    font-size: 14px;
+    -webkit-overflow-scrolling: touch;
   }
+  :global(.cm-content) { padding: 10px 8px; }
 </style>
