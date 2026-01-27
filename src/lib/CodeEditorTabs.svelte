@@ -1,4 +1,6 @@
 <script lang="ts">
+
+  import { tick } from "svelte";
   import CodeEditor from "./CodeEditor.svelte";
 
   const { pageId, repo } = $props();
@@ -8,6 +10,7 @@
 
   let renaming = $state<string>("");
   let renameValue = $state<string>("");
+  let renameEl = $state<HTMLElement | null>(null);
 
   let tabs = $derived(repo.list(pageId));
   let content = $derived(active ? repo.get(pageId, active) : "");
@@ -56,9 +59,27 @@
     repo.set(pageId, active, next);
   }
 
-  function beginRename(name: string): void {
+  async function beginRename(name: string): Promise<void> {
     renaming = name;
     renameValue = name;
+    await tick();
+
+    const el = renameEl;
+    if (!el) return;
+
+    el.focus();
+
+    const text = el.textContent ?? "";
+    const pos = text.endsWith(".py") ? text.length - 3 : text.length;
+
+    const sel = window.getSelection();
+    if (!sel || !el.firstChild) return;
+
+    const range = document.createRange();
+    range.setStart(el.firstChild, pos);
+    range.collapse(true);
+    sel.removeAllRanges();
+    sel.addRange(range);
   }
 
   function cancelRename(): void {
@@ -66,10 +87,10 @@
     renameValue = "";
   }
 
-  function commitRename(): void {
+  function commitRename(next?: string): void {
     if (!renaming) return;
     const from = renaming;
-    const to = renameValue.trim();
+    const to = (next ?? renameValue).trim();
     if (to === "" || to === from) {
       cancelRename();
       return;
@@ -78,6 +99,7 @@
     if (!ok) return;
     if (active === from) active = to;
     renaming = "";
+    renameValue = "";
   }
 
   function onRenameMenu(e: MouseEvent, name: string): void {
@@ -96,18 +118,34 @@
     <div class="tabs">
       {#each tabs as t (t)}
         <div class="tab" data-active={t === active}>
-          {#if renaming === t}
-            <input
-              class="rename"
-              value={renameValue}
-              autofocus
-              oninput={(e) => (renameValue = (e.currentTarget as HTMLInputElement).value)}
-              onkeydown={(e) => {
-                if (e.key === "Enter") commitRename();
-                if (e.key === "Escape") cancelRename();
-              }}
-              onblur={commitRename}
-            />
+        {#if renaming === t}
+          <span
+            class="rename"
+            bind:this={renameEl}
+            contenteditable
+            role="textbox"
+            aria-label="Rename file"
+            aria-multiline="false"
+            tabindex="0"
+            spellcheck="false"
+            onkeydown={(e) => {
+              const el = e.currentTarget as HTMLSpanElement;
+              if (e.key === "Enter") {
+                e.preventDefault();
+                commitRename(el.textContent ?? "");
+              }
+              if (e.key === "Escape") {
+                e.preventDefault();
+                cancelRename();
+              }
+            }}
+            onblur={(e) => {
+              const el = e.currentTarget as HTMLSpanElement;
+              commitRename(el.textContent ?? "");
+            }}
+          >
+            {renameValue}
+          </span>
           {:else}
             <button
               class="tabbtn"
@@ -256,8 +294,11 @@
     border: 0;
     background: transparent;
     padding: 6px 10px;
+    cursor: text;
     max-width: 240px;
     outline: none;
+    font: inherit;
+    color: inherit;
   }
 
   .close {
