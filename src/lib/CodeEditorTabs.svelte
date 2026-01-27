@@ -12,15 +12,15 @@
   type Props = {
     pageId: string;
     repo: Repo;
-    showReset?: boolean;
   };
 
-  const { pageId, repo, showReset = true } = $props() as Props;
+  const { pageId, repo } = $props() as Props;
 
   let active = $state<string>("");
   let menuOpen = $state<boolean>(false);
 
   let tabs = $derived(repo.list(pageId));
+  let content = $derived(active ? repo.get(pageId, active) : "");
 
   $effect(() => {
     if (tabs.length === 0) {
@@ -31,7 +31,6 @@
     if (active === "" || !tabs.includes(active)) active = tabs[0];
   });
 
-  let content = $derived(active ? repo.get(pageId, active) : "");
 
   function nextNewName(): string {
     let i = 1;
@@ -65,8 +64,7 @@
   }
 
   function resetPage(): void {
-    if (!repo.reset) return;
-    repo.reset(pageId);
+    repo.reset?.(pageId);
     menuOpen = false;
   }
 </script>
@@ -75,9 +73,7 @@
   <div class="bar">
     <div class="mobile">
       <div class="title" title={active || ""}>{active || "No file"}</div>
-      <button class="hamb" type="button" aria-label="Menu" onclick={() => (menuOpen = !menuOpen)}>
-        ☰
-      </button>
+      <button class="hamb" type="button" aria-label="Menu" onclick={() => (menuOpen = !menuOpen)}>☰</button>
     </div>
 
     <div class="tabs">
@@ -90,9 +86,7 @@
       <button class="new" type="button" onclick={addFile}>+ New</button>
     </div>
 
-    {#if showReset && repo.reset}
-      <button class="reset" type="button" onclick={resetPage}>Reset</button>
-    {/if}
+    <button class="reset" type="button" onclick={resetPage} disabled={!repo.reset}>Reset</button>
   </div>
 
   {#if menuOpen}
@@ -105,7 +99,7 @@
       <div class="menuList">
         {#each tabs as t (t)}
           <div class="row" data-active={t === active}>
-            <button class="pick" type="button" onclick={() => pick(t)}>{t}</button>
+            <button class="pick" type="button" onclick={() => (active = t, menuOpen = false)}>{t}</button>
             <button class="close" type="button" aria-label="Close" onclick={() => closeFile(t)}>×</button>
           </div>
         {/each}
@@ -113,9 +107,7 @@
 
       <div class="menuActions">
         <button class="new" type="button" onclick={addFile}>+ New</button>
-        {#if showReset && repo.reset}
-          <button class="reset" type="button" onclick={resetPage}>Reset</button>
-        {/if}
+        <button class="reset" type="button" onclick={resetPage} disabled={!repo.reset}>Reset</button>
       </div>
     </div>
     <button class="backdrop" type="button" aria-label="Close" onclick={() => (menuOpen = false)}></button>
