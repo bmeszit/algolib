@@ -18,7 +18,6 @@
     if (active === "" || !tabs.includes(active)) active = tabs[0];
   });
 
-
   function nextNewName(): string {
     let i = 1;
     for (;;) {
@@ -40,19 +39,14 @@
     if (active === name) active = "";
   }
 
-  function pick(name: string): void {
-    active = name;
+  function resetPage(): void {
+    repo.reset?.(pageId);
     menuOpen = false;
   }
 
   function onEdit(next: string): void {
     if (!active) return;
     repo.set(pageId, active, next);
-  }
-
-  function resetPage(): void {
-    repo.reset?.(pageId);
-    menuOpen = false;
   }
 </script>
 
@@ -72,8 +66,6 @@
       {/each}
       <button class="new" type="button" onclick={addFile}>+ New</button>
     </div>
-
-    <button class="reset" type="button" onclick={resetPage} disabled={!repo.reset}>Reset</button>
   </div>
 
   {#if menuOpen}
