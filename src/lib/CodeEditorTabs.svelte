@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { onMount } from "svelte";
   import CodeEditor from "./CodeEditor.svelte";
 
   const { pageId, repo } = $props();
@@ -7,45 +6,24 @@
   let active = $state<string>("");
   let menuOpen = $state<boolean>(false);
 
-  let tabs = $state<string[]>([]);
-  let content = $state<string>("");
+  let tabs = $derived(repo.list(pageId));
+  let content = $derived(active ? repo.get(pageId, active) : "");
 
-  function refreshTabs(): void {
-    tabs = repo.list(pageId);
+  $effect(() => {
     if (tabs.length === 0) {
       active = "";
-      content = "";
       menuOpen = false;
       return;
     }
     if (active === "" || !tabs.includes(active)) active = tabs[0];
-  }
-
-  function refreshContent(): void {
-    content = active ? repo.get(pageId, active) : "";
-  }
-
-  onMount(() => {
-    refreshTabs();
-    refreshContent();
   });
 
-  $effect(() => {
-    // react only to active changes (not to repo.pages mutations)
-    active;
-    refreshContent();
-  });
 
   function nextNewName(): string {
     let i = 1;
     for (;;) {
       const name = `new${i}.py`;
-      if (!tabs.includes(name))
-      {
-        refreshTabs();
-        refreshContent();
-        return name;
-      }
+      if (!tabs.includes(name)) return name;
       i += 1;
     }
   }
@@ -60,8 +38,6 @@
   function closeFile(name: string): void {
     repo.del(pageId, name);
     if (active === name) active = "";
-    refreshTabs();
-    refreshContent();
   }
 
   function pick(name: string): void {
@@ -69,18 +45,14 @@
     menuOpen = false;
   }
 
-
   function onEdit(next: string): void {
     if (!active) return;
     repo.set(pageId, active, next);
-    content = next;
   }
 
   function resetPage(): void {
     repo.reset?.(pageId);
     menuOpen = false;
-    refreshTabs();
-    refreshContent();
   }
 </script>
 

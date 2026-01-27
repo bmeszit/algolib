@@ -4,12 +4,11 @@ function key(pageId: PageId): string { return `pageCode:${pageId}`; }
 
 export function createCodeRepo(defaults: Pages) {
   let pages = $state<Pages>({});
-
-  function ensure(pageId: PageId): void {
-    if (pages[pageId] !== undefined) return;
-
+  for (const pageId in defaults) {
     const raw = localStorage.getItem(key(pageId));
-    pages[pageId] = raw ? JSON.parse(raw) : { ...(defaults[pageId] ?? {}) };
+    pages[pageId] = raw
+      ? { ...defaults[pageId as PageId], ...JSON.parse(raw) }
+      : { ...defaults[pageId as PageId]};
   }
 
   function save(pageId: PageId): void {
@@ -17,12 +16,10 @@ export function createCodeRepo(defaults: Pages) {
   }
 
   function list(pageId: PageId): Filename[] {
-    ensure(pageId);
     return Object.keys(pages[pageId]);
   }
 
   function get(pageId: PageId, filename: Filename): string {
-    ensure(pageId);
     if (pages[pageId][filename] === undefined) {
       pages[pageId][filename] = defaults[pageId]?.[filename] ?? "";
       save(pageId);
@@ -31,13 +28,11 @@ export function createCodeRepo(defaults: Pages) {
   }
 
   function set(pageId: PageId, filename: Filename, content: string): void {
-    ensure(pageId);
     pages[pageId][filename] = content;
     save(pageId);
   }
 
   function del(pageId: PageId, filename: Filename): void {
-    ensure(pageId);
     delete pages[pageId][filename];
     save(pageId);
   }
