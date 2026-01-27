@@ -11,7 +11,7 @@ import type { PageId, Filename, Pages } from "$lib";
 
 export const defaultCode: Pages = {
   search: {
-    "linsrc.py": { content: linsrc, version: 1 },
+    "linsrc.py": { content: linsrc, version: 3 },
     "binsrc.py": { content: binsrc, version: 1 },
   },
   sort: {
