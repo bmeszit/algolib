@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { base } from '$app/paths';
+  import { resolve } from '$app/paths';
   import { t, locale } from 'svelte-i18n';
   import LocaleSwitcher from './LocaleSwitcher.svelte';
 </script>
 
 <header>
   <nav>
-    <a href="/{base}{$locale === 'en' ? '?lang=en' : ''}" class="logo">{$t('common.title')}</a>
+    <a href={resolve('/') + ($locale === 'en' ? '?lang=en' : '')} class="logo">{$t('common.title')}</a>
     <LocaleSwitcher />
   </nav>
 </header>
