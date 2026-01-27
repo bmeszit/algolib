@@ -1,29 +1,20 @@
-<!-- CodeEditor.svelte (Svelte 5 + CodeMirror 6, runes mode) -->
 <script lang="ts">
-  import { onMount, onDestroy } from "svelte"
-
-  import { EditorView, keymap, lineNumbers, highlightActiveLine, drawSelection } from "@codemirror/view"
-  import { EditorState, Compartment } from "@codemirror/state"
-  import { defaultKeymap, history, historyKeymap, indentWithTab } from "@codemirror/commands"
-  import { bracketMatching } from "@codemirror/language"
-  import { python } from "@codemirror/lang-python"
+  import { onMount, onDestroy } from "svelte";
+  import { EditorView, keymap, lineNumbers, highlightActiveLine, drawSelection } from "@codemirror/view";
+  import { EditorState } from "@codemirror/state";
+  import { defaultKeymap, history, historyKeymap, indentWithTab } from "@codemirror/commands";
+   import { bracketMatching } from "@codemirror/language";
+  import { python } from "@codemirror/lang-python";
 
   type Props = {
-    value: string
-    onChange?: (next: string) => void
-    extraExtensions?: any[]
-  }
+    value: string;
+    onChange?: (next: string) => void;
+  };
 
-  const {
-    value,
-    onChange = () => {},
-    extraExtensions = []
-  } = $props() as Props
+  const { value, onChange = () => {} } = $props() as Props;
 
-  let host: HTMLDivElement | null = null
-  let view: EditorView | null = null
-
-  const extras = new Compartment()
+  let host: HTMLDivElement | null = null;
+  let view: EditorView | null = null;
 
   function makeState(doc: string) {
     return EditorState.create({
@@ -37,43 +28,30 @@
         python(),
         keymap.of([indentWithTab, ...defaultKeymap, ...historyKeymap]),
         EditorView.updateListener.of((u) => {
-          if (!u.docChanged) return
-          const next = u.state.doc.toString()
-          if (next !== value) onChange(next)
-        }),
-        extras.of(extraExtensions)
+          if (!u.docChanged) return;
+          const next = u.state.doc.toString();
+          if (next !== value) onChange(next);
+        })
       ]
-    })
+    });
   }
 
   onMount(() => {
-    if (!host) return
-    view = new EditorView({
-      state: makeState(value ?? ""),
-      parent: host
-    })
-  })
+    if (!host) return;
+    view = new EditorView({ state: makeState(value ?? ""), parent: host });
+  });
 
   onDestroy(() => {
     view?.destroy();
     view = null;
-  })
+  });
 
-  // parent -> editor sync (tab switch / external update)
   $effect(() => {
     if (!view) return;
     const next = value ?? "";
     const cur = view.state.doc.toString();
     if (next === cur) return;
-    view.dispatch({
-      changes: { from: 0, to: view.state.doc.length, insert: next }
-    });
-  })
-
-  // extraExtensions sync
-  $effect(() => {
-    if (!view) return
-    view.dispatch({ effects: extras.reconfigure(extraExtensions) })
+    view.dispatch({ changes: { from: 0, to: view.state.doc.length, insert: next } });
   });
 </script>
 
