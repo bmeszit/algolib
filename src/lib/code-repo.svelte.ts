@@ -5,10 +5,21 @@ function key(pageId: PageId): string { return `pageCode:${pageId}`; }
 export function createCodeRepo(defaults: Pages) {
   let pages = $state<Pages>({});
   for (const pageId in defaults) {
+
     const raw = localStorage.getItem(key(pageId as PageId));
-    pages[pageId as PageId] = raw
-      ? { ...defaults[pageId as PageId], ...JSON.parse(raw) }
+    const stored = raw ? JSON.parse(raw) : {};
+
+    pages[pageId as PageId] = stored
+      ? { ...defaults[pageId as PageId], ...stored }
       : { ...defaults[pageId as PageId] };
+
+    for (const fname in stored) {
+      const def = defaults[pageId]?.[fname];
+      const cur = stored[fname];
+      if (def && def.version > cur.version) {
+        pages[pageId][fname] = def;
+      }
+    }
   }
 
   function save(pageId: PageId): void {
@@ -20,15 +31,18 @@ export function createCodeRepo(defaults: Pages) {
   }
 
   function get(pageId: PageId, filename: Filename): string {
-    if (pages[pageId][filename] === undefined) {
-      pages[pageId][filename] = defaults[pageId]?.[filename] ?? "";
+    const page = pages[pageId];
+    if (!page[filename]) {
+      page[filename] = { content: "", version: 0 };
       save(pageId);
     }
-    return pages[pageId][filename];
+    return page[filename].content;
   }
 
   function set(pageId: PageId, filename: Filename, content: string): void {
-    pages[pageId][filename] = content;
+    const page = pages[pageId];
+    const version = page[filename]?.version ?? 0;
+    page[filename] = { content, version };
     save(pageId);
   }
 
@@ -40,8 +54,8 @@ export function createCodeRepo(defaults: Pages) {
   function rename(pageId: PageId, from: Filename, to: Filename): boolean {
     if (from === to) return true;
     const page = pages[pageId];
-    if (page[from] === undefined) return false;
-    if (page[to] !== undefined) return false;
+    if (!page[from] || page[to]) return false;
+
     page[to] = page[from];
     delete page[from];
     save(pageId);

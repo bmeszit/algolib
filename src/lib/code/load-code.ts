@@ -7,16 +7,18 @@ import merge from "./sort/merge.py?raw";
 import quick from "./sort/quick.py?raw";
 import selection from "./sort/selection.py?raw";
 
-export const defaultCode: Record<string, Record<string, string>> = {
+import type { PageId, Filename, Pages } from "$lib";
+
+export const defaultCode: Pages = {
   search: {
-    "linsrc.py": linsrc,
-    "binsrc.py": binsrc
+    "linsrc.py": { content: linsrc, version: 1 },
+    "binsrc.py": { content: binsrc, version: 1 },
   },
   sort: {
-    "bubble.py": bubble,
-    "insertion.py": insertion,
-    "merge.py": merge,
-    "quick.py": quick,
-    "selection.py": selection
+    "bubble.py": { content: bubble, version: 1 },
+    "insertion.py": { content: insertion, version: 1 },
+    "merge.py": { content: merge, version: 1 },
+    "quick.py": { content: quick, version: 1 },
+    "selection.py": { content: selection, version: 1 },
   }
 };
