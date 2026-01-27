@@ -1,4 +1,4 @@
-<!-- CodeEditor.svelte (Svelte 5 + CodeMirror 6) -->
+<!-- CodeEditor.svelte (Svelte 5 + CodeMirror 6, runes mode) -->
 <script lang="ts">
   import { onMount, onDestroy } from "svelte"
 
@@ -67,6 +67,7 @@
     view = null
   })
 
+  // parent -> editor sync (tab switch / external update)
   $effect(() => {
     if (!view) return
     const next = value ?? ""
@@ -77,11 +78,13 @@
     })
   })
 
+  // readOnly sync
   $effect(() => {
     if (!view) return
     view.dispatch({ effects: ro.reconfigure(roExt(readOnly)) })
   })
 
+  // extraExtensions sync
   $effect(() => {
     if (!view) return
     view.dispatch({ effects: extras.reconfigure(extraExtensions) })
