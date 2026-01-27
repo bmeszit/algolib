@@ -1,13 +1,13 @@
 <script lang="ts">
   import { t } from 'svelte-i18n';
-  import { CodeEditor, createEditorManager } from '$lib';
+  import { CodeEditor, CodeEditorTabs, createCodeRepo } from '$lib';
   import AlgorithmRunner from '$lib/AlgorithmRunner.svelte';
   
   import binarySearchCode from './binary-search.py?raw';
   import linearSearchCode from './linear-search.py?raw';
 
   // 1. Manager inicializálása
-  const editor = createEditorManager("search-algorithms", {
+  const editor = createCodeRepo("search-algorithms", {
     "binary-search.py": binarySearchCode,
     "linear-search.py": linearSearchCode
   });
