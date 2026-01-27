@@ -6,12 +6,7 @@
    import { bracketMatching } from "@codemirror/language";
   import { python } from "@codemirror/lang-python";
 
-  type Props = {
-    value: string;
-    onChange?: (next: string) => void;
-  };
-
-  const { value, onChange = () => {} } = $props() as Props;
+  const { value, onchange = () => {} } = $props();
 
   let host: HTMLDivElement | null = null;
   let view: EditorView | null = null;
@@ -30,7 +25,7 @@
         EditorView.updateListener.of((u) => {
           if (!u.docChanged) return;
           const next = u.state.doc.toString();
-          if (next !== value) onChange(next);
+          if (next !== value) onchange(next);
         })
       ]
     });

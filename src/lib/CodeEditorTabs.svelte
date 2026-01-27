@@ -75,7 +75,7 @@
   <div class="bar">
     <div class="mobile">
       <div class="title" title={active || ""}>{active || "No file"}</div>
-      <button class="hamb" type="button" aria-label="Menu" on:click={() => (menuOpen = !menuOpen)}>
+      <button class="hamb" type="button" aria-label="Menu" onclick={() => (menuOpen = !menuOpen)}>
         ☰
       </button>
     </div>
@@ -83,15 +83,15 @@
     <div class="tabs">
       {#each tabs as t (t)}
         <div class="tab" data-active={t === active}>
-          <button class="tabbtn" type="button" on:click={() => (active = t)}>{t}</button>
-          <button class="close" type="button" aria-label="Close" on:click={() => closeFile(t)}>×</button>
+          <button class="tabbtn" type="button" onclick={() => (active = t)}>{t}</button>
+          <button class="close" type="button" aria-label="Close" onclick={() => closeFile(t)}>×</button>
         </div>
       {/each}
-      <button class="new" type="button" on:click={addFile}>+ New</button>
+      <button class="new" type="button" onclick={addFile}>+ New</button>
     </div>
 
     {#if showReset && repo.reset}
-      <button class="reset" type="button" on:click={resetPage}>Reset</button>
+      <button class="reset" type="button" onclick={resetPage}>Reset</button>
     {/if}
   </div>
 
@@ -99,31 +99,31 @@
     <div class="menu" role="dialog" aria-label="Files">
       <div class="menuHead">
         <div class="menuTitle">Files</div>
-        <button class="x" type="button" aria-label="Close" on:click={() => (menuOpen = false)}>×</button>
+        <button class="x" type="button" aria-label="Close" onclick={() => (menuOpen = false)}>×</button>
       </div>
 
       <div class="menuList">
         {#each tabs as t (t)}
           <div class="row" data-active={t === active}>
-            <button class="pick" type="button" on:click={() => pick(t)}>{t}</button>
-            <button class="close" type="button" aria-label="Close" on:click={() => closeFile(t)}>×</button>
+            <button class="pick" type="button" onclick={() => pick(t)}>{t}</button>
+            <button class="close" type="button" aria-label="Close" onclick={() => closeFile(t)}>×</button>
           </div>
         {/each}
       </div>
 
       <div class="menuActions">
-        <button class="new" type="button" on:click={addFile}>+ New</button>
+        <button class="new" type="button" onclick={addFile}>+ New</button>
         {#if showReset && repo.reset}
-          <button class="reset" type="button" on:click={resetPage}>Reset</button>
+          <button class="reset" type="button" onclick={resetPage}>Reset</button>
         {/if}
       </div>
     </div>
-    <button class="backdrop" type="button" aria-label="Close" on:click={() => (menuOpen = false)}></button>
+    <button class="backdrop" type="button" aria-label="Close" onclick={() => (menuOpen = false)}></button>
   {/if}
 
   <div class="editor">
     {#if active}
-      <CodeEditor value={content} onChange={onEdit} />
+      <CodeEditor value={content} onchange={onEdit} />
     {:else}
       <div class="empty">No file selected.</div>
     {/if}
