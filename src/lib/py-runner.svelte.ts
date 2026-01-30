@@ -1,5 +1,5 @@
-// src/lib/py-runner.svelte.ts
-// Svelte 5 runes store for running Python in-browser via Pyodide with time + peak memory (Python allocs).
+import RUN_PY from "$lib/code/hepler/run.py?raw";
+
 type PyRunResult = {
   result: string;
   stdout: string;
@@ -8,17 +8,12 @@ type PyRunResult = {
   peakBytes: number;
 };
 
-type PyRunnerOptions = {
-  indexURL?: string; // e.g. "https://cdn.jsdelivr.net/pyodide/v0.26.1/full/"
-};
-
-export function createPyRunner(options: PyRunnerOptions = {}) {
-  const indexURL = options.indexURL ?? "https://cdn.jsdelivr.net/pyodide/v0.26.1/full/";
+export function createPyRunner() {
+  const indexURL = "https://cdn.jsdelivr.net/pyodide/v0.26.1/full/";
 
   let pyodide = $state<any>(null);
   let isLoading = $state(false);
   let loadError = $state<string | null>(null);
-
   let last = $state<PyRunResult | null>(null);
 
   let loadingPromise: Promise<any> | null = null;
@@ -32,14 +27,13 @@ export function createPyRunner(options: PyRunnerOptions = {}) {
 
     loadingPromise = (async () => {
       try {
-        // Prefer installed npm package `pyodide`, otherwise fall back to global `loadPyodide`.
         let loadPyodideFn: any = null;
 
         try {
           const mod: any = await import("pyodide");
           loadPyodideFn = mod?.loadPyodide ?? null;
         } catch {
-          // ignore; try global
+          // ignore
         }
 
         if (!loadPyodideFn) {
@@ -48,48 +42,11 @@ export function createPyRunner(options: PyRunnerOptions = {}) {
         }
 
         if (!loadPyodideFn) {
-          throw new Error(
-            "Pyodide loader not found. Install `pyodide` or include a script that defines globalThis.loadPyodide.",
-          );
+          throw new Error("Pyodide loader not found. Install `pyodide` or include a script that defines globalThis.loadPyodide.");
         }
 
         const inst = await loadPyodideFn({ indexURL });
-
-        // Define a Python helper that executes user code with redirected stdin/stdout/stderr,
-        // measures runtime, and records peak allocated memory via tracemalloc.
-        inst.runPython(`
-import sys, io, traceback, time, tracemalloc
-
-def __run_user_code_with_metrics__(code: str, stdin_text: str | None):
-    old_stdin, old_stdout, old_stderr = sys.stdin, sys.stdout, sys.stderr
-    sys.stdin = io.StringIO(stdin_text or "")
-    out = io.StringIO()
-    err = io.StringIO()
-    sys.stdout = out
-    sys.stderr = err
-
-    glb = {"__name__": "__main__"}
-    loc = glb
-
-    tracemalloc.start()
-    t0 = time.perf_counter()
-    try:
-        exec(compile(code, "<user_code>", "exec"), glb, loc)
-    except Exception:
-        traceback.print_exc()
-    t1 = time.perf_counter()
-    current, peak = tracemalloc.get_traced_memory()
-    tracemalloc.stop()
-
-    sys.stdin, sys.stdout, sys.stderr = old_stdin, old_stdout, old_stderr
-
-    return {
-        "stdout": out.getvalue(),
-        "stderr": err.getvalue(),
-        "time_ms": (t1 - t0) * 1000.0,
-        "peak_bytes": int(peak),
-    }
-        `);
+        inst.runPython(RUN_PY);
 
         pyodide = inst;
         return inst;
@@ -106,7 +63,8 @@ def __run_user_code_with_metrics__(code: str, stdin_text: str | None):
 
   async function run(code: string, inputText?: string): Promise<PyRunResult> {
     const inst = await ensurePyodide();
-    const fn = inst.globals.get("__run_user_code_with_metrics__");
+
+    const fn = inst.globals.get("run_user_code_with_metrics");
     const metrics = fn(code, inputText ?? null);
 
     const stdout = String(metrics.get("stdout") ?? "");
@@ -114,7 +72,6 @@ def __run_user_code_with_metrics__(code: str, stdin_text: str | None):
     const timeMs = Number(metrics.get("time_ms") ?? NaN);
     const peakBytes = Number(metrics.get("peak_bytes") ?? NaN);
 
-    // Best-effort cleanup of PyProxy values.
     try {
       metrics.destroy?.();
     } catch {
@@ -128,21 +85,10 @@ def __run_user_code_with_metrics__(code: str, stdin_text: str | None):
   }
 
   return {
-    // state
-    get pyodide() {
-      return pyodide;
-    },
-    get isLoading() {
-      return isLoading;
-    },
-    get loadError() {
-      return loadError;
-    },
-    get last() {
-      return last;
-    },
-
-    // actions
+    get pyodide() { return pyodide; },
+    get isLoading() { return isLoading; },
+    get loadError() { return loadError; },
+    get last() { return last; },
     ensurePyodide,
     run,
   };
