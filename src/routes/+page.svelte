@@ -1,6 +1,5 @@
-<script lang="ts">
+<script>
   import { t, locale } from 'svelte-i18n';
-  import { base } from '$app/paths';
   import AlgorithmGrid from '$lib/AlgorithmGrid.svelte';
   import AlgorithmCard from '$lib/AlgorithmCard.svelte';
 
@@ -11,7 +10,6 @@
 </script>
 
 <section>
-  
   <AlgorithmGrid gap="2rem">
     {#each algorithms as algo}
       <AlgorithmCard

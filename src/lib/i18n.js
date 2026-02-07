@@ -5,7 +5,7 @@ import hu from './locales/hu.json';
 addMessages('en', en);
 addMessages('hu', hu);
 
-export function setupI18n(lang: string) {
+export function setupI18n(lang) {
   init({
     fallbackLocale: 'en',
     initialLocale: lang,

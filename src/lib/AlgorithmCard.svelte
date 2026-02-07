@@ -1,7 +1,7 @@
-<script lang="ts">
-  export let title: string;
-  export let description: string;
-  export let href: string;
+<script>
+  export let title;
+  export let description;
+  export let href;
 </script>
 
 <a {href} class="card">
@@ -10,7 +10,7 @@
   <slot />
 </a>
 
-<style>
+<style lang="scss">
   .card {
     display: block;
     text-decoration: none;

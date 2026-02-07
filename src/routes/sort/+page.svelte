@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   import { t } from 'svelte-i18n';
   import { CodeEditorTabs } from '$lib';
   import { getContext } from "svelte";

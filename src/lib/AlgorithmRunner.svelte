@@ -1,30 +1,25 @@
-<script lang="ts">
+<script>
   import { usePyodide } from './pyodide.svelte';
-  
-  // Props bővítése:
+
+  // Props:
   // - openNames: a nyitott tabok nevei (hogy tudjuk mit kell futtatni)
   // - allFiles: az összes fájl tartalma (a kódok eléréséhez)
   // - inputData: a generált adat (ezt bindoljuk, hogy a textarea szerkeszthesse)
   // - pythonCall: a hívás sablon
   // - children: generáló gombok
+
   let { 
     openNames, 
     allFiles, 
     inputData = $bindable(), 
     pythonCall, 
     children 
-  } = $props<{
-    openNames: string[],
-    allFiles: Record<string, string>,
-    inputData: any,
-    pythonCall: string,
-    children: any
-  }>();
+  } = $props();
 
   const py = usePyodide();
   
   // Eredmények tárolása: { "file.py": 1.234 }
-  let results = $state<Record<string, number | string>>({});
+  let results = $state({});
   let isExecuting = $state(false);
 
   // Textarea kezelése: szinkronizáljuk az inputData-val
@@ -42,8 +37,8 @@
   });
 
   // Ha a textarea-ban szerkesztjük, megpróbáljuk visszatölteni az adatba
-  function handleTextChange(e: Event) {
-    const val = (e.target as HTMLTextAreaElement).value;
+  function handleTextChange(e) {
+    const val = e.target.value;
     const parsed = val.split(',').map(n => Number(n.trim())).filter(n => !isNaN(n));
     
     if (inputData && typeof inputData === 'object' && inputData.list) {
@@ -72,12 +67,12 @@
           await instance.runPythonAsync(`${code}\n${pythonCall}`);
           const t1 = performance.now();
           results[fileName] = (t1 - t0).toFixed(4);
-        } catch (err: any) {
+        } catch (err) {
           results[fileName] = "Hiba";
           console.error(`Hiba a(z) ${fileName} futtatásakor:`, err);
         }
       }
-    } catch (e: any) {
+    } catch (e) {
       alert("Pyodide hiba: " + e.message);
     } finally {
       isExecuting = false;

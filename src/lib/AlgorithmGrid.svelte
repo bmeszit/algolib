@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   export let gap = '1.5rem';
 </script>
 
@@ -6,7 +6,7 @@
   <slot />
 </div>
 
-<style>
+<style lang="scss">
   .grid {
     display: flex;
     flex-wrap: wrap;

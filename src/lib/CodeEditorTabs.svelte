@@ -1,16 +1,15 @@
-<script lang="ts">
-
+<script>
   import { tick } from "svelte";
   import CodeEditor from "./CodeEditor.svelte";
 
-  const { pageId, repo } = $props();
+  let { pageId, repo, activeCode = $bindable("") } = $props();
 
-  let active = $state<string>("");
-  let menuOpen = $state<boolean>(false);
+  let active = $state("");
+  let menuOpen = $state(false);
 
-  let renaming = $state<string>("");
-  let renameValue = $state<string>("");
-  let renameEl = $state<HTMLElement | null>(null);
+  let renaming = $state("");
+  let renameValue = $state("");
+  let renameEl = $state(null);
 
   let tabs = $derived(repo.list(pageId));
   let content = $derived(active ? repo.get(pageId, active) : "");
@@ -26,7 +25,9 @@
     if (renaming && !tabs.includes(renaming)) renaming = "";
   });
 
-  function nextNewName(): string {
+  $effect(() => { activeCode = active; });
+
+  function nextNewName() {
     let i = 1;
     for (;;) {
       const name = `new${i}.py`;
@@ -35,31 +36,31 @@
     }
   }
 
-  function addFile(): void {
+  function addFile() {
     const name = nextNewName();
     repo.get(pageId, name);
     active = name;
     menuOpen = false;
   }
 
-  function closeFile(name: string): void {
+  function closeFile(name) {
     repo.del(pageId, name);
     if (active === name) active = "";
     if (renaming === name) renaming = "";
   }
 
-  function resetPage(): void {
+  function resetPage() {
     repo.reset?.(pageId);
     menuOpen = false;
     renaming = "";
   }
 
-  function onEdit(next: string): void {
+  function onEdit(next) {
     if (!active) return;
     repo.set(pageId, active, next);
   }
 
-  async function beginRename(name: string): Promise<void> {
+  async function beginRename(name) {
     renaming = name;
     renameValue = name;
     await tick();
@@ -82,12 +83,12 @@
     sel.addRange(range);
   }
 
-  function cancelRename(): void {
+  function cancelRename() {
     renaming = "";
     renameValue = "";
   }
 
-  function commitRename(next?: string): void {
+  function commitRename(next) {
     if (!renaming) return;
     const from = renaming;
     const to = (next ?? renameValue).trim();
@@ -102,7 +103,7 @@
     renameValue = "";
   }
 
-  function onRenameMenu(e: MouseEvent, name: string): void {
+  function onRenameMenu(e, name) {
     e.preventDefault();
     beginRename(name);
   }
@@ -111,82 +112,78 @@
 <div class="wrap">
   <div class="bar">
     <div class="mobile">
-        {#if active && renaming === active}
-          <span
-            class="title renameTitle"
-            bind:this={renameEl}
-            contenteditable
-            role="textbox"
-            aria-label="Rename file"
-            aria-multiline="false"
-            tabindex="0"
-            spellcheck="false"
-            onkeydown={(e) => {
-              const el = e.currentTarget as HTMLSpanElement;
-              if (e.key === "Enter") {
-                e.preventDefault();
-                commitRename(el.textContent ?? "");
-              }
-              if (e.key === "Escape") {
-                e.preventDefault();
-                cancelRename();
-              }
-            }}
-            onblur={(e) => {
-              const el = e.currentTarget as HTMLSpanElement;
-              commitRename(el.textContent ?? "");
-            }}
-          >
-            {renameValue}
-          </span>
-        {:else}
-          <button
-            class="title titleBtn"
-            type="button"
-            title={active || ""}
-            disabled={!active}
-            onclick={() => {
-              if (active) beginRename(active);
-            }}
-          >
-            {active || "No file"}
-          </button>
-        {/if}
+      {#if active && renaming === active}
+        <span
+          class="title renameTitle"
+          bind:this={renameEl}
+          contenteditable
+          role="textbox"
+          aria-label="Rename file"
+          aria-multiline="false"
+          tabindex="0"
+          spellcheck="false"
+          onkeydown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              commitRename(e.currentTarget.textContent ?? "");
+            }
+            if (e.key === "Escape") {
+              e.preventDefault();
+              cancelRename();
+            }
+          }}
+          onblur={(e) => {
+            commitRename(e.currentTarget.textContent ?? "");
+          }}
+        >
+          {renameValue}
+        </span>
+      {:else}
+        <button
+          class="title titleBtn"
+          type="button"
+          title={active || ""}
+          disabled={!active}
+          onclick={() => {
+            if (active) beginRename(active);
+          }}
+        >
+          {active || "No file"}
+        </button>
+      {/if}
 
-        <button class="hamb" type="button" aria-label="Menu" onclick={() => (menuOpen = !menuOpen)}>☰</button>
-      </div>
+      <button class="hamb" type="button" aria-label="Menu" onclick={() => (menuOpen = !menuOpen)}>☰</button>
+    </div>
 
     <div class="tabs">
       {#each tabs as t (t)}
         <div class="tab" data-active={t === active}>
-        {#if renaming === t}
-          <span
-            class="rename"
-            bind:this={renameEl}
-            contenteditable
-            role="textbox"
-            aria-label="Rename file"
-            aria-multiline="false"
-            tabindex="0"
-            spellcheck="false"
-            onkeydown={(e) => {
-              const el = e.currentTarget as HTMLSpanElement;
-              if (e.key === "Enter") {
-                e.preventDefault();
-                commitRename(el.textContent ?? "");
-              }
-              if (e.key === "Escape") {
-                e.preventDefault();
-                cancelRename();
-              }
-            }}
-            onblur={(e) => {
-              const el = e.currentTarget as HTMLSpanElement;
-              commitRename(el.textContent ?? "");
-            }}
-          >
-            {renameValue}
-          </span>
+          {#if renaming === t}
+            <span
+              class="rename"
+              bind:this={renameEl}
+              contenteditable
+              role="textbox"
+              aria-label="Rename file"
+              aria-multiline="false"
+              tabindex="0"
+              spellcheck="false"
+              onkeydown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  commitRename(e.currentTarget.textContent ?? "");
+                }
+                if (e.key === "Escape") {
+                  e.preventDefault();
+                  cancelRename();
+                }
+              }}
+              onblur={(e) => {
+                commitRename(e.currentTarget.textContent ?? "");
+              }}
+            >
+              {renameValue}
+            </span>
           {:else}
             <button
               class="tabbtn"
@@ -213,26 +210,25 @@
         <button class="x" type="button" aria-label="Close" onclick={() => (menuOpen = false)}>×</button>
       </div>
 
-        <div class="menuList">
-    {#each tabs as t (t)}
-      <div class="row" data-active={t === active}>
-        <button
-          class="pick"
-          type="button"
-          disabled={renaming !== ""}
-          onclick={() => {
-            if (renaming) return;
-            active = t;
-            menuOpen = false;
-          }}
-        >
-          {t}
-        </button>
-        <button class="close" type="button" aria-label="Close" onclick={() => closeFile(t)}>×</button>
+      <div class="menuList">
+        {#each tabs as t (t)}
+          <div class="row" data-active={t === active}>
+            <button
+              class="pick"
+              type="button"
+              disabled={renaming !== ""}
+              onclick={() => {
+                if (renaming) return;
+                active = t;
+                menuOpen = false;
+              }}
+            >
+              {t}
+            </button>
+            <button class="close" type="button" aria-label="Close" onclick={() => closeFile(t)}>×</button>
+          </div>
+        {/each}
       </div>
-    {/each}
-  </div>
-
 
       <div class="menuActions">
         <button class="new" type="button" onclick={addFile}>+ New</button>
@@ -251,7 +247,7 @@
   </div>
 </div>
 
-<style>
+<style lang="scss">
   .wrap {
     position: relative;
     display: flex;
@@ -449,5 +445,4 @@
     cursor: text;
     outline: none;
   }
-
 </style>

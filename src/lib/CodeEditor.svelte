@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   import { onMount, onDestroy } from "svelte";
   import { EditorView, keymap, lineNumbers, highlightActiveLine, drawSelection } from "@codemirror/view";
   import { EditorState } from "@codemirror/state";
@@ -9,10 +9,10 @@
 
   const { value, onchange = () => {} } = $props();
 
-  let host: HTMLDivElement | null = null;
-  let view: EditorView | null = null;
+  let host = null;
+  let view = null;
 
-  function makeState(doc: string) {
+  function makeState(doc) {
     return EditorState.create({
       doc,
       extensions: [
@@ -54,7 +54,7 @@
 
 <div class="host" bind:this={host}></div>
 
-<style>
+<style lang="scss">
   .host { width: 100%; height: 100%; }
   :global(.cm-editor) { height: 100%; }
   :global(.cm-scroller) {

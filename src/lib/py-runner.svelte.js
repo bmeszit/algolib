@@ -1,24 +1,16 @@
-import RUN_PY from "$lib/code/hepler/run.py?raw";
-
-type PyRunResult = {
-  result: string;
-  stdout: string;
-  stderr: string;
-  timeMs: number;
-  peakBytes: number;
-};
+import RUN_PY from "$lib/code/helper/run.py?raw";
 
 export function createPyRunner() {
   const indexURL = "https://cdn.jsdelivr.net/pyodide/v0.26.1/full/";
 
-  let pyodide = $state<any>(null);
+  let pyodide = $state(null);
   let isLoading = $state(false);
-  let loadError = $state<string | null>(null);
-  let last = $state<PyRunResult | null>(null);
+  let loadError = $state(null);
+  let last = $state(null);
 
-  let loadingPromise: Promise<any> | null = null;
+  let loadingPromise = null;
 
-  async function ensurePyodide(): Promise<any> {
+  async function ensurePyodide() {
     if (pyodide) return pyodide;
     if (loadingPromise) return await loadingPromise;
 
@@ -27,17 +19,17 @@ export function createPyRunner() {
 
     loadingPromise = (async () => {
       try {
-        let loadPyodideFn: any = null;
+        let loadPyodideFn = null;
 
         try {
-          const mod: any = await import("pyodide");
+          const mod = await import("pyodide");
           loadPyodideFn = mod?.loadPyodide ?? null;
         } catch {
           // ignore
         }
 
         if (!loadPyodideFn) {
-          const g: any = globalThis as any;
+          const g = globalThis;
           loadPyodideFn = g?.loadPyodide ?? null;
         }
 
@@ -50,7 +42,7 @@ export function createPyRunner() {
 
         pyodide = inst;
         return inst;
-      } catch (e: any) {
+      } catch (e) {
         loadError = String(e?.message ?? e);
         throw e;
       } finally {
@@ -61,7 +53,7 @@ export function createPyRunner() {
     return await loadingPromise;
   }
 
-  async function run(code: string, inputText?: string): Promise<PyRunResult> {
+  async function run(code, inputText) {
     const inst = await ensurePyodide();
 
     const fn = inst.globals.get("run_user_code_with_metrics");

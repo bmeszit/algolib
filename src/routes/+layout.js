@@ -1,7 +1,6 @@
 import { setupI18n } from '$lib/i18n';
 
-// This is the secret to NO FLICKERING
-export const ssr = false; 
+export const ssr = false;
 export const prerender = true;
 
 export const load = ({ url }) => {

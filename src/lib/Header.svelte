@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   import { resolve } from '$app/paths';
   import { t, locale } from 'svelte-i18n';
   import LocaleSwitcher from './LocaleSwitcher.svelte';
@@ -11,7 +11,7 @@
   </nav>
 </header>
 
-<style>
+<style lang="scss">
   nav {
     display: flex;
     justify-content: space-between;

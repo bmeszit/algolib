@@ -1,10 +1,10 @@
-<script lang="ts">
+<script>
   import { page } from '$app/stores';
   import { goto } from '$app/navigation';
   import { locale } from 'svelte-i18n';
 
-  function updateLocale(event: Event) {
-    const target = event.target as HTMLSelectElement;
+  function updateLocale(event) {
+    const target = event.target;
     const newLang = target.value;
 
     const newUrl = new URL($page.url);

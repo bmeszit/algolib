@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   import "../lib/i18n";
   import { page } from "$app/state";
   import favicon from "$lib/assets/favicon.svg";
@@ -7,11 +7,10 @@
 
   import { createCodeRepo } from "$lib";
   import { defaultCode } from "$lib";
-  import type { Lang } from "$lib";
   import { setContext } from "svelte";
 
   const lang = $derived(page.url.searchParams.get("lang") ?? "hu");
-  const codeRepo = createCodeRepo(defaultCode, () => lang as Lang);
+  const codeRepo = createCodeRepo(defaultCode, () => lang);
   setContext("codeRepo", codeRepo);
 
   let { children } = $props();
