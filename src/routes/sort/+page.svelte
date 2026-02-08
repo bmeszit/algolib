@@ -22,7 +22,7 @@
     outputText = "";
 
     try {
-      const res = await pyRunner.run(activeSource, null, debugOn);
+      const res = await pyRunner.run(activeSource, "2 3 4 5", debugOn);
       outputText =
         `stdout:\n${res.stdout || "(empty)"}\n\n` +
         `stderr:\n${res.stderr || "(empty)"}\n\n` +
