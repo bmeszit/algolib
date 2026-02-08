@@ -2,6 +2,7 @@
   import { t } from "svelte-i18n";
   import { CodeEditorTabs } from "$lib";
   import { getContext } from "svelte";
+  import { goto } from "$app/navigation";
   import { createPyRunner } from "$lib/py-runner.svelte.js";
 
   const codeRepo = getContext("codeRepo");
@@ -23,6 +24,8 @@
     return res;
   });
 
+  function goBack() { goto(".."); }
+
   async function runBenchmark() {
     if (!generatorSource) return;
     isRunning = true;
@@ -39,7 +42,12 @@
 
 <article>
   <header class="page-header">
-    <h1>{$t("algos.sort.title")}</h1>
+    <div class="headRow">
+      <h1>{$t("common.benchmarks")}: {$t("algos.sort.title")}</h1>
+      <button type="button" class="backBtn" onclick={goBack}>
+        {$t("common.back")}
+      </button>
+    </div>
   </header>
 
   <p>{$t("algos.sort.desc")}</p>
@@ -68,6 +76,21 @@
 </article>
 
 <style lang="scss">
+  .headRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .backBtn {
+    border: 1px solid #ddd;
+    background: transparent;
+    padding: 6px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
   .editor-section {
     margin-bottom: 20px;
   }
@@ -102,6 +125,7 @@
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     font-size: 0.95rem;
     border: 1px solid #ddd;
+    border-radius: 10px;
     border-radius: 10px;
     padding: 10px;
     min-height: 44px;
