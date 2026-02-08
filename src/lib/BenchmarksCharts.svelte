@@ -6,6 +6,12 @@
   let Scatter = $state(null);
   let ready = $state(false);
 
+  let timeCmp = $state(null);
+  let memCmp = $state(null);
+
+  let dpr = $state(1);
+  let redrawKey = $state(0);
+
   $effect(() => {
     if (!browser || ready) return;
 
@@ -27,7 +33,40 @@
 
       Scatter = svelteChart.Scatter;
       ready = true;
+      dpr = window.devicePixelRatio || 1;
     })();
+  });
+
+  $effect(() => {
+    if (!browser || !ready) return;
+
+    let raf = 0;
+
+    const sync = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        dpr = window.devicePixelRatio || 1;
+
+        timeCmp?.chart?.resize?.();
+        timeCmp?.chart?.update?.("none");
+
+        memCmp?.chart?.resize?.();
+        memCmp?.chart?.update?.("none");
+
+        redrawKey += 1;
+      });
+    };
+
+    const vv = window.visualViewport;
+
+    window.addEventListener("resize", sync, { passive: true });
+    vv?.addEventListener("resize", sync, { passive: true });
+
+    return () => {
+      window.removeEventListener("resize", sync);
+      vv?.removeEventListener("resize", sync);
+      cancelAnimationFrame(raf);
+    };
   });
 
   function colorForIndex(i) {
@@ -59,38 +98,41 @@
     })),
   }));
 
-  const baseOptions = {
+  let baseOptions = $derived.by(() => ({
     responsive: true,
     maintainAspectRatio: false,
+    devicePixelRatio: dpr,
     plugins: { legend: { position: "bottom" } },
     scales: {
       x: { type: "linear", title: { display: true, text: "input size (chars)" } },
     },
-  };
+  }));
 
-  const timeOptions = {
+  let timeOptions = $derived.by(() => ({
     ...baseOptions,
     plugins: { ...baseOptions.plugins, title: { display: true, text: "time (sec)" } },
     scales: { ...baseOptions.scales, y: { title: { display: true, text: "time (sec)" } } },
-  };
+  }));
 
-  const memOptions = {
+  let memOptions = $derived.by(() => ({
     ...baseOptions,
     plugins: { ...baseOptions.plugins, title: { display: true, text: "memory (bytes)" } },
     scales: { ...baseOptions.scales, y: { title: { display: true, text: "memory (bytes)" } } },
-  };
+  }));
 </script>
 
 {#if ready && bench && Scatter}
-  <div class="charts">
-    <div class="chartBox">
-      <Scatter data={timeData} options={timeOptions} />
-    </div>
+  {#key redrawKey}
+    <div class="charts">
+      <div class="chartBox">
+        <Scatter bind:this={timeCmp} data={timeData} options={timeOptions} />
+      </div>
 
-    <div class="chartBox">
-      <Scatter data={memData} options={memOptions} />
+      <div class="chartBox">
+        <Scatter bind:this={memCmp} data={memData} options={memOptions} />
+      </div>
     </div>
-  </div>
+  {/key}
 
   {#if (bench?.stderr ?? "").trim() !== ""}
     <pre class="err">{bench.stderr}</pre>
@@ -104,6 +146,7 @@
   }
 
   .chartBox {
+    position: relative;
     height: 360px;
     border: 1px solid #ddd;
     border-radius: 12px;
