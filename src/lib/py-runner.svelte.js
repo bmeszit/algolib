@@ -70,7 +70,8 @@ export function createPyRunner() {
     return s;
   }
 
-  async function run(code, inputText, debug = false) {
+  async function run(code, inputText) {
+    const debug = false;
     const inst = await load();
 
     const pyFn = inst.globals.get("run_user_code_with_metrics");
@@ -96,12 +97,13 @@ export function createPyRunner() {
     }
   }
 
-  async function runAndFormat(code, inputText, debug = false) {
-    const res = await run(code, inputText, debug);
+  async function runAndFormat(code, inputText) {
+    const res = await run(code, inputText);
     return format(res);
   }
 
-  async function runBenchmark(algoSources, generatorCode, debug = false) {
+  async function runBenchmark(algoSources, generatorCode) {
+    const debug = false;
     const inst = await load();
 
     const pyFn = inst.globals.get("run_benchmark_with_metrics");
@@ -132,8 +134,8 @@ export function createPyRunner() {
     }
   }
 
-  async function runBenchmarkAndFormat(algoSources, generatorCode, debug = false) {
-    const res = await runBenchmark(algoSources, generatorCode, debug);
+  async function runBenchmarkAndFormat(algoSources, generatorCode) {
+    const res = await runBenchmark(algoSources, generatorCode);
     return formatBenchmark(res);
   }
 
