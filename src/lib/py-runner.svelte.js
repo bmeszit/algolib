@@ -47,6 +47,29 @@ export function createPyRunner() {
     );
   }
 
+  function formatBenchmark(res) {
+    const sizes = (res.inputSizes ?? []).map((x) => String(x)).join(", ");
+    const algoNames = Object.keys(res.timeSec ?? {});
+
+    let s = "";
+    s += `input_sizes (chars): [${sizes}]\n`;
+
+    for (const name of algoNames) {
+      const ts = (res.timeSec?.[name] ?? []).map((x) => String(x)).join(", ");
+      const ms = (res.memoryBytes?.[name] ?? []).map((x) => String(x)).join(", ");
+      s += `\n${name}\n`;
+      s += `  time_sec: [${ts}]\n`;
+      s += `  memory_bytes: [${ms}]\n`;
+    }
+
+    const err = String(res.stderr ?? "");
+    if (err.trim() !== "") {
+      s += `\nerrors:\n${err}\n`;
+    }
+
+    return s;
+  }
+
   async function run(code, inputText, debug = false) {
     const inst = await load();
 
@@ -78,6 +101,38 @@ export function createPyRunner() {
     return format(res);
   }
 
+  async function runBenchmark(algoSources, generatorCode, debug = false) {
+    const inst = await load();
+
+    const pyFn = inst.globals.get("run_benchmark_with_metrics");
+    if (!pyFn || typeof pyFn.call !== "function") {
+      throw new Error("run_benchmark_with_metrics is missing or not callable.");
+    }
+
+    let metrics = null;
+    try {
+      metrics = pyFn.call(null, algoSources ?? {}, generatorCode ?? "", Boolean(debug));
+
+      const raw = metrics.toJs({ dict_converter: Object.fromEntries });
+
+      const inputSizes = Array.isArray(raw.input_sizes) ? raw.input_sizes.map((x) => Number(x)) : [];
+      const timeSec = raw.time_sec ?? {};
+      const memoryBytes = raw.memory_bytes ?? {};
+      const stderr = String(raw.stderr ?? "");
+
+      lastRun = { inputSizes, timeSec, memoryBytes, stderr };
+      return lastRun;
+    } finally {
+      try { metrics?.destroy?.(); } catch {}
+      try { pyFn?.destroy?.(); } catch {}
+    }
+  }
+
+  async function runBenchmarkAndFormat(algoSources, generatorCode, debug = false) {
+    const res = await runBenchmark(algoSources, generatorCode, debug);
+    return formatBenchmark(res);
+  }
+
   return {
     get pyodide() { return pyodide; },
     get isLoading() { return isLoading; },
@@ -87,5 +142,8 @@ export function createPyRunner() {
     run,
     format,
     runAndFormat,
+    runBenchmark,
+    formatBenchmark,
+    runBenchmarkAndFormat,
   };
 }
