@@ -1,41 +1,78 @@
-import RUN_PY from "$lib/code/helper/run.py?raw";
-
+// src/lib/py-runner.svelte.js
 export function createPyRunner() {
-  const indexURL = "https://cdn.jsdelivr.net/pyodide/v0.29.1/full/";
-
   let pyodide = $state(null);
   let isLoading = $state(false);
   let loadError = $state(null);
   let lastRun = $state(null);
 
-  let loading = null;
+  let worker = null;
+  let nextId = 1;
+  const pending = new Map();
+
+  function failAll(err) {
+    const msg = String(err?.message ?? err ?? "Worker error.");
+    loadError = msg;
+
+    for (const [, p] of pending) {
+      try { p.reject(new Error(msg)); } catch {}
+    }
+    pending.clear();
+
+    isLoading = false;
+    pyodide = null;
+  }
+
+  function ensureWorker() {
+    if (worker) return worker;
+
+    worker = new Worker(new URL("./py-worker.js", import.meta.url), { type: "module" });
+
+    worker.onmessage = (ev) => {
+      const { id, ok, result, error } = ev.data || {};
+      const p = pending.get(id);
+      if (!p) return;
+      pending.delete(id);
+
+      if (ok) p.resolve(result);
+      else p.reject(new Error(String(error ?? "Worker error.")));
+    };
+
+    worker.onerror = (e) => {
+      failAll(e?.message ?? e);
+    };
+
+    worker.onmessageerror = (e) => {
+      failAll(e?.message ?? e);
+    };
+
+    return worker;
+  }
+
+  function call(kind, payload) {
+    const w = ensureWorker();
+    const id = nextId++;
+    return new Promise((resolve, reject) => {
+      pending.set(id, { resolve, reject });
+      w.postMessage({ id, kind, payload });
+    });
+  }
 
   async function load() {
     if (pyodide) return pyodide;
-    if (loading) return await loading;
 
     isLoading = true;
     loadError = null;
 
-    loading = (async () => {
-      try {
-        const mod = await import("pyodide").catch(() => null);
-        const loadPyodide = mod?.loadPyodide ?? globalThis?.loadPyodide ?? null;
-        if (!loadPyodide) throw new Error("Missing Pyodide loader.");
-
-        const inst = await loadPyodide({ indexURL });
-        inst.runPython(RUN_PY);
-        pyodide = inst;
-        return inst;
-      } catch (e) {
-        loadError = String(e?.message ?? e);
-        throw e;
-      } finally {
-        isLoading = false;
-      }
-    })();
-
-    return await loading;
+    try {
+      await call("ensure", {});
+      pyodide = { kind: "worker" };
+      return pyodide;
+    } catch (e) {
+      failAll(e);
+      throw e;
+    } finally {
+      isLoading = false;
+    }
   }
 
   function format(res) {
@@ -66,35 +103,21 @@ export function createPyRunner() {
     if (err.trim() !== "") {
       s += `\nerrors:\n\n${err}\n`;
     }
-
     return s;
   }
 
   async function run(code, inputText) {
-    const debug = false;
-    const inst = await load();
+    await load();
+    const m = await call("run", { code: code ?? "", inputText: inputText ?? null });
 
-    const pyFn = inst.globals.get("run_user_code_with_metrics");
-    if (!pyFn || typeof pyFn.call !== "function") {
-      throw new Error("run_user_code_with_metrics is missing or not callable.");
-    }
+    const stdout = String(m.stdout ?? "");
+    const stderr = String(m.stderr ?? "");
+    const timeSec = Number(m.timeSec ?? NaN);
+    const memoryBytes = Number(m.memoryBytes ?? NaN);
 
-    let metrics = null;
-    try {
-      metrics = pyFn.call(null, code ?? "", inputText ?? null, Boolean(debug));
-
-      const stdout = String(metrics.get("stdout") ?? "");
-      const stderr = String(metrics.get("stderr") ?? "");
-      const timeSec = Number(metrics.get("time_sec") ?? NaN);
-      const memoryBytes = Number(metrics.get("memory_bytes") ?? NaN);
-
-      const result = stdout || stderr || "(no output)";
-      lastRun = { result, stdout, stderr, timeSec, memoryBytes };
-      return lastRun;
-    } finally {
-      try { metrics?.destroy?.(); } catch {}
-      try { pyFn?.destroy?.(); } catch {}
-    }
+    const result = stdout || stderr || "(no output)";
+    lastRun = { result, stdout, stderr, timeSec, memoryBytes };
+    return lastRun;
   }
 
   async function runAndFormat(code, inputText) {
@@ -103,35 +126,19 @@ export function createPyRunner() {
   }
 
   async function runBenchmark(algoSources, generatorCode) {
-    const debug = false;
-    const inst = await load();
+    await load();
+    const m = await call("benchmark", {
+      algoSources: algoSources ?? {},
+      generatorCode: generatorCode ?? "",
+    });
 
-    const pyFn = inst.globals.get("run_benchmark_with_metrics");
-    if (!pyFn || typeof pyFn.call !== "function") {
-      throw new Error("run_benchmark_with_metrics is missing or not callable.");
-    }
+    const inputSizes = Array.isArray(m.inputSizes) ? m.inputSizes.map((x) => Number(x)) : [];
+    const timeSec = m.timeSec ?? {};
+    const memoryBytes = m.memoryBytes ?? {};
+    const stderr = String(m.stderr ?? "");
 
-    let metrics = null;
-    let algoSourcesPy = null;
-
-    try {
-      algoSourcesPy = inst.toPy(algoSources ?? {});
-      metrics = pyFn.call(null, algoSourcesPy, generatorCode ?? "", Boolean(debug));
-
-      const raw = metrics.toJs({ dict_converter: Object.fromEntries });
-
-      const inputSizes = Array.isArray(raw.input_sizes) ? raw.input_sizes.map((x) => Number(x)) : [];
-      const timeSec = raw.time_sec ?? {};
-      const memoryBytes = raw.memory_bytes ?? {};
-      const stderr = String(raw.stderr ?? "");
-
-      lastRun = { inputSizes, timeSec, memoryBytes, stderr };
-      return lastRun;
-    } finally {
-      try { metrics?.destroy?.(); } catch {}
-      try { algoSourcesPy?.destroy?.(); } catch {}
-      try { pyFn?.destroy?.(); } catch {}
-    }
+    lastRun = { inputSizes, timeSec, memoryBytes, stderr };
+    return lastRun;
   }
 
   async function runBenchmarkAndFormat(algoSources, generatorCode) {
