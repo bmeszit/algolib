@@ -29,7 +29,9 @@ function loadHu() {
         "kivalasztasos.py": { content: file("hu", "sort/algo/kivalasztasos.py") },
       },
       "generator": {
-        "novekvo.py": { content: file("hu", "sort/generator/novekvo.py") }
+        "novekvo.py": { content: file("hu", "sort/generator/novekvo.py") },
+        "csokkeno.py": { content: file("hu", "sort/generator/csokkeno.py") },
+        "veletlen.py": { content: file("hu", "sort/generator/veletlen.py") }
       }
     }
   };
@@ -52,7 +54,9 @@ function loadEn() {
         "selection.py": { content: file("en", "sort/algo/selection.py") },
       },
       "generator": {
-        "increasing.py": { content: file("en", "sort/generator/increasing.py") }
+        "increasing.py": { content: file("en", "sort/generator/increasing.py") },
+        "decreasing.py": { content: file("hu", "sort/generator/csokkeno.py") },
+        "random.py": { content: file("hu", "sort/generator/veletlen.py") }
       }
     }
   };
