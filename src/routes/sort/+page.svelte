@@ -11,7 +11,7 @@
   let outputText = $state("");
   let isRunning = $state(false);
 
-  let activeSource = $derived(activeFile ? codeRepo.get("sort", activeFile) : "");
+  let activeSource = $derived(activeFile ? codeRepo.get("sort", "algo", activeFile) : "");
 
   let debugOn = $state(true);
   let inputText = $state("");
@@ -38,7 +38,7 @@
   <p>{$t("algos.sort.desc")}</p>
 
   <div class="editor-section">
-    <CodeEditorTabs pageId="sort" repo={codeRepo} bind:activeCode={activeFile} />
+    <CodeEditorTabs pageId="sort" type="algo", repo={codeRepo} bind:activeCode={activeFile} />
   </div>
 
   <div class="run">
