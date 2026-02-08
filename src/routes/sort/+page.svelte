@@ -26,8 +26,8 @@
       outputText =
         `stdout:\n${res.stdout || "(empty)"}\n\n` +
         `stderr:\n${res.stderr || "(empty)"}\n\n` +
-        `timeMs: ${res.timeMs}\n` +
-        `peakBytes: ${res.peakBytes}\n`;
+        `time: ${res.timeSec} sec\n` +
+        `memory: ${res.memoryBytes} bytes\n`;
     } catch (e) {
       outputText = String(e?.message ?? e);
     } finally {

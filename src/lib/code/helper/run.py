@@ -29,8 +29,8 @@ def __run_user_code_with_metrics__(code: str, stdin_text: str | None, debug: boo
   return {
     "stdout": out.getvalue(),
     "stderr": err.getvalue(),
-    "time_ms": (t1 - t0) * 1000.0,
-    "peak_bytes": int(peak),
+    "time_sec": t1 - t0,
+    "memory_bytes": int(peak),
   };
 
 run_user_code_with_metrics = __run_user_code_with_metrics__;

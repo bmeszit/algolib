@@ -52,11 +52,11 @@ export function createPyRunner() {
 
       const stdout = String(metrics.get("stdout") ?? "");
       const stderr = String(metrics.get("stderr") ?? "");
-      const timeMs = Number(metrics.get("time_ms") ?? NaN);
-      const peakBytes = Number(metrics.get("peak_bytes") ?? NaN);
+      const timeSec = Number(metrics.get("time_sec") ?? NaN);
+      const memoryBytes = Number(metrics.get("memory_bytes") ?? NaN);
 
       const result = stdout || stderr || "(no output)";
-      lastRun = { result, stdout, stderr, timeMs, peakBytes };
+      lastRun = { result, stdout, stderr, timeSec, memoryBytes };
       return lastRun;
     } finally {
       try { metrics?.destroy?.(); } catch {}
