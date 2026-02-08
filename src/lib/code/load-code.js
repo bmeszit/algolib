@@ -18,6 +18,11 @@ function loadHu() {
       "algo": {
         "linker.py": { content: file("hu", "search/algo/linker.py") },
         "binker.py": { content: file("hu", "search/algo/binker.py") },
+      },
+      "generator": {
+        "eleje.py": { content: file("hu", "search/generator/eleje.py") },
+        "vege.py": { content: file("hu", "search/generator/vege.py") },
+        "veletlen.py": { content: file("hu", "search/generator/veletlen.py") }
       }
     },
     sort: {
@@ -43,6 +48,11 @@ function loadEn() {
       "algo": {
         "linsrc.py": { content: file("en", "search/algo/linsrc.py") },
         "binsrc.py": { content: file("en", "search/algo/binsrc.py") },
+      },
+      "generator": {
+        "begin.py": { content: file("hu", "search/generator/eleje.py") },
+        "end.py": { content: file("hu", "search/generator/vege.py") },
+        "random.py": { content: file("hu", "search/generator/veletlen.py") }
       }
     },
     sort: {
