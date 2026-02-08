@@ -13,7 +13,7 @@ function file(lang, path) {
 }
 
 export function loadDefaultCode() {
-  const res = { version: 1, pages: { hu: {}, en: {} } };
+  const res = { version: 2, pages: { hu: {}, en: {} } };
 
   for (const lang of ["hu", "en"]) {
     res.pages[lang] = {

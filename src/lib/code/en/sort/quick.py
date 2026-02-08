@@ -21,3 +21,6 @@ def rendezes(T):
   n = len(T)
   helyben_rendez(T, 0, n-1)
   return T
+
+T = list(map(int, input().split()))
+print(rendezes(T))

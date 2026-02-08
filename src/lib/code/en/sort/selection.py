@@ -9,3 +9,6 @@ def rendezes(T):
         min_hely = i
     T[j], T[min_hely] = T[min_hely], T[j]
   return T
+
+T = list(map(int, input().split()))
+print(rendezes(T))

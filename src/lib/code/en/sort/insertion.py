@@ -6,3 +6,6 @@ def rendezes(T):
       T[i-1], T[i] = T[i], T[i-1]
       i = i-1
   return T
+
+T = list(map(int, input().split()))
+print(rendezes(T))

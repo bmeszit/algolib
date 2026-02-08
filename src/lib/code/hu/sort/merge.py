@@ -37,3 +37,6 @@ def rendezes(T):
     B = rendezes(T[n//2 : n])
     T = osszefesul(A, B)
   return T
+
+T = list(map(int, input().split()))
+print(rendezes(T))

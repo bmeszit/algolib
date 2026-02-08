@@ -18,17 +18,10 @@
 
   async function runActive() {
     if (!activeSource) return;
-
     isRunning = true;
     outputText = "";
-
     try {
-      const res = await pyRunner.run(activeSource, inputText, debugOn);
-      outputText =
-        `stdout:\n${res.stdout || "(empty)"}\n\n` +
-        `stderr:\n${res.stderr || "(empty)"}\n\n` +
-        `time: ${res.timeSec} sec\n` +
-        `memory: ${res.memoryBytes} bytes\n`;
+      outputText = await pyRunner.runAndFormat(activeSource, inputText, debugOn);
     } catch (e) {
       outputText = String(e?.message ?? e);
     } finally {

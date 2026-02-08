@@ -5,3 +5,6 @@ def rendezes(T):
       if T[i] > T[i+1]:
         T[i], T[i+1] = T[i+1], T[i]
   return T
+
+T = list(map(int, input().split()))
+print(rendezes(T))

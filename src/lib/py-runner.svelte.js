@@ -38,6 +38,15 @@ export function createPyRunner() {
     return await loading;
   }
 
+  function format(res) {
+    return (
+      `stdout:\n${res.stdout || "(empty)"}\n\n` +
+      `stderr:\n${res.stderr || "(empty)"}\n\n` +
+      `time: ${res.timeSec} sec\n` +
+      `memory: ${res.memoryBytes} bytes\n`
+    );
+  }
+
   async function run(code, inputText, debug = false) {
     const inst = await load();
 
@@ -64,6 +73,11 @@ export function createPyRunner() {
     }
   }
 
+  async function runAndFormat(code, inputText, debug = false) {
+    const res = await run(code, inputText, debug);
+    return format(res);
+  }
+
   return {
     get pyodide() { return pyodide; },
     get isLoading() { return isLoading; },
@@ -71,5 +85,7 @@ export function createPyRunner() {
     get lastRun() { return lastRun; },
     ensurePyodide: load,
     run,
+    format,
+    runAndFormat,
   };
 }
