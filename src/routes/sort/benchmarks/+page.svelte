@@ -24,7 +24,7 @@
     return res;
   });
 
-  function goBack() { goto(".."); }
+  function goBack() { goto("/sort"); }
 
   async function runBenchmark() {
     if (!generatorSource) return;
