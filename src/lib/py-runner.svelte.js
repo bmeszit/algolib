@@ -64,7 +64,7 @@ export function createPyRunner() {
 
     const err = String(res.stderr ?? "");
     if (err.trim() !== "") {
-      s += `\nerrors:\n${err}\n`;
+      s += `\nerrors:\n\n${err}\n`;
     }
 
     return s;
