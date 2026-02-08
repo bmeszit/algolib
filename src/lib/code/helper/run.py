@@ -53,6 +53,7 @@ def run_benchmark_with_metrics(algo_sources: dict, generator_src: str, debug: bo
 
   time_sec = {}
   memory_bytes = {}
+  err_chunks = []
 
   for name, src in (algo_sources or {}).items():
     if not isinstance(name, str) or not isinstance(src, str):
@@ -61,10 +62,14 @@ def run_benchmark_with_metrics(algo_sources: dict, generator_src: str, debug: bo
     ts = []
     ms = []
 
-    for inp in inputs:
+    for i, inp in enumerate(inputs):
       m = run_user_code_with_metrics(src, inp, bool(debug), label=f"<{name}>")
       ts.append(float(m["time_sec"]))
       ms.append(int(m["memory_bytes"]))
+
+      e = m["stderr"] or ""
+      if e.strip() != "":
+        err_chunks.append(f"[{name}][{i}]\n{e}\n")
 
     time_sec[name] = ts
     memory_bytes[name] = ms
@@ -73,4 +78,5 @@ def run_benchmark_with_metrics(algo_sources: dict, generator_src: str, debug: bo
     "input_sizes": input_sizes,
     "time_sec": time_sec,
     "memory_bytes": memory_bytes,
+    "stderr": "".join(err_chunks),
   }
