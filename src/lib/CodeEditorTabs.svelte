@@ -3,7 +3,7 @@
   import { t } from "svelte-i18n";
   import CodeEditor from "./CodeEditor.svelte";
 
-  let { pageId, repo, activeCode = $bindable("") } = $props();
+  let { pageId, type, repo, activeCode = $bindable("") } = $props();
 
   let active = $state("");
   let menuOpen = $state(false);
@@ -12,8 +12,8 @@
   let renameValue = $state("");
   let renameEl = $state(null);
 
-  let tabs = $derived(repo.list(pageId));
-  let content = $derived(active ? repo.get(pageId, active) : "");
+  let tabs = $derived(repo.list(pageId, type));
+  let content = $derived(active ? repo.get(pageId, type, active) : "");
 
   $effect(() => {
     if (tabs.length === 0) {
@@ -39,26 +39,26 @@
 
   function addFile() {
     const name = nextNewName();
-    repo.get(pageId, name);
+    repo.get(pageId, type, name);
     active = name;
     menuOpen = false;
   }
 
   function closeFile(name) {
-    repo.del(pageId, name);
+    repo.del(pageId, type, name);
     if (active === name) active = "";
     if (renaming === name) renaming = "";
   }
 
   function resetPage() {
-    repo.reset?.(pageId);
+    repo.reset?.(pageId, type);
     menuOpen = false;
     renaming = "";
   }
 
   function onEdit(next) {
     if (!active) return;
-    repo.set(pageId, active, next);
+    repo.set(pageId, type, active, next);
   }
 
   async function beginRename(name) {
@@ -97,7 +97,7 @@
       cancelRename();
       return;
     }
-    const ok = repo.rename?.(pageId, from, to);
+    const ok = repo.rename?.(pageId, type, from, to);
     if (!ok) return;
     if (active === from) active = to;
     renaming = "";

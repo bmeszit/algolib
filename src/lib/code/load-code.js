@@ -18,16 +18,23 @@ export function loadDefaultCode() {
   for (const lang of ["hu", "en"]) {
     res.pages[lang] = {
       search: {
-        "linsrc.py": { content: file(lang, "search/linsrc.py") },
-        "binsrc.py": { content: file(lang, "search/binsrc.py") },
+        "algo": {
+          "linsrc.py": { content: file(lang, "search/algo/linsrc.py") },
+          "binsrc.py": { content: file(lang, "search/algo/binsrc.py") },
+        }
       },
       sort: {
-        "bubble.py": { content: file(lang, "sort/bubble.py") },
-        "insertion.py": { content: file(lang, "sort/insertion.py") },
-        "merge.py": { content: file(lang, "sort/merge.py") },
-        "quick.py": { content: file(lang, "sort/quick.py") },
-        "selection.py": { content: file(lang, "sort/selection.py") },
-      },
+        "algo": {
+          "bubble.py": { content: file(lang, "sort/algo/bubble.py") },
+          "insertion.py": { content: file(lang, "sort/algo/insertion.py") },
+          "merge.py": { content: file(lang, "sort/algo/merge.py") },
+          "quick.py": { content: file(lang, "sort/algo/quick.py") },
+          "selection.py": { content: file(lang, "sort/algo/selection.py") },
+        },
+        "generator": {
+          "increasing.py": { content: file(lang, "sort/generator/increasing.py") }
+        }
+      }
     };
   }
 
