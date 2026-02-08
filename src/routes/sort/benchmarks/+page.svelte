@@ -2,29 +2,33 @@
   import { t } from "svelte-i18n";
   import { CodeEditorTabs } from "$lib";
   import { getContext } from "svelte";
-  import { goto } from "$app/navigation";
   import { createPyRunner } from "$lib/py-runner.svelte.js";
 
   const codeRepo = getContext("codeRepo");
   const pyRunner = createPyRunner();
 
-  let activeFile = $state("");
+  let activeGenerator = $state("");
   let outputText = $state("");
   let isRunning = $state(false);
-
-  let activeSource = $derived(activeFile ? codeRepo.get("sort", "algo", activeFile) : "");
-
   let debugOn = $state(true);
-  let inputText = $state("");
 
-  function goBenchmarks() { goto("/sort/benchmarks"); }
+  let generatorSource = $derived.by(() => (activeGenerator ? codeRepo.get("sort", "generator", activeGenerator) : ""));
+  let algoFiles = $derived.by(() => codeRepo.list("sort", "algo"));
 
-  async function runActive() {
-    if (!activeSource) return;
+  let algoSources = $derived.by(() => {
+    const res = {};
+    for (const f of algoFiles) {
+      res[f] = codeRepo.get("sort", "algo", f);
+    }
+    return res;
+  });
+
+  async function runBenchmark() {
+    if (!generatorSource) return;
     isRunning = true;
     outputText = "";
     try {
-      outputText = await pyRunner.runAndFormat(activeSource, inputText, debugOn);
+      outputText = await pyRunner.runBenchmarkAndFormat(algoSources, generatorSource, debugOn);
     } catch (e) {
       outputText = String(e?.message ?? e);
     } finally {
@@ -35,37 +39,21 @@
 
 <article>
   <header class="page-header">
-    <div class="headRow">
-      <h1>{$t("algos.sort.title")}</h1>
-      <button type="button" class="benchBtn" onclick={goBenchmarks}>
-        {$t("common.benchmarks")}
-      </button>
-    </div>
+    <h1>{$t("algos.sort.title")}</h1>
   </header>
 
   <p>{$t("algos.sort.desc")}</p>
 
   <div class="editor-section">
-    <CodeEditorTabs pageId="sort" type="algo" repo={codeRepo} bind:activeCode={activeFile} />
+    <CodeEditorTabs pageId="sort" type="generator" repo={codeRepo} bind:activeCode={activeGenerator} />
   </div>
 
   <div class="run">
-    <label class="inLabel">
-      <span>{$t("common.input")}</span>
-      <textarea
-        class="inBox"
-        rows="3"
-        value={inputText}
-        oninput={(e) => (inputText = e.currentTarget.value)}
-        spellcheck="false"
-      ></textarea>
-    </label>
-
     <button
       type="button"
-      onclick={runActive}
-      disabled={!activeFile || isRunning || pyRunner.isLoading}
-      title={activeFile ? `${$t("common.run")} ${activeFile}` : $t("common.select_a_file_to_run")}
+      onclick={runBenchmark}
+      disabled={!activeGenerator || algoFiles.length === 0 || isRunning || pyRunner.isLoading}
+      title={activeGenerator ? `${$t("common.run")} ${activeGenerator}` : $t("common.select_a_file_to_run")}
     >
       {pyRunner.isLoading ? $t("common.loading_python") : isRunning ? $t("common.running") : $t("common.run")}
     </button>
@@ -80,21 +68,6 @@
 </article>
 
 <style lang="scss">
-  .headRow {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-  }
-
-  .benchBtn {
-    border: 1px solid #ddd;
-    background: transparent;
-    padding: 6px 10px;
-    border-radius: 10px;
-    cursor: pointer;
-  }
-
   .editor-section {
     margin-bottom: 20px;
   }
@@ -117,22 +90,6 @@
         opacity: 0.6;
       }
     }
-  }
-
-  .inLabel {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .inBox {
-    background: #eee;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 10px;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-size: 1rem;
-    resize: vertical;
   }
 
   .err {

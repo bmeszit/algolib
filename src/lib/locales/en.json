@@ -9,7 +9,8 @@
     "run": "Run",
     "running": "Running...",
     "input": "Input",
-    "result": "Result"
+    "result": "Result",
+    "benchmarks": "Benchmarks"
   },
   "algos": {
     "search": {

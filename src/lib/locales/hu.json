@@ -9,7 +9,8 @@
     "run": "Futtatás",
     "running": "Futás...",
     "input": "Bemenet",
-    "result": "Eredmény"
+    "result": "Eredmény",
+    "benchmarks": "Mérések"
   },
   "algos": {
     "search": {
