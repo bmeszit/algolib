@@ -66,6 +66,7 @@
       <div class="err">{pyRunner.loadError}</div>
     {/if}
 
+    <span>{$t("common.result")}</span>
     <div class="out">{outputText}</div>
   </div>
 </article>
