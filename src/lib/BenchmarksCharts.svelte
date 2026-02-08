@@ -147,7 +147,7 @@
 
   .chartBox {
     position: relative;
-    height: 360px;
+    height: 520px;
     border: 1px solid #ddd;
     border-radius: 12px;
     padding: 10px;
