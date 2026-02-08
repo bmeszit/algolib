@@ -3,6 +3,8 @@
   import { CodeEditorTabs } from "$lib";
   import { getContext } from "svelte";
   import { goto } from "$app/navigation";
+  import { base } from "$app/paths";
+  import { page as appPage } from "$app/state";
   import { createPyRunner } from "$lib/py-runner.svelte.js";
   import BenchmarksCharts from "$lib/BenchmarksCharts.svelte";
 
@@ -28,7 +30,7 @@
   });
 
   function goBack() {
-    goto(`/${page}`);
+    goto(`${base}/${page}${appPage.url.search}`);
   }
 
   async function runBenchmark() {
