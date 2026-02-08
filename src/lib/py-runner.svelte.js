@@ -110,8 +110,11 @@ export function createPyRunner() {
     }
 
     let metrics = null;
+    let algoSourcesPy = null;
+
     try {
-      metrics = pyFn.call(null, algoSources ?? {}, generatorCode ?? "", Boolean(debug));
+      algoSourcesPy = inst.toPy(algoSources ?? {});
+      metrics = pyFn.call(null, algoSourcesPy, generatorCode ?? "", Boolean(debug));
 
       const raw = metrics.toJs({ dict_converter: Object.fromEntries });
 
@@ -124,6 +127,7 @@ export function createPyRunner() {
       return lastRun;
     } finally {
       try { metrics?.destroy?.(); } catch {}
+      try { algoSourcesPy?.destroy?.(); } catch {}
       try { pyFn?.destroy?.(); } catch {}
     }
   }
