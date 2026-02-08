@@ -1,6 +1,15 @@
 {
   "common": {
-    "title": "Algoritmus könyvtár"
+    "title": "Algoritmus könyvtár",
+    "new": "Új",
+    "reset": "Visszaállítás",
+    "loading_python": "Python betöltése...",
+    "select_a_file_to_run": "Válassz ki egy fájlt a futtatáshoz",
+    "no_file_selected": "Nincs kiválasztva fájl",
+    "run": "Futtatás",
+    "running": "Futás...",
+    "input": "Bemenet",
+    "result": "Eredmény"
   },
   "algos": {
     "search": {

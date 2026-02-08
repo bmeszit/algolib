@@ -1,5 +1,6 @@
 <script>
   import { tick } from "svelte";
+  import { t } from "svelte-i18n";
   import CodeEditor from "./CodeEditor.svelte";
 
   let { pageId, repo, activeCode = $bindable("") } = $props();
@@ -198,9 +199,9 @@
           <button class="close" type="button" aria-label="Close" onclick={() => closeFile(t)}>×</button>
         </div>
       {/each}
-      <button class="new" type="button" onclick={addFile}>+ New</button>
+      <button class="new" type="button" onclick={addFile}>+ {$t("common.new")}</button>
     </div>
-    <button class="reset desktopOnly" type="button" onclick={resetPage} disabled={!repo.reset}>Reset</button>
+    <button class="reset desktopOnly" type="button" onclick={resetPage} disabled={!repo.reset}>{$t("common.reset")}</button>
   </div>
 
   {#if menuOpen}
@@ -231,8 +232,8 @@
       </div>
 
       <div class="menuActions">
-        <button class="new" type="button" onclick={addFile}>+ New</button>
-        <button class="reset" type="button" onclick={resetPage} disabled={!repo.reset}>Reset</button>
+        <button class="new" type="button" onclick={addFile}>+ {$t("common.new")}</button>
+        <button class="reset" type="button" onclick={resetPage} disabled={!repo.reset}>{$t("common.reset")}</button>
       </div>
     </div>
     <button class="backdrop" type="button" aria-label="Close" onclick={() => (menuOpen = false)}></button>
@@ -242,7 +243,7 @@
     {#if active}
       <CodeEditor value={content} onchange={onEdit} />
     {:else}
-      <div class="empty">No file selected.</div>
+      <div class="empty">{$t("common.no_file_selected")}</div>
     {/if}
   </div>
 </div>

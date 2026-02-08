@@ -43,7 +43,7 @@
 
   <div class="run">
     <label class="inLabel">
-      <span>Input</span>
+      <span>{$t("common.input")}</span>
       <textarea
         class="inBox"
         rows="3"
@@ -57,9 +57,9 @@
       type="button"
       onclick={runActive}
       disabled={!activeFile || isRunning || pyRunner.isLoading}
-      title={activeFile ? `Run ${activeFile}` : "Select a file to run"}
+      title={activeFile ? `$t("common.run") ${activeFile}` : $t("common.select_a_file_to_run")}
     >
-      {pyRunner.isLoading ? "Loading Python…" : isRunning ? "Running…" : "Run"}
+      {pyRunner.isLoading ? $t("common.loading_python") : isRunning ? $t("common.running") : $t("common.run")}
     </button>
 
     {#if pyRunner.loadError}

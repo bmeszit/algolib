@@ -1,6 +1,15 @@
 {
   "common": {
-    "title": "Algorithms library"
+    "title": "Algorithms library",
+    "new": "New",
+    "reset": "Reset",
+    "loading_python": "Loading Python...",
+    "select_a_file_to_run": "Select a file to run",
+    "no_file_selected": "No file selected",
+    "run": "Run",
+    "running": "Running...",
+    "input": "Input",
+    "result": "Result"
   },
   "algos": {
     "search": {
