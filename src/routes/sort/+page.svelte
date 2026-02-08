@@ -14,7 +14,6 @@
 
   let activeSource = $derived(activeFile ? codeRepo.get("sort", "algo", activeFile) : "");
 
-  let debugOn = $state(true);
   let inputText = $state("");
 
   function goBenchmarks() { goto("/sort/benchmarks"); }
@@ -24,7 +23,7 @@
     isRunning = true;
     outputText = "";
     try {
-      outputText = await pyRunner.runAndFormat(activeSource, inputText, debugOn);
+      outputText = await pyRunner.runAndFormat(activeSource, inputText);
     } catch (e) {
       outputText = String(e?.message ?? e);
     } finally {

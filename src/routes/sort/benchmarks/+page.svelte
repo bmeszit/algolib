@@ -11,7 +11,6 @@
 
   let activeGenerator = $state("");
   let isRunning = $state(false);
-  let debugOn = $state(true);
 
   let bench = $state(null);
 
@@ -36,7 +35,7 @@
     bench = null;
 
     try {
-      bench = await pyRunner.runBenchmark(algoSources, generatorSource, debugOn);
+      bench = await pyRunner.runBenchmark(algoSources, generatorSource);
     } catch (e) {
       bench = {
         inputSizes: [],
