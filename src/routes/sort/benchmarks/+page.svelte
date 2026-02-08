@@ -4,14 +4,16 @@
   import { getContext } from "svelte";
   import { goto } from "$app/navigation";
   import { createPyRunner } from "$lib/py-runner.svelte.js";
+  import BenchmarkCharts from "$lib/BenchmarkCharts.svelte";
 
   const codeRepo = getContext("codeRepo");
   const pyRunner = createPyRunner();
 
   let activeGenerator = $state("");
-  let outputText = $state("");
   let isRunning = $state(false);
   let debugOn = $state(true);
+
+  let bench = $state(null);
 
   let generatorSource = $derived.by(() => (activeGenerator ? codeRepo.get("sort", "generator", activeGenerator) : ""));
   let algoFiles = $derived.by(() => codeRepo.list("sort", "algo"));
@@ -24,16 +26,24 @@
     return res;
   });
 
-  function goBack() { goto("/sort"); }
+  function goBack() {
+    goto("/sort");
+  }
 
   async function runBenchmark() {
     if (!generatorSource) return;
     isRunning = true;
-    outputText = "";
+    bench = null;
+
     try {
-      outputText = await pyRunner.runBenchmarkAndFormat(algoSources, generatorSource, debugOn);
+      bench = await pyRunner.runBenchmark(algoSources, generatorSource, debugOn);
     } catch (e) {
-      outputText = String(e?.message ?? e);
+      bench = {
+        inputSizes: [],
+        timeSec: {},
+        memoryBytes: {},
+        stderr: String(e?.message ?? e),
+      };
     } finally {
       isRunning = false;
     }
@@ -70,8 +80,7 @@
       <div class="err">{pyRunner.loadError}</div>
     {/if}
 
-    <span>{$t("common.result")}</span>
-    <div class="out">{outputText}</div>
+    <BenchmarkCharts bench={bench} />
   </div>
 </article>
 
@@ -118,16 +127,5 @@
   .err {
     font-size: 0.9rem;
     opacity: 0.9;
-  }
-
-  .out {
-    white-space: pre-wrap;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    font-size: 0.95rem;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    border-radius: 10px;
-    padding: 10px;
-    min-height: 44px;
   }
 </style>
