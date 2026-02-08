@@ -12,33 +12,54 @@ function file(lang, path) {
   return v;
 }
 
-export function loadDefaultCode() {
-  const res = { version: 2, pages: { hu: {}, en: {} } };
-
-  for (const lang of ["hu", "en"]) {
-    res.pages[lang] = {
-      search: {
-        "algo": {
-          "linsrc.py": { content: file(lang, "search/algo/linsrc.py") },
-          "binsrc.py": { content: file(lang, "search/algo/binsrc.py") },
-        }
-      },
-      sort: {
-        "algo": {
-          "bubble.py": { content: file(lang, "sort/algo/bubble.py") },
-          "insertion.py": { content: file(lang, "sort/algo/insertion.py") },
-          "merge.py": { content: file(lang, "sort/algo/merge.py") },
-          "quick.py": { content: file(lang, "sort/algo/quick.py") },
-          "selection.py": { content: file(lang, "sort/algo/selection.py") },
-        },
-        "generator": {
-          "increasing.py": { content: file(lang, "sort/generator/increasing.py") }
-        }
+function loadHu() {
+  return {
+    search: {
+      "algo": {
+        "linker.py": { content: file("hu", "search/algo/linker.py") },
+        "binker.py": { content: file("hu", "search/algo/binker.py") },
       }
-    };
-  }
+    },
+    sort: {
+      "algo": {
+        "buborek.py": { content: file("hu", "sort/algo/buborek.py") },
+        "beszurasos.py": { content: file("hu", "sort/algo/beszurasos.py") },
+        "osszefesuleses.py": { content: file("hu", "sort/algo/osszefesuleses.py") },
+        "gyors.py": { content: file("hu", "sort/algo/gyors.py") },
+        "kivalasztasos.py": { content: file("hu", "sort/algo/kivalasztasos.py") },
+      },
+      "generator": {
+        "novekvo.py": { content: file("hu", "sort/generator/novekvo.py") }
+      }
+    }
+  };
+}
 
-  return res;
+function loadEn() {
+  return {
+    search: {
+      "algo": {
+        "linsrc.py": { content: file("en", "search/algo/linsrc.py") },
+        "binsrc.py": { content: file("en", "search/algo/binsrc.py") },
+      }
+    },
+    sort: {
+      "algo": {
+        "bubble.py": { content: file("en", "sort/algo/bubble.py") },
+        "insertion.py": { content: file("en", "sort/algo/insertion.py") },
+        "merge.py": { content: file("en", "sort/algo/merge.py") },
+        "quick.py": { content: file("en", "sort/algo/quick.py") },
+        "selection.py": { content: file("en", "sort/algo/selection.py") },
+      },
+      "generator": {
+        "increasing.py": { content: file("en", "sort/generator/increasing.py") }
+      }
+    }
+  };
+}
+
+export function loadDefaultCode() {
+  return { version: 2, pages: { hu: loadHu(), en: loadEn() } };
 }
 
 export const defaultCode = loadDefaultCode();
