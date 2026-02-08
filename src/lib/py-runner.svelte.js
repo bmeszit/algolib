@@ -1,45 +1,30 @@
 import RUN_PY from "$lib/code/helper/run.py?raw";
 
 export function createPyRunner() {
-  const indexURL = "https://cdn.jsdelivr.net/pyodide/v0.26.1/full/";
+  const indexURL = "https://cdn.jsdelivr.net/pyodide/v0.29.1/full/";
 
   let pyodide = $state(null);
   let isLoading = $state(false);
   let loadError = $state(null);
-  let last = $state(null);
+  let lastRun = $state(null);
 
-  let loadingPromise = null;
+  let loading = null;
 
-  async function ensurePyodide() {
+  async function load() {
     if (pyodide) return pyodide;
-    if (loadingPromise) return await loadingPromise;
+    if (loading) return await loading;
 
     isLoading = true;
     loadError = null;
 
-    loadingPromise = (async () => {
+    loading = (async () => {
       try {
-        let loadPyodideFn = null;
+        const mod = await import("pyodide").catch(() => null);
+        const loadPyodide = mod?.loadPyodide ?? globalThis?.loadPyodide ?? null;
+        if (!loadPyodide) throw new Error("Missing Pyodide loader.");
 
-        try {
-          const mod = await import("pyodide");
-          loadPyodideFn = mod?.loadPyodide ?? null;
-        } catch {
-          // ignore
-        }
-
-        if (!loadPyodideFn) {
-          const g = globalThis;
-          loadPyodideFn = g?.loadPyodide ?? null;
-        }
-
-        if (!loadPyodideFn) {
-          throw new Error("Pyodide loader not found. Install `pyodide` or include a script that defines globalThis.loadPyodide.");
-        }
-
-        const inst = await loadPyodideFn({ indexURL });
+        const inst = await loadPyodide({ indexURL });
         inst.runPython(RUN_PY);
-
         pyodide = inst;
         return inst;
       } catch (e) {
@@ -50,38 +35,41 @@ export function createPyRunner() {
       }
     })();
 
-    return await loadingPromise;
+    return await loading;
   }
 
-  async function run(code, inputText) {
-    const inst = await ensurePyodide();
+  async function run(code, inputText, debug = false) {
+    const inst = await load();
 
-    const fn = inst.globals.get("run_user_code_with_metrics");
-    const metrics = fn(code, inputText ?? null);
-
-    const stdout = String(metrics.get("stdout") ?? "");
-    const stderr = String(metrics.get("stderr") ?? "");
-    const timeMs = Number(metrics.get("time_ms") ?? NaN);
-    const peakBytes = Number(metrics.get("peak_bytes") ?? NaN);
-
-    try {
-      metrics.destroy?.();
-    } catch {
-      // ignore
+    const pyFn = inst.globals.get("run_user_code_with_metrics");
+    if (!pyFn || typeof pyFn.call !== "function") {
+      throw new Error("run_user_code_with_metrics is missing or not callable.");
     }
 
-    const result = stdout.length > 0 ? stdout : stderr;
+    let metrics = null;
+    try {
+      metrics = pyFn.call(null, code ?? "", inputText ?? null, Boolean(debug));
 
-    last = { result, stdout, stderr, timeMs, peakBytes };
-    return last;
+      const stdout = String(metrics.get("stdout") ?? "");
+      const stderr = String(metrics.get("stderr") ?? "");
+      const timeMs = Number(metrics.get("time_ms") ?? NaN);
+      const peakBytes = Number(metrics.get("peak_bytes") ?? NaN);
+
+      const result = stdout || stderr || "(no output)";
+      lastRun = { result, stdout, stderr, timeMs, peakBytes };
+      return lastRun;
+    } finally {
+      try { metrics?.destroy?.(); } catch {}
+      try { pyFn?.destroy?.(); } catch {}
+    }
   }
 
   return {
     get pyodide() { return pyodide; },
     get isLoading() { return isLoading; },
     get loadError() { return loadError; },
-    get last() { return last; },
-    ensurePyodide,
+    get lastRun() { return lastRun; },
+    ensurePyodide: load,
     run,
   };
 }
