@@ -14,6 +14,7 @@
   let activeSource = $derived(activeFile ? codeRepo.get("sort", activeFile) : "");
 
   let debugOn = $state(true);
+  let inputText = $state("");
 
   async function runActive() {
     if (!activeSource) return;
@@ -22,7 +23,7 @@
     outputText = "";
 
     try {
-      const res = await pyRunner.run(activeSource, "2 3 4 5", debugOn);
+      const res = await pyRunner.run(activeSource, inputText, debugOn);
       outputText =
         `stdout:\n${res.stdout || "(empty)"}\n\n` +
         `stderr:\n${res.stderr || "(empty)"}\n\n` +
@@ -48,6 +49,17 @@
   </div>
 
   <div class="run">
+    <label class="inLabel">
+      <span>Input</span>
+      <textarea
+        class="inBox"
+        rows="3"
+        value={inputText}
+        oninput={(e) => (inputText = e.currentTarget.value)}
+        spellcheck="false"
+      ></textarea>
+    </label>
+
     <button
       type="button"
       onclick={runActive}
@@ -88,6 +100,22 @@
         opacity: 0.6;
       }
     }
+  }
+
+  .inLabel {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .inBox {
+    background: #eee;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 1rem;
+    resize: vertical;
   }
 
   .err {
