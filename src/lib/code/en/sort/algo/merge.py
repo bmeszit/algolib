@@ -1,4 +1,4 @@
-def osszefesul(A, B):
+def merge(A, B):
   k = len(A)
   l = len(B)
   C = [None]*(k+l)
@@ -29,14 +29,14 @@ def osszefesul(A, B):
       h=h+1
   return C
 
-def rendezes(T):
-  n = len(T)
+def sort(A):
+  n = len(A)
   
   if n>1:
-    A = rendezes(T[0 : n//2])
-    B = rendezes(T[n//2 : n])
-    T = osszefesul(A, B)
-  return T
+    A = sort(A[0 : n//2])
+    B = sort(A[n//2 : n])
+    A = merge(A, B)
+  return A
 
-T = list(map(int, input().split()))
-print(rendezes(T))
+A = list(map(int, input().split()))
+print(sort(A))

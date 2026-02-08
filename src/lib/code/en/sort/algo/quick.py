@@ -1,26 +1,26 @@
-def particional(T, eleje, vege):
-  pivot_ertek = T[vege]
-  pivot_hely = vege
-  i = eleje
-  for j in range(eleje, vege):
-    if T[j] < pivot_ertek:
-      T[i], T[j] = T[j], T[i]
+def partition(A, begin, end):
+  pivot_value = A[end]
+  pivot_place = end
+  i = begin
+  for j in range(begin, end):
+    if A[j] < pivot_value:
+      A[i], A[j] = A[j], A[i]
       i = i+1
-  T[i], T[pivot_hely] = T[pivot_hely], T[i]
+  A[i], A[pivot_place] = A[pivot_place], A[i]
   return i
 
-def helyben_rendez(T, eleje, vege):
-  if not eleje<vege:
+def inplace_sort(A, begin, end):
+  if not begin<end:
     return
   
-  pivot_hely = particional(T, eleje, vege)
-  helyben_rendez(T, eleje, pivot_hely-1)
-  helyben_rendez(T, pivot_hely+1, vege)
+  pivot_place = partition(A, begin, end)
+  inplace_sort(A, begin, pivot_place-1)
+  inplace_sort(A, pivot_place+1, end)
 
-def rendezes(T):
-  n = len(T)
-  helyben_rendez(T, 0, n-1)
-  return T
+def sort(A):
+  n = len(A)
+  inplace_sort(A, 0, n-1)
+  return A
 
-T = list(map(int, input().split()))
-print(rendezes(T))
+A = list(map(int, input().split()))
+print(sort(A))

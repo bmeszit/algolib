@@ -1,14 +1,14 @@
-def rendezes(T):
-  n = len(T)
+def sort(A):
+  n = len(A)
   for j in range(0, n-1):
-    min_ertek = T[j]
-    min_hely = j
+    min_value = A[j]
+    min_place = j
     for i in range(j+1, n):
-      if T[i] < min_ertek:
-        min_ertek = T[i]
-        min_hely = i
-    T[j], T[min_hely] = T[min_hely], T[j]
-  return T
+      if A[i] < min_value:
+        min_value = A[i]
+        min_place = i
+    A[j], A[min_place] = A[min_place], A[j]
+  return A
 
-T = list(map(int, input().split()))
-print(rendezes(T))
+A = list(map(int, input().split()))
+print(sort(A))

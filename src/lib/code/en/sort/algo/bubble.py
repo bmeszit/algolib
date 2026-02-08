@@ -1,10 +1,10 @@
-def rendezes(T):
-  n = len(T)
+def sort(A):
+  n = len(A)
   for j in range(n-1, 0, -1):
     for i in range(0, j):
-      if T[i] > T[i+1]:
-        T[i], T[i+1] = T[i+1], T[i]
-  return T
+      if A[i] > A[i+1]:
+        A[i], A[i+1] = A[i+1], A[i]
+  return A
 
-T = list(map(int, input().split()))
-print(rendezes(T))
+A = list(map(int, input().split()))
+print(sort(A))
