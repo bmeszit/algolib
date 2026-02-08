@@ -13,22 +13,24 @@ function file(lang, path) {
 }
 
 export function loadDefaultCode() {
-  const res = {};
+  const res = { version: 1, pages: { hu: {}, en: {} } };
+
   for (const lang of ["hu", "en"]) {
-    res[lang] = {
+    res.pages[lang] = {
       search: {
-        "linsrc.py": { content: file(lang, "search/linsrc.py"), version: 1 },
-        "binsrc.py": { content: file(lang, "search/binsrc.py"), version: 1 },
+        "linsrc.py": { content: file(lang, "search/linsrc.py") },
+        "binsrc.py": { content: file(lang, "search/binsrc.py") },
       },
       sort: {
-        "bubble.py": { content: file(lang, "sort/bubble.py"), version: 1 },
-        "insertion.py": { content: file(lang, "sort/insertion.py"), version: 1 },
-        "merge.py": { content: file(lang, "sort/merge.py"), version: 1 },
-        "quick.py": { content: file(lang, "sort/quick.py"), version: 1 },
-        "selection.py": { content: file(lang, "sort/selection.py"), version: 1 },
+        "bubble.py": { content: file(lang, "sort/bubble.py") },
+        "insertion.py": { content: file(lang, "sort/insertion.py") },
+        "merge.py": { content: file(lang, "sort/merge.py") },
+        "quick.py": { content: file(lang, "sort/quick.py") },
+        "selection.py": { content: file(lang, "sort/selection.py") },
       },
     };
   }
+
   return res;
 }
 

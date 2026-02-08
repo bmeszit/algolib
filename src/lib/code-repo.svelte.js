@@ -1,30 +1,27 @@
+const VERSION_KEY = "code-version";
+
 function key(lang, pageId) {
   return `lang-${lang}-page-${pageId}`;
 }
 
 export function createCodeRepo(defaults, getLang) {
+  const storedVersion = Number.parseInt(localStorage.getItem(VERSION_KEY) ?? "0", 10) || 0;
+
   let pages = $state({ hu: {}, en: {} });
 
   for (const lang of ["hu", "en"]) {
-    for (const pageId in defaults[lang]) {
+    for (const pageId in defaults.pages[lang]) {
       const raw = localStorage.getItem(key(lang, pageId));
-      const stored = (raw ? JSON.parse(raw) : {});
 
       pages[lang][pageId] = {
-        ...defaults[lang][pageId],
-        ...stored,
+        ...defaults.pages[lang][pageId],
+        ...(storedVersion >= defaults.version && raw ? JSON.parse(raw) : {})
       };
-
-      for (const fname in stored) {
-        const def = defaults[lang][pageId]?.[fname];
-        const cur = stored[fname];
-        const curVersion = typeof cur?.version === "number" ? cur.version : 0;
-        if (def && def.version > curVersion) {
-          pages[lang][pageId][fname] = def;
-        }
-      }
     }
   }
+
+  const version = Math.max(storedVersion, defaults.version);
+  localStorage.setItem(VERSION_KEY, String(version));
 
   function save(pageId) {
     const lang = getLang();
@@ -40,7 +37,7 @@ export function createCodeRepo(defaults, getLang) {
     const lang = getLang();
     const page = pages[lang][pageId];
     if (!page[filename]) {
-      page[filename] = { content: "", version: 0 };
+      page[filename] = { content: "" };
       save(pageId);
     }
     return page[filename].content;
@@ -49,8 +46,7 @@ export function createCodeRepo(defaults, getLang) {
   function set(pageId, filename, content) {
     const lang = getLang();
     const page = pages[lang][pageId];
-    const version = page[filename]?.version ?? 0;
-    page[filename] = { content, version };
+    page[filename] = { content };
     save(pageId);
   }
 
@@ -73,7 +69,7 @@ export function createCodeRepo(defaults, getLang) {
 
   function reset(pageId) {
     const lang = getLang();
-    pages[lang][pageId] = { ...defaults[lang][pageId] };
+    pages[lang][pageId] = { ...defaults.pages[lang][pageId] };
     save(pageId);
   }
 
