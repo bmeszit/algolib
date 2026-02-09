@@ -20,7 +20,7 @@ function loadHu() {
         "binker.py": { content: file("hu", "search/algo/binker.py") },
       },
       "generator": {
-        "teszt.py": { content: file("hu", "sort/generator/teszt.py") },
+        "teszt.py": { content: file("hu", "search/generator/teszt.py") },
       }
     },
     sort: {
