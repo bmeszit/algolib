@@ -24,24 +24,17 @@
       "y_memory_bytes": "Memória (bájt)"
     },
     "errors": {
-      "stderr_title": "hibák"
+      "stderr_title": "Hibák"
     },
     "runner": {
-      "stdout_label": "kimenet",
-      "stderr_label": "hiba",
+      "stdout_label": "Kimenet",
+      "stderr_label": "Hiba",
       "empty": "(üres)",
       "no_output": "(nincs kimenet)",
-      "time_label": "idő",
+      "time_label": "Idő",
       "time_unit_sec": "másodperc",
-      "memory_label": "memória",
-      "memory_unit_bytes": "bájt",
-      "benchmark": {
-        "input_sizes_label": "bemenet méretek",
-        "input_sizes_unit_chars": "karakter",
-        "errors_label": "hibák",
-        "time_series_label": "idő (másodperc)",
-        "memory_series_label": "memória (bájt)"
-      }
+      "memory_label": "Memória",
+      "memory_unit_bytes": "bájt"
     }
   },
   "algos": {
