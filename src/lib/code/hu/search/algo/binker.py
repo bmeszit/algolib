@@ -11,6 +11,6 @@ def binker(T, eleje, vege, x):
     return -1
 
 T = list(map(int, input().split()))
+x = int(input())
 n = len(T)
-for i in range(n):
-  print(binker(T, 0, n-1, T[i]))
+print(binker(T, 0, n-1, x))

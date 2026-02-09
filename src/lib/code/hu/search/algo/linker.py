@@ -6,6 +6,5 @@ def linker(T, x):
   return -1
 
 T = list(map(int, input().split()))
-n = len(T)
-for i in range(n):
-  print(linker(T, T[i]))
+x = int(input())
+print(linker(T, x))

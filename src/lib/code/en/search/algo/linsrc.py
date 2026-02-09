@@ -6,6 +6,5 @@ def linsrc(T, x):
   return -1
 
 T = list(map(int, input().split()))
-n = len(T)
-for i in range(n):
-  print(linsrc(T, T[i]))
+x = int(input())
+print(linsrc(T, x))
