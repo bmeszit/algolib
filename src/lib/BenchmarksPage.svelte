@@ -7,30 +7,44 @@
   import { page as appPage } from "$app/state";
   import { createPyRunner } from "$lib/py-runner.svelte.js";
   import BenchmarksCharts from "$lib/BenchmarksCharts.svelte";
+  import { getBenchState, setBenchState } from "$lib/bench-cache.js";
 
-  let { page } = $props();
+  const props = $props();
+  const pageId = $derived.by(() => props.page);
 
   const codeRepo = getContext("codeRepo");
   const pyRunner = createPyRunner();
 
   let activeGenerator = $state("");
   let isRunning = $state(false);
-
+  
   let bench = $state(null);
 
-  let generatorSource = $derived.by(() => (activeGenerator ? codeRepo.get(page, "generator", activeGenerator) : ""));
-  let algoFiles = $derived.by(() => codeRepo.list(page, "algo"));
+  $effect(() => {
+    const cached = getBenchState(pageId);
+    if (cached) {
+      activeGenerator = cached.activeGenerator ?? "";
+      bench = cached.bench ?? null;
+    }
+  });
+
+  $effect(() => {
+    setBenchState(pageId, { activeGenerator, bench });
+  });
+
+  let generatorSource = $derived.by(() => (activeGenerator ? codeRepo.get(pageId, "generator", activeGenerator) : ""));
+  let algoFiles = $derived.by(() => codeRepo.list(pageId, "algo"));
 
   let algoSources = $derived.by(() => {
     const res = {};
     for (const f of algoFiles) {
-      res[f] = codeRepo.get(page, "algo", f);
+      res[f] = codeRepo.get(pageId, "algo", f);
     }
     return res;
   });
 
   function goBack() {
-    goto(`${base}/${page}${appPage.url.search}`);
+    goto(`${base}/${pageId}${appPage.url.search}`);
   }
 
   async function runBenchmark() {
@@ -56,17 +70,17 @@
 <article>
   <header class="page-header">
     <div class="headRow">
-      <h1>{$t("common.benchmarks")}: {$t(`algos.${page}.title`)}</h1>
+      <h1>{$t("common.benchmarks")}: {$t(`algos.${pageId}.title`)}</h1>
       <button type="button" class="backBtn" onclick={goBack}>
         {$t("common.back")}
       </button>
     </div>
   </header>
 
-  <p>{$t(`algos.${page}.desc`)}</p>
+  <p>{$t(`algos.${pageId}.desc`)}</p>
 
   <div class="editor-section">
-    <CodeEditorTabs pageId={page} type="generator" repo={codeRepo} bind:activeCode={activeGenerator} />
+    <CodeEditorTabs pageId={pageId} type="generator" repo={codeRepo} bind:activeCode={activeGenerator} />
   </div>
 
   <div class="run">
