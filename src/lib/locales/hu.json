@@ -24,7 +24,7 @@
       "y_memory_bytes": "Memória (bájt)"
     },
     "errors": {
-      "stderr_title": "Hiba"
+      "stderr_title": "hibák"
     },
     "runner": {
       "stdout_label": "kimenet",

@@ -144,7 +144,7 @@
   {/key}
 
   {#if stderrText !== ""}
-    <pre class="err">{stderrText}</pre>
+    <pre class="err">{$t("benchmarks.errors.stderr_title")}:<br><br>{stderrText}</pre>
   {/if}
 {/if}
 

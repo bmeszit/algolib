@@ -24,7 +24,7 @@
       "y_memory_bytes": "Memory (bytes)"
     },
     "errors": {
-      "stderr_title": "Error"
+      "stderr_title": "errors"
     },
     "runner": {
       "stdout_label": "output",
