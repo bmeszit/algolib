@@ -17,7 +17,7 @@ export function createCodeRepo(defaults, getLang) {
           pages[lang][pageId][type] = defaults.pages[lang][pageId][type];
         } else {
           const raw = localStorage.getItem(key(lang, pageId, type));
-          pages[lang][pageId][type] = raw ? JSON.parse(raw) : {};
+          pages[lang][pageId][type] = raw ? JSON.parse(raw) : defaults.pages[lang][pageId][type];
         }
       }
     }
