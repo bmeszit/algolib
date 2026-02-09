@@ -5,14 +5,14 @@
   import { goto } from "$app/navigation";
   import { base } from "$app/paths";
   import { page as appPage } from "$app/state";
-  import { createPyRunner } from "$lib/py-runner.svelte.js";
+  import { getPyRunner } from "$lib/py-runner.svelte.js";
   import { getAlgoRunState, setAlgoRunState } from "$lib/algo-cache.js";
 
   const props = $props();
   const pageId = $derived.by(() => props.page);
 
   const codeRepo = getContext("codeRepo");
-  const pyRunner = createPyRunner();
+  const pyRunner = getPyRunner();
 
   let activeFile = $state("");
   let inputText = $state("");

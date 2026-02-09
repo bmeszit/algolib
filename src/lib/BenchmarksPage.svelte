@@ -5,7 +5,7 @@
   import { goto } from "$app/navigation";
   import { base } from "$app/paths";
   import { page as appPage } from "$app/state";
-  import { createPyRunner } from "$lib/py-runner.svelte.js";
+  import { getPyRunner } from "$lib/py-runner.svelte.js";
   import BenchmarksCharts from "$lib/BenchmarksCharts.svelte";
   import { getBenchState, setBenchState } from "$lib/bench-cache.js";
 
@@ -13,11 +13,11 @@
   const pageId = $derived.by(() => props.page);
 
   const codeRepo = getContext("codeRepo");
-  const pyRunner = createPyRunner();
+  const pyRunner = getPyRunner();
 
   let activeGenerator = $state("");
   let isRunning = $state(false);
-  
+
   let bench = $state(null);
 
   $effect(() => {

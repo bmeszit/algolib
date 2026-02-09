@@ -5,4 +5,4 @@ export { default as CodeEditor } from './CodeEditor.svelte';
 export { default as CodeEditorTabs } from './CodeEditorTabs.svelte';
 export { createCodeRepo } from './code-repo.svelte.js';
 export { defaultCode } from './code/load-code.js';
-export { createPyRunner } from './py-runner.svelte.js';
+export { getPyRunner } from './py-runner.svelte.js';

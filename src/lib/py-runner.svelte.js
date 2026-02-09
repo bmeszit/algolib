@@ -1,4 +1,12 @@
 // src/lib/py-runner.svelte.js
+let _singleton = null;
+
+export function getPyRunner() {
+  if (_singleton) return _singleton;
+  _singleton = createPyRunner();
+  return _singleton;
+}
+
 export function createPyRunner() {
   let pyodide = $state(null);
   let isLoading = $state(false);
@@ -37,13 +45,8 @@ export function createPyRunner() {
       else p.reject(new Error(String(error ?? "Worker error.")));
     };
 
-    worker.onerror = (e) => {
-      failAll(e?.message ?? e);
-    };
-
-    worker.onmessageerror = (e) => {
-      failAll(e?.message ?? e);
-    };
+    worker.onerror = (e) => failAll(e?.message ?? e);
+    worker.onmessageerror = (e) => failAll(e?.message ?? e);
 
     return worker;
   }
@@ -91,10 +94,7 @@ export function createPyRunner() {
 
   async function runBenchmark(algoSources, generatorCode) {
     await load();
-    const m = await call("benchmark", {
-      algoSources: algoSources ?? {},
-      generatorCode: generatorCode ?? ""
-    });
+    const m = await call("benchmark", { algoSources: algoSources ?? {}, generatorCode: generatorCode ?? "" });
 
     const inputSizes = Array.isArray(m.inputSizes) ? m.inputSizes.map((x) => Number(x)) : [];
     const timeSec = m.timeSec ?? {};
