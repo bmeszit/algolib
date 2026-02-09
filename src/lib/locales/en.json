@@ -13,6 +13,12 @@
     "benchmarks": "Benchmarks",
     "back": "Back"
   },
+  "footer": {
+    "about": "About",
+    "issues_feature_requests": "Issues / Feature requests",
+    "creator_vkitti": "Kitti Varga",
+    "creator_nemkin": "Viktória Nemkin"
+  },
   "benchmarks": {
     "charts": {
       "time_title": "Time (seconds)",

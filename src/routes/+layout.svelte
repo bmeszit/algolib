@@ -3,6 +3,7 @@
   import { page } from "$app/state";
   import favicon from "$lib/assets/favicon.svg";
   import Header from "$lib/Header.svelte";
+  import Footer from "$lib/Footer.svelte";
   import "../app.scss";
 
   import { createCodeRepo } from "$lib";
@@ -25,3 +26,5 @@
 <main>
   {@render children()}
 </main>
+
+<Footer />
