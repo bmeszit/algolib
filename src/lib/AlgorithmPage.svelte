@@ -6,22 +6,36 @@
   import { base } from "$app/paths";
   import { page as appPage } from "$app/state";
   import { createPyRunner } from "$lib/py-runner.svelte.js";
+  import { getAlgoRunState, setAlgoRunState } from "$lib/algo-cache.js";
 
-  let { page } = $props();
+  const props = $props();
+  const pageId = $derived.by(() => props.page);
 
   const codeRepo = getContext("codeRepo");
   const pyRunner = createPyRunner();
 
   let activeFile = $state("");
+  let inputText = $state("");
   let outputText = $state("");
   let isRunning = $state(false);
 
-  let activeSource = $derived.by(() => (activeFile ? codeRepo.get(page, "algo", activeFile) : ""));
+  $effect(() => {
+    const cached = getAlgoRunState(pageId);
+    if (cached) {
+      activeFile = cached.activeFile ?? "";
+      inputText = cached.inputText ?? "";
+      outputText = cached.outputText ?? "";
+    }
+  });
 
-  let inputText = $state("");
+  $effect(() => {
+    setAlgoRunState(pageId, { activeFile, inputText, outputText });
+  });
+
+  const activeSource = $derived.by(() => (activeFile ? codeRepo.get(pageId, "algo", activeFile) : ""));
 
   function goBenchmarks() {
-    goto(`${base}/${page}/benchmarks${appPage.url.search}`);
+    goto(`${base}/${pageId}/benchmarks${appPage.url.search}`);
   }
 
   function formatRun(res) {
@@ -63,17 +77,17 @@
 <article>
   <header class="page-header">
     <div class="headRow">
-      <h1>{$t(`algos.${page}.title`)}</h1>
+      <h1>{$t(`algos.${pageId}.title`)}</h1>
       <button type="button" class="benchBtn" onclick={goBenchmarks}>
         {$t("common.benchmarks")}
       </button>
     </div>
   </header>
 
-  <p>{$t(`algos.${page}.desc`)}</p>
+  <p>{$t(`algos.${pageId}.desc`)}</p>
 
   <div class="editor-section">
-    <CodeEditorTabs pageId={page} type="algo" repo={codeRepo} bind:activeCode={activeFile} />
+    <CodeEditorTabs pageId={pageId} type="algo" repo={codeRepo} bind:activeCode={activeFile} />
   </div>
 
   <div class="run">
