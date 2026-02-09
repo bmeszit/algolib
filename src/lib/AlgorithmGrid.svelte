@@ -13,4 +13,10 @@
     align-items: stretch;
     justify-content: flex-start;
   }
+
+  @media (max-width: 800px) {
+    .grid {
+      justify-content: center;
+    }
+  }
 </style>
