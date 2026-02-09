@@ -20,9 +20,9 @@ function loadHu() {
         "binker.py": { content: file("hu", "search/algo/binker.py") },
       },
       "generator": {
+        "veletlen.py": { content: file("hu", "search/generator/veletlen.py") },
         "eleje.py": { content: file("hu", "search/generator/eleje.py") },
         "vege.py": { content: file("hu", "search/generator/vege.py") },
-        "veletlen.py": { content: file("hu", "search/generator/veletlen.py") }
       }
     },
     sort: {
@@ -34,9 +34,9 @@ function loadHu() {
         "kivalasztasos.py": { content: file("hu", "sort/algo/kivalasztasos.py") },
       },
       "generator": {
+        "veletlen.py": { content: file("hu", "sort/generator/veletlen.py") },
         "novekvo.py": { content: file("hu", "sort/generator/novekvo.py") },
         "csokkeno.py": { content: file("hu", "sort/generator/csokkeno.py") },
-        "veletlen.py": { content: file("hu", "sort/generator/veletlen.py") }
       }
     }
   };
@@ -50,9 +50,9 @@ function loadEn() {
         "binsrc.py": { content: file("en", "search/algo/binsrc.py") },
       },
       "generator": {
+        "random.py": { content: file("hu", "search/generator/veletlen.py") },
         "begin.py": { content: file("hu", "search/generator/eleje.py") },
         "end.py": { content: file("hu", "search/generator/vege.py") },
-        "random.py": { content: file("hu", "search/generator/veletlen.py") }
       }
     },
     sort: {
@@ -64,16 +64,16 @@ function loadEn() {
         "selection.py": { content: file("en", "sort/algo/selection.py") },
       },
       "generator": {
+        "random.py": { content: file("hu", "sort/generator/veletlen.py") },
         "increasing.py": { content: file("en", "sort/generator/increasing.py") },
         "decreasing.py": { content: file("hu", "sort/generator/csokkeno.py") },
-        "random.py": { content: file("hu", "sort/generator/veletlen.py") }
       }
     }
   };
 }
 
 export function loadDefaultCode() {
-  return { version: 2, pages: { hu: loadHu(), en: loadEn() } };
+  return { version: 3, pages: { hu: loadHu(), en: loadEn() } };
 }
 
 export const defaultCode = loadDefaultCode();
