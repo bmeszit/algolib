@@ -75,37 +75,6 @@ export function createPyRunner() {
     }
   }
 
-  function format(res) {
-    return (
-      `stdout:\n${res.stdout || "(empty)"}\n\n` +
-      `stderr:\n${res.stderr || "(empty)"}\n\n` +
-      `time: ${res.timeSec} sec\n` +
-      `memory: ${res.memoryBytes} bytes\n`
-    );
-  }
-
-  function formatBenchmark(res) {
-    const sizes = (res.inputSizes ?? []).map((x) => String(x)).join(", ");
-    const algoNames = Object.keys(res.timeSec ?? {});
-
-    let s = "";
-    s += `input_sizes (chars): [${sizes}]\n`;
-
-    for (const name of algoNames) {
-      const ts = (res.timeSec?.[name] ?? []).map((x) => String(x)).join(", ");
-      const ms = (res.memoryBytes?.[name] ?? []).map((x) => String(x)).join(", ");
-      s += `\n${name}\n`;
-      s += `  time_sec: [${ts}]\n`;
-      s += `  memory_bytes: [${ms}]\n`;
-    }
-
-    const err = String(res.stderr ?? "");
-    if (err.trim() !== "") {
-      s += `\nerrors:\n\n${err}\n`;
-    }
-    return s;
-  }
-
   async function run(code, inputText) {
     await load();
     const m = await call("run", { code: code ?? "", inputText: inputText ?? null });
@@ -115,21 +84,16 @@ export function createPyRunner() {
     const timeSec = Number(m.timeSec ?? NaN);
     const memoryBytes = Number(m.memoryBytes ?? NaN);
 
-    const result = stdout || stderr || "(no output)";
+    const result = stdout || stderr || "";
     lastRun = { result, stdout, stderr, timeSec, memoryBytes };
     return lastRun;
-  }
-
-  async function runAndFormat(code, inputText) {
-    const res = await run(code, inputText);
-    return format(res);
   }
 
   async function runBenchmark(algoSources, generatorCode) {
     await load();
     const m = await call("benchmark", {
       algoSources: algoSources ?? {},
-      generatorCode: generatorCode ?? "",
+      generatorCode: generatorCode ?? ""
     });
 
     const inputSizes = Array.isArray(m.inputSizes) ? m.inputSizes.map((x) => Number(x)) : [];
@@ -141,11 +105,6 @@ export function createPyRunner() {
     return lastRun;
   }
 
-  async function runBenchmarkAndFormat(algoSources, generatorCode) {
-    const res = await runBenchmark(algoSources, generatorCode);
-    return formatBenchmark(res);
-  }
-
   return {
     get pyodide() { return pyodide; },
     get isLoading() { return isLoading; },
@@ -153,10 +112,6 @@ export function createPyRunner() {
     get lastRun() { return lastRun; },
     ensurePyodide: load,
     run,
-    format,
-    runAndFormat,
-    runBenchmark,
-    formatBenchmark,
-    runBenchmarkAndFormat,
+    runBenchmark
   };
 }

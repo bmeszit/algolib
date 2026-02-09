@@ -24,12 +24,28 @@
     goto(`${base}/${page}/benchmarks${appPage.url.search}`);
   }
 
+  function formatRun(res) {
+    const stdout = String(res?.stdout ?? "");
+    const stderr = String(res?.stderr ?? "");
+    const timeSec = Number(res?.timeSec ?? NaN);
+    const memoryBytes = Number(res?.memoryBytes ?? NaN);
+
+    return (
+      `${$t("benchmarks.runner.stdout_label")}:\n${stdout || $t("benchmarks.runner.empty")}\n\n` +
+      `${$t("benchmarks.runner.stderr_label")}:\n${stderr || $t("benchmarks.runner.empty")}\n\n` +
+      `${$t("benchmarks.runner.time_label")}: ${timeSec} ${$t("benchmarks.runner.time_unit_sec")}\n` +
+      `${$t("benchmarks.runner.memory_label")}: ${memoryBytes} ${$t("benchmarks.runner.memory_unit_bytes")}\n`
+    );
+  }
+
   async function runActive() {
     if (!activeSource) return;
     isRunning = true;
     outputText = "";
     try {
-      outputText = await pyRunner.runAndFormat(activeSource, inputText);
+      const res = await pyRunner.run(activeSource, inputText);
+      const hasOut = String(res?.stdout ?? "").trim() !== "" || String(res?.stderr ?? "").trim() !== "";
+      outputText = hasOut ? formatRun(res) : $t("benchmarks.runner.no_output");
     } catch (e) {
       outputText = String(e?.message ?? e);
     } finally {

@@ -25,6 +25,23 @@
     },
     "errors": {
       "stderr_title": "Error"
+    },
+    "runner": {
+      "stdout_label": "output",
+      "stderr_label": "error",
+      "empty": "(empty)",
+      "no_output": "(no output)",
+      "time_label": "time",
+      "time_unit_sec": "second(s)",
+      "memory_label": "memory",
+      "memory_unit_bytes": "byte(s)",
+      "benchmark": {
+        "input_sizes_label": "input sizes",
+        "input_sizes_unit_chars": "character(s)",
+        "errors_label": "errors",
+        "time_series_label": "time (seconds)",
+        "memory_series_label": "memory (bytes)"
+      }
     }
   },
   "algos": {
