@@ -92,7 +92,7 @@ export function createPyRunner() {
     return lastRun;
   }
 
-  async function runBenchmark(algoSources, generatorCode) {
+  async function runBenchmark(algoSources, generatorName, generatorCode) {
     await load();
     const m = await call("benchmark", { algoSources: algoSources ?? {}, generatorCode: generatorCode ?? "" });
 
@@ -101,7 +101,7 @@ export function createPyRunner() {
     const memoryBytes = m.memoryBytes ?? {};
     const stderr = String(m.stderr ?? "");
 
-    lastRun = { inputSizes, timeSec, memoryBytes, stderr };
+    lastRun = { generatorName, inputSizes, timeSec, memoryBytes, stderr };
     return lastRun;
   }
 

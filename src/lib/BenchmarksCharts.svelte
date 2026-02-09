@@ -111,16 +111,16 @@
 
   let timeOptions = $derived.by(() => ({
     ...baseOptions,
-    plugins: { ...baseOptions.plugins, title: { display: true, text: $t("benchmarks.charts.time_title") } },
+    plugins: { ...baseOptions.plugins, title: { display: true, text: $t("benchmarks.charts.time_title") + ": " + bench.generatorName  } },
     scales: {
       ...baseOptions.scales,
-      y: { title: { display: true, text: $t("benchmarks.axes.y_time_sec") } }
+      y: { title: { display: true, text: $t("benchmarks.axes.y_time_sec") } } 
     }
   }));
 
   let memOptions = $derived.by(() => ({
     ...baseOptions,
-    plugins: { ...baseOptions.plugins, title: { display: true, text: $t("benchmarks.charts.memory_title") } },
+    plugins: { ...baseOptions.plugins, title: { display: true, text: $t("benchmarks.charts.memory_title") + ": " + bench.generatorName } },
     scales: {
       ...baseOptions.scales,
       y: { title: { display: true, text: $t("benchmarks.axes.y_memory_bytes") } }

@@ -20,8 +20,8 @@
   },
   "benchmarks": {
     "charts": {
-      "time_title": "Idő (másodperc)",
-      "memory_title": "Memória (bájt)"
+      "time_title": "Idő",
+      "memory_title": "Memória"
     },
     "axes": {
       "x_input_size_chars": "Bemenet mérete (karakter)",

@@ -20,8 +20,8 @@
   },
   "benchmarks": {
     "charts": {
-      "time_title": "Time (seconds)",
-      "memory_title": "Memory (bytes)"
+      "time_title": "Time",
+      "memory_title": "Memory"
     },
     "axes": {
       "x_input_size_chars": "Input size (number of characters)",

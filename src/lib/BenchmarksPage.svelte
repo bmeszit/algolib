@@ -53,9 +53,10 @@
     bench = null;
 
     try {
-      bench = await pyRunner.runBenchmark(algoSources, generatorSource);
+      bench = await pyRunner.runBenchmark(algoSources, activeGenerator, generatorSource);
     } catch (e) {
       bench = {
+        generatorName: "",
         inputSizes: [],
         timeSec: {},
         memoryBytes: {},
