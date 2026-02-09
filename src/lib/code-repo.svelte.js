@@ -13,12 +13,12 @@ export function createCodeRepo(defaults, getLang) {
     for (const pageId in defaults.pages[lang]) {
       pages[lang][pageId] = {};
       for (const type in defaults.pages[lang][pageId]) {
-        const raw = localStorage.getItem(key(lang, pageId, type));
-
-        pages[lang][pageId][type] = {
-          ...defaults.pages[lang][pageId][type],
-          ...(storedVersion >= defaults.version && raw ? JSON.parse(raw) : {}),
-        };
+        if(storedVersion < defaults.version) {
+          pages[lang][pageId][type] = defaults.pages[lang][pageId][type];
+        } else {
+          const raw = localStorage.getItem(key(lang, pageId, type));
+          pages[lang][pageId][type] = raw ? JSON.parse(raw) : {};
+        }
       }
     }
   }
