@@ -422,11 +422,11 @@
 
   .desktopOnly { display: inline-flex; }
 
-  @media (max-width: 640px) {
-    .tabs { display: none; }
-    .mobile { display: flex; }
-    .desktopOnly { display: none; }
-  }
+  // @media (max-width: 800px) {
+  //   .tabs { display: none; }
+  //   .mobile { display: flex; }
+  //   .desktopOnly { display: none; }
+  // }
 
   .titleBtn {
     border: 0;
