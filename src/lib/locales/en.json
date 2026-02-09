@@ -14,8 +14,7 @@
     "back": "Back"
   },
   "footer": {
-    "about": "About",
-    "issues_feature_requests": "Issues / Feature requests",
+    "github": "Github",
     "creator_vkitti": "Kitti Varga",
     "creator_nemkin": "Viktória Nemkin"
   },
