@@ -131,6 +131,10 @@
 </script>
 
 {#if ready && bench && Scatter}
+  {#if stderrText !== ""}
+    <pre class="err">{$t("benchmarks.errors.stderr_title")}:<br><br>{stderrText}</pre>
+  {/if}
+
   {#key redrawKey}
     <div class="charts">
       <div class="chartBox">
@@ -142,10 +146,6 @@
       </div>
     </div>
   {/key}
-
-  {#if stderrText !== ""}
-    <pre class="err">{$t("benchmarks.errors.stderr_title")}:<br><br>{stderrText}</pre>
-  {/if}
 {/if}
 
 <style>
