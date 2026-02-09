@@ -23,6 +23,7 @@
         history(),
         bracketMatching(),
         python(),
+        EditorView.lineWrapping,
         keymap.of([indentWithTab, ...defaultKeymap, ...historyKeymap]),
         EditorView.updateListener.of((u) => {
           if (!u.docChanged) return;
