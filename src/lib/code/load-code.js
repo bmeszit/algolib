@@ -50,9 +50,9 @@ function loadEn() {
         "binsrc.py": { content: file("en", "search/algo/binsrc.py") },
       },
       "generator": {
-        "random.py": { content: file("hu", "search/generator/veletlen.py") },
-        "begin.py": { content: file("hu", "search/generator/eleje.py") },
-        "end.py": { content: file("hu", "search/generator/vege.py") },
+        "random.py": { content: file("en", "search/generator/random.py") },
+        "begin.py": { content: file("en", "search/generator/begin.py") },
+        "end.py": { content: file("en", "search/generator/end.py") },
       }
     },
     sort: {
@@ -64,16 +64,16 @@ function loadEn() {
         "selection.py": { content: file("en", "sort/algo/selection.py") },
       },
       "generator": {
-        "random.py": { content: file("hu", "sort/generator/veletlen.py") },
+        "random.py": { content: file("en", "sort/generator/random.py") },
         "increasing.py": { content: file("en", "sort/generator/increasing.py") },
-        "decreasing.py": { content: file("hu", "sort/generator/csokkeno.py") },
+        "decreasing.py": { content: file("en", "sort/generator/decreasing.py") },
       }
     }
   };
 }
 
 export function loadDefaultCode() {
-  return { version: 3, pages: { hu: loadHu(), en: loadEn() } };
+  return { version: 4, pages: { hu: loadHu(), en: loadEn() } };
 }
 
 export const defaultCode = loadDefaultCode();
