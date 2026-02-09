@@ -21,19 +21,21 @@
 
   const defaultInput = $derived.by(() => codeRepo.get(pageId, "input", "input.txt") ?? "");
 
+  let didInit = $state(false);
+
   $effect(() => {
+    if (didInit) return;
+    didInit = true;
+
     const cached = getAlgoRunState(pageId);
     if (cached) {
       activeFile = cached.activeFile ?? "";
       inputText = cached.inputText ?? "";
       outputText = cached.outputText ?? "";
+      return;
     }
-  });
 
-  $effect(() => {
-    if (inputText.trim() === "" && defaultInput.trim() !== "") {
-      inputText = defaultInput;
-    }
+    inputText = defaultInput;
   });
 
   $effect(() => {
@@ -44,6 +46,11 @@
 
   function goBenchmarks() {
     goto(`${base}/${pageId}/benchmarks${appPage.url.search}`);
+  }
+
+  function restoreInput() {
+    inputText = defaultInput;
+    outputText = "";
   }
 
   function formatRun(res) {
@@ -100,7 +107,13 @@
 
   <div class="run">
     <label class="inLabel">
-      <span>{$t("common.input")}</span>
+      <div class="inHead">
+        <span>{$t("common.input")}</span>
+          <button type="button" class="resetBtn" onclick={restoreInput} disabled={defaultInput.trim() === ""}>
+            {$t("common.reset")}
+          </button>
+      </div>
+
       <textarea
         class="inBox"
         rows="3"
@@ -165,6 +178,26 @@
         cursor: default;
         opacity: 0.6;
       }
+    }
+  }
+
+  .inHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .resetBtn {
+    border: 1px solid #ddd;
+    background: transparent;
+    padding: 4px 8px;
+    border-radius: 10px;
+    cursor: pointer;
+
+    &:disabled {
+      cursor: default;
+      opacity: 0.6;
     }
   }
 
