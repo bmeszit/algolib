@@ -1,26 +1,37 @@
-def partition(A, begin, end):
-  pivot_value = A[end]
-  pivot_place = end
-  i = begin
-  for j in range(begin, end):
-    if A[j] < pivot_value:
-      A[i], A[j] = A[j], A[i]
-      i = i+1
-  A[i], A[pivot_place] = A[pivot_place], A[i]
-  return i
+def partition(arr, start, end):
+  pivot_value = arr[start]
+  left = start + 1
+  right = end
+  
+  while left <= right:
+    # Search from left for element greater than pivot
+    while left <= right and arr[left] < pivot_value:
+      left += 1
+    
+    # Search from right for element smaller than pivot
+    while left <= right and arr[right] >= pivot_value:
+      right -= 1
+    
+    # If we found a pair to swap, swap them
+    if left < right:
+      arr[left], arr[right] = arr[right], arr[left]
+  
+  # Swap pivot to the right pointer position (its final position)
+  arr[start], arr[right] = arr[right], arr[start]
+  return right
 
-def inplace_sort(A, begin, end):
-  if not begin<end:
+def sort_inplace(arr, start, end):
+  if not start < end:
     return
   
-  pivot_place = partition(A, begin, end)
-  inplace_sort(A, begin, pivot_place-1)
-  inplace_sort(A, pivot_place+1, end)
+  pivot_position = partition(arr, start, end)
+  sort_inplace(arr, start, pivot_position - 1)
+  sort_inplace(arr, pivot_position + 1, end)
 
-def sort(A):
-  n = len(A)
-  inplace_sort(A, 0, n-1)
-  return A
+def sort(arr):
+  n = len(arr)
+  sort_inplace(arr, 0, n - 1)
+  return arr
 
 A = list(map(int, input().split()))
 print(sort(A))
