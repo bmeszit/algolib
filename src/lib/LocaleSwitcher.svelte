@@ -75,9 +75,6 @@
         >
           <span class="flag">{opt.flag}</span>
           <span class="text">{opt.label}</span>
-          {#if opt.value === currentValue}
-            <span class="check" aria-hidden="true">✓</span>
-          {/if}
         </button>
       {/each}
     </div>
@@ -135,8 +132,8 @@
     background: canvas;
     color: canvastext;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-    padding: 6px;
     z-index: 50;
+    background: #eee;
   }
 
   .item {
@@ -156,10 +153,5 @@
   .item:hover,
   .item[aria-selected="true"] {
     background: rgba(0, 0, 0, 0.06);
-  }
-
-  .check {
-    margin-left: auto;
-    opacity: 0.8;
   }
 </style>
