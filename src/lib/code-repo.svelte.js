@@ -9,7 +9,7 @@ export function createCodeRepo(defaults, getLang) {
 
   let pages = $state({ hu: {}, en: {} });
 
-  for (const lang of ["hu", "en"]) {
+  for (const lang in defaults.pages) {
     for (const pageId in defaults.pages[lang]) {
       pages[lang][pageId] = {};
       for (const type in defaults.pages[lang][pageId]) {

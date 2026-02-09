@@ -19,12 +19,20 @@
   let outputText = $state("");
   let isRunning = $state(false);
 
+  const defaultInput = $derived.by(() => codeRepo.get(pageId, "input", "input.txt") ?? "");
+
   $effect(() => {
     const cached = getAlgoRunState(pageId);
     if (cached) {
       activeFile = cached.activeFile ?? "";
       inputText = cached.inputText ?? "";
       outputText = cached.outputText ?? "";
+    }
+  });
+
+  $effect(() => {
+    if (inputText.trim() === "" && defaultInput.trim() !== "") {
+      inputText = defaultInput;
     }
   });
 

@@ -1,4 +1,4 @@
-const rawFiles = import.meta.glob("./{hu,en}/**/*.py", {
+const rawFiles = import.meta.glob("./{hu,en}/**/*.{py,txt}", {
   as: "raw",
   eager: true,
 });
@@ -21,6 +21,9 @@ function loadHu() {
       },
       "generator": {
         "teszt.py": { content: file("hu", "search/generator/teszt.py") },
+      },
+      "input": {
+        "input.txt": { content: file("hu", "search/input.txt") },
       }
     },
     sort: {
@@ -35,6 +38,9 @@ function loadHu() {
         "veletlen.py": { content: file("hu", "sort/generator/veletlen.py") },
         "novekvo.py": { content: file("hu", "sort/generator/novekvo.py") },
         "csokkeno.py": { content: file("hu", "sort/generator/csokkeno.py") },
+      },
+      "input": {
+        "input.txt": { content: file("hu", "sort/input.txt") },
       }
     }
   };
@@ -49,6 +55,9 @@ function loadEn() {
       },
       "generator": {
         "test.py": { content: file("en", "search/generator/test.py") },
+      },
+      "input": {
+        "input.txt": { content: file("en", "search/input.txt") },
       }
     },
     sort: {
@@ -63,6 +72,9 @@ function loadEn() {
         "random.py": { content: file("en", "sort/generator/random.py") },
         "increasing.py": { content: file("en", "sort/generator/increasing.py") },
         "decreasing.py": { content: file("en", "sort/generator/decreasing.py") },
+      },
+      "input": {
+        "input.txt": { content: file("en", "sort/input.txt") },
       }
     }
   };
