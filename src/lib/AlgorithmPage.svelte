@@ -106,14 +106,14 @@
   </div>
 
   <div class="run">
-    <label class="inLabel">
-      <div class="inHead">
-        <span>{$t("common.input")}</span>
-          <button type="button" class="resetBtn" onclick={restoreInput} disabled={defaultInput.trim() === ""}>
-            {$t("common.reset")}
-          </button>
-      </div>
+    <div class="inHead">
+      <span>{$t("common.input")}</span>
+      <button type="button" class="resetBtn" onclick={restoreInput} disabled={defaultInput.trim() === ""}>
+        {$t("common.reset")}
+      </button>
+    </div>
 
+    <label class="inLabel">
       <textarea
         class="inBox"
         rows="3"
