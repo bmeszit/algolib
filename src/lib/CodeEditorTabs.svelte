@@ -6,7 +6,6 @@
   let { pageId, type, repo, activeCode = $bindable("") } = $props();
 
   let active = $state("");
-  let menuOpen = $state(false);
 
   let renaming = $state("");
   let renameValue = $state("");
@@ -18,7 +17,6 @@
   $effect(() => {
     if (tabs.length === 0) {
       active = "";
-      menuOpen = false;
       renaming = "";
       return;
     }
@@ -41,7 +39,6 @@
     const name = nextNewName();
     repo.set(pageId, type, name, "");
     active = name;
-    menuOpen = false;
   }
 
   function closeFile(name) {
@@ -52,7 +49,6 @@
 
   function resetPage() {
     repo.reset?.(pageId, type);
-    menuOpen = false;
     renaming = "";
   }
 
@@ -112,50 +108,6 @@
 
 <div class="wrap">
   <div class="bar">
-    <div class="mobile">
-      {#if active && renaming === active}
-        <span
-          class="title renameTitle"
-          bind:this={renameEl}
-          contenteditable
-          role="textbox"
-          aria-label="Rename file"
-          aria-multiline="false"
-          tabindex="0"
-          spellcheck="false"
-          onkeydown={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              commitRename(e.currentTarget.textContent ?? "");
-            }
-            if (e.key === "Escape") {
-              e.preventDefault();
-              cancelRename();
-            }
-          }}
-          onblur={(e) => {
-            commitRename(e.currentTarget.textContent ?? "");
-          }}
-        >
-          {renameValue}
-        </span>
-      {:else}
-        <button
-          class="title titleBtn"
-          type="button"
-          title={active || ""}
-          disabled={!active}
-          onclick={() => {
-            if (active) beginRename(active);
-          }}
-        >
-          {active || "No file"}
-        </button>
-      {/if}
-
-      <button class="hamb" type="button" aria-label="Menu" onclick={() => (menuOpen = !menuOpen)}>☰</button>
-    </div>
-
     <div class="tabs">
       {#each tabs as t (t)}
         <div class="tab" data-active={t === active}>
@@ -201,43 +153,8 @@
       {/each}
       <button class="new" type="button" onclick={addFile}>+ {$t("common.new")}</button>
     </div>
-    <button class="reset desktopOnly" type="button" onclick={resetPage} disabled={!repo.reset}>{$t("common.reset")}</button>
+    <button class="reset" type="button" onclick={resetPage} disabled={!repo.reset}>{$t("common.reset")}</button>
   </div>
-
-  {#if menuOpen}
-    <div class="menu" role="dialog" aria-label="Files">
-      <div class="menuHead">
-        <div class="menuTitle">Files</div>
-        <button class="x" type="button" aria-label="Close" onclick={() => (menuOpen = false)}>×</button>
-      </div>
-
-      <div class="menuList">
-        {#each tabs as t (t)}
-          <div class="row" data-active={t === active}>
-            <button
-              class="pick"
-              type="button"
-              disabled={renaming !== ""}
-              onclick={() => {
-                if (renaming) return;
-                active = t;
-                menuOpen = false;
-              }}
-            >
-              {t}
-            </button>
-            <button class="close" type="button" aria-label="Close" onclick={() => closeFile(t)}>×</button>
-          </div>
-        {/each}
-      </div>
-
-      <div class="menuActions">
-        <button class="new" type="button" onclick={addFile}>+ {$t("common.new")}</button>
-        <button class="reset" type="button" onclick={resetPage} disabled={!repo.reset}>{$t("common.reset")}</button>
-      </div>
-    </div>
-    <button class="backdrop" type="button" aria-label="Close" onclick={() => (menuOpen = false)}></button>
-  {/if}
 
   <div class="editor">
     {#if active}
@@ -265,29 +182,15 @@
     gap: 8px;
   }
 
-  .mobile {
-    display: none;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    min-width: 0;
-    flex: 1;
-  }
+  @media (max-width: 800px) {
+    .bar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
 
-  .title {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-weight: 600;
-  }
-
-  .hamb, .new, .reset {
-    border: 1px solid #ddd;
-    background: transparent;
-    padding: 6px 10px;
-    border-radius: 10px;
-    cursor: pointer;
+    .reset {
+      align-self: flex-start;
+    }
   }
 
   .tabs {
@@ -339,75 +242,12 @@
     cursor: pointer;
   }
 
-  .menu {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    right: 10px;
-    z-index: 20;
+  .new, .reset {
     border: 1px solid #ddd;
-    background: #eee;
-    border-radius: 12px;
-    overflow: hidden;
-  }
-
-  .menuHead {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 12px;
-    border-bottom: 1px solid #eee;
-  }
-
-  .menuTitle { font-weight: 600; }
-
-  .x {
-    border: 0;
     background: transparent;
     padding: 6px 10px;
+    border-radius: 10px;
     cursor: pointer;
-  }
-
-  .menuList {
-    max-height: 55vh;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .row {
-    display: flex;
-    align-items: stretch;
-    border-top: 1px solid #eee;
-  }
-
-  .row[data-active="true"] { background: #eee; }
-
-  .pick {
-    border: 0;
-    background: transparent;
-    padding: 10px 12px;
-    cursor: pointer;
-    flex: 1;
-    text-align: left;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .menuActions {
-    display: flex;
-    gap: 8px;
-    padding: 10px 12px;
-    border-top: 1px solid #eee;
-  }
-
-  .backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 10;
-    background: rgba(0, 0, 0, 0.2);
-    border: 0;
   }
 
   .editor {
@@ -419,31 +259,4 @@
   }
 
   .empty { padding: 12px; opacity: 0.7; }
-
-  .desktopOnly { display: inline-flex; }
-
-  // @media (max-width: 800px) {
-  //   .tabs { display: none; }
-  //   .mobile { display: flex; }
-  //   .desktopOnly { display: none; }
-  // }
-
-  .titleBtn {
-    border: 0;
-    background: transparent;
-    padding: 0;
-    text-align: left;
-    cursor: pointer;
-    font: inherit;
-    color: inherit;
-  }
-
-  .titleBtn:disabled {
-    cursor: default;
-  }
-
-  .renameTitle {
-    cursor: text;
-    outline: none;
-  }
 </style>

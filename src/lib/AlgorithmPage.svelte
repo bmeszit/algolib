@@ -149,7 +149,26 @@
     gap: 12px;
   }
 
+  .headRow h1 {
+    min-width: 0;
+    flex: 1 1 auto;
+    overflow-wrap: anywhere;
+    hyphens: auto;
+  }
+
+  @media (max-width: 800px) {
+    .headRow {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .benchBtn {
+      align-self: flex-start;
+    }
+  }
+
   .benchBtn {
+    flex: 0 0 auto;
     border: 1px solid #ddd;
     background: transparent;
     padding: 6px 10px;
@@ -186,6 +205,17 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
+  }
+
+  @media (max-width: 800px) {
+    .inHead {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .resetBtn {
+      align-self: flex-start;
+    }
   }
 
   .resetBtn {

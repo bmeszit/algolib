@@ -109,7 +109,26 @@
     gap: 12px;
   }
 
+  .headRow h1 {
+    min-width: 0;
+    flex: 1 1 auto;
+    overflow-wrap: anywhere;
+    hyphens: auto;
+  }
+
+  @media (max-width: 800px) {
+    .headRow {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .backBtn {
+      align-self: flex-start;
+    }
+  }
+
   .backBtn {
+    flex: 0 0 auto;
     border: 1px solid #ddd;
     background: transparent;
     padding: 6px 10px;

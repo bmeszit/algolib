@@ -25,6 +25,9 @@
     font-weight: bold;
     text-decoration: none;
     color: black;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    hyphens: auto;
   }
 
   @media (max-width: 800px) {
