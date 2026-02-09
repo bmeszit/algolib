@@ -4,7 +4,7 @@ def general(n):
 def searched(n):
   return 1
 
-sizes = [10, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+sizes = [(i+1) * 10000 for i in range(30)]
 INPUTS = [
   " ".join(map(str, general(n))) + "\n" +
   str(searched(n)) + "\n"

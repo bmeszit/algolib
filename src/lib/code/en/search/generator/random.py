@@ -6,7 +6,7 @@ def general(n):
 def searched(n, rng):
   return rng.randint(1, n)
 
-sizes = [10, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+sizes = [(i+1) * 10000 for i in range(30)]
 INPUTS = []
 for n in sizes:
   rng = random.Random(n)

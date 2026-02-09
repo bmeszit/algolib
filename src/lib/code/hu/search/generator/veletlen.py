@@ -6,7 +6,7 @@ def general(n):
 def keresett(n, rng):
   return rng.randint(1, n)
 
-meretek = [10, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+meretek = [(i+1) * 10000 for i in range(30)]
 INPUTS = []
 for n in meretek:
   rng = random.Random(n)
