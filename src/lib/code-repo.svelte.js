@@ -38,12 +38,7 @@ export function createCodeRepo(defaults, getLang) {
 
   function get(pageId, type, filename) {
     const lang = getLang();
-    const bucket = (pages[lang][pageId][type] ??= {});
-    if (!bucket[filename]) {
-      bucket[filename] = { content: "" };
-      save(pageId, type);
-    }
-    return bucket[filename].content;
+    return pages[lang]?.[pageId]?.[type]?.[filename]?.content ?? "";
   }
 
   function set(pageId, type, filename, content) {

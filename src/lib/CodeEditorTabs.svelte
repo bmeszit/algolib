@@ -39,7 +39,7 @@
 
   function addFile() {
     const name = nextNewName();
-    repo.get(pageId, type, name);
+    repo.set(pageId, type, name, "");
     active = name;
     menuOpen = false;
   }
