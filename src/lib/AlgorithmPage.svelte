@@ -30,12 +30,18 @@
     const timeSec = Number(res?.timeSec ?? NaN);
     const memoryBytes = Number(res?.memoryBytes ?? NaN);
 
-    return (
-      `${$t("benchmarks.runner.stdout_label")}:\n${stdout || $t("benchmarks.runner.empty")}\n\n` +
-      `${$t("benchmarks.runner.stderr_label")}:\n${stderr || $t("benchmarks.runner.empty")}\n\n` +
-      `${$t("benchmarks.runner.time_label")}: ${timeSec} ${$t("benchmarks.runner.time_unit_sec")}\n` +
-      `${$t("benchmarks.runner.memory_label")}: ${memoryBytes} ${$t("benchmarks.runner.memory_unit_bytes")}\n`
-    );
+    let s = "";
+
+    s += `${$t("benchmarks.runner.stdout_label")}:\n${stdout}\n\n`;
+
+    if (stderr.trim() !== "") {
+      s += `${$t("benchmarks.runner.stderr_label")}:\n${stderr}\n\n`;
+    }
+
+    s += `${$t("benchmarks.runner.time_label")}:\n${timeSec} ${$t("benchmarks.runner.time_unit_sec")}\n\n`;
+    s += `${$t("benchmarks.runner.memory_label")}:\n${memoryBytes} ${$t("benchmarks.runner.memory_unit_bytes")}\n`;
+
+    return s;
   }
 
   async function runActive() {
