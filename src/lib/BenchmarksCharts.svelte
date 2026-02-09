@@ -1,5 +1,6 @@
 <script>
   import { browser } from "$app/environment";
+  import { t } from "svelte-i18n";
 
   let { bench } = $props();
 
@@ -26,7 +27,7 @@
         LineElement,
         Tooltip,
         Legend,
-        Title,
+        Title
       } = chartjs;
 
       ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend, Title);
@@ -83,8 +84,8 @@
       backgroundColor: colorForIndex(i),
       borderColor: colorForIndex(i),
       showLine: false,
-      pointRadius: 3,
-    })),
+      pointRadius: 3
+    }))
   }));
 
   let memData = $derived.by(() => ({
@@ -94,8 +95,8 @@
       backgroundColor: colorForIndex(i),
       borderColor: colorForIndex(i),
       showLine: false,
-      pointRadius: 3,
-    })),
+      pointRadius: 3
+    }))
   }));
 
   let baseOptions = $derived.by(() => ({
@@ -104,21 +105,29 @@
     devicePixelRatio: dpr,
     plugins: { legend: { position: "bottom" } },
     scales: {
-      x: { type: "linear", title: { display: true, text: "input size (chars)" } },
-    },
+      x: { type: "linear", title: { display: true, text: $t("benchmarks.axes.x_input_size_chars") } }
+    }
   }));
 
   let timeOptions = $derived.by(() => ({
     ...baseOptions,
-    plugins: { ...baseOptions.plugins, title: { display: true, text: "time (sec)" } },
-    scales: { ...baseOptions.scales, y: { title: { display: true, text: "time (sec)" } } },
+    plugins: { ...baseOptions.plugins, title: { display: true, text: $t("benchmarks.charts.time_title") } },
+    scales: {
+      ...baseOptions.scales,
+      y: { title: { display: true, text: $t("benchmarks.axes.y_time_sec") } }
+    }
   }));
 
   let memOptions = $derived.by(() => ({
     ...baseOptions,
-    plugins: { ...baseOptions.plugins, title: { display: true, text: "memory (bytes)" } },
-    scales: { ...baseOptions.scales, y: { title: { display: true, text: "memory (bytes)" } } },
+    plugins: { ...baseOptions.plugins, title: { display: true, text: $t("benchmarks.charts.memory_title") } },
+    scales: {
+      ...baseOptions.scales,
+      y: { title: { display: true, text: $t("benchmarks.axes.y_memory_bytes") } }
+    }
   }));
+
+  let stderrText = $derived.by(() => String(bench?.stderr ?? "").trim());
 </script>
 
 {#if ready && bench && Scatter}
@@ -134,8 +143,8 @@
     </div>
   {/key}
 
-  {#if (bench?.stderr ?? "").trim() !== ""}
-    <pre class="err">{bench.stderr}</pre>
+  {#if stderrText !== ""}
+    <pre class="err">{stderrText}</pre>
   {/if}
 {/if}
 

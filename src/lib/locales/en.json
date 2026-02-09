@@ -13,6 +13,20 @@
     "benchmarks": "Benchmarks",
     "back": "Back"
   },
+  "benchmarks": {
+    "charts": {
+      "time_title": "Time (seconds)",
+      "memory_title": "Memory (bytes)"
+    },
+    "axes": {
+      "x_input_size_chars": "Input size (number of characters)",
+      "y_time_sec": "Time (seconds)",
+      "y_memory_bytes": "Memory (bytes)"
+    },
+    "errors": {
+      "stderr_title": "Error"
+    }
+  },
   "algos": {
     "search": {
       "title": "Search",

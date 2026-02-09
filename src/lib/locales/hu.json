@@ -13,6 +13,20 @@
     "benchmarks": "Mérések",
     "back": "Vissza"
   },
+  "benchmarks": {
+    "charts": {
+      "time_title": "Idő (másodperc)",
+      "memory_title": "Memória (bájt)"
+    },
+    "axes": {
+      "x_input_size_chars": "Bemenet mérete (karakter)",
+      "y_time_sec": "Idő (másodperc)",
+      "y_memory_bytes": "Memória (bájt)"
+    },
+    "errors": {
+      "stderr_title": "Hiba"
+    }
+  },
   "algos": {
     "search": {
       "title": "Keresés",
