@@ -27,7 +27,7 @@
     color: black;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 800px) {
     nav {
       flex-direction: column;
       gap: 1.5rem;
