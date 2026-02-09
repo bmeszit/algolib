@@ -20,7 +20,7 @@ function loadHu() {
         "binker.py": { content: file("hu", "search/algo/binker.py") },
       },
       "generator": {
-        "teszt.py": { content: file("hu", "search/generator/veletlen.py") },
+        "veletlen.py": { content: file("hu", "search/generator/veletlen.py") },
       },
       "input": {
         "input.txt": { content: file("hu", "search/input.txt") },
@@ -54,7 +54,7 @@ function loadEn() {
         "binsrc.py": { content: file("en", "search/algo/binsrc.py") },
       },
       "generator": {
-        "test.py": { content: file("en", "search/generator/random.py") },
+        "random.py": { content: file("en", "search/generator/random.py") },
       },
       "input": {
         "input.txt": { content: file("en", "search/input.txt") },
