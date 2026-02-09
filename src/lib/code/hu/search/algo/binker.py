@@ -1,16 +1,19 @@
-def binker(T, eleje, vege, x):
-  if eleje <= vege:
-    kozepe = (eleje + vege) // 2
-    if T[kozepe] == x:
-      return kozepe + 1
-    elif x < T[kozepe]:
-      return binker(T, eleje, kozepe-1, x)
-    else:  # T[kozepe] < x
-      return binker(T, kozepe+1, vege, x)
-  else:
-    return -1
+def binker(T, s):
+  n = len(T)
+  eleje = 0
+  vege = n-1
+  
+  while eleje <= vege:
+    kozepso = (eleje + vege) // 2
+    if T[kozepso] == s:
+      return kozepso
+    elif T[kozepso] > s:
+      vege = kozepso-1
+    else:
+      eleje = kozepso+1
+  
+  return -1
 
 T = list(map(int, input().split()))
-x = int(input())
-n = len(T)
-print(binker(T, 0, n-1, x))
+s = int(input())
+print(binker(T, s))

@@ -1,10 +1,10 @@
-def linsrc(T, x):
-  n = len(T)
+def linsrc(A, s):
+  n = len(A)
   for i in range(n):
-    if T[i] == x:
-      return i+1
+    if A[i] == s:
+      return i
   return -1
 
-T = list(map(int, input().split()))
-x = int(input())
-print(linsrc(T, x))
+A = list(map(int, input().split()))
+s = int(input())
+print(linsrc(A, s))

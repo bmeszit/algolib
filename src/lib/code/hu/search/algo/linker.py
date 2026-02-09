@@ -1,10 +1,10 @@
-def linker(T, x):
+def linker(T, s):
   n = len(T)
   for i in range(n):
-    if T[i] == x:
-      return i+1
+    if T[i] == s:
+      return i
   return -1
 
 T = list(map(int, input().split()))
-x = int(input())
-print(linker(T, x))
+s = int(input())
+print(linker(T, s))
