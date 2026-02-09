@@ -1,7 +1,8 @@
 import random
 rng = random.Random(42)
-def general(n):
-  return [rng.randint(1, 10**6) for _ in range(n)]
 
-meretek = [10, 100, 200, 300, 400, 500, 600, 700, 800, 900]
+def general(n):
+  return list(range(1, n+1))
+
+meretek = [(i+1) * 100 for i in range(20)]
 INPUTS = [" ".join(map(str, general(n))) for n in meretek]
