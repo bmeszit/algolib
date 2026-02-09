@@ -32,7 +32,8 @@
 
     let s = "";
 
-    s += `${$t("benchmarks.runner.stdout_label")}:\n${stdout}\n\n`;
+    const output = stdout.trim() === "" ? $t("benchmarks.runner.empty") : stdout;
+    s += `${$t("benchmarks.runner.stdout_label")}:\n${output}\n\n`;
 
     if (stderr.trim() !== "") {
       s += `${$t("benchmarks.runner.stderr_label")}:\n${stderr}\n\n`;
@@ -50,8 +51,7 @@
     outputText = "";
     try {
       const res = await pyRunner.run(activeSource, inputText);
-      const hasOut = String(res?.stdout ?? "").trim() !== "" || String(res?.stderr ?? "").trim() !== "";
-      outputText = hasOut ? formatRun(res) : $t("benchmarks.runner.no_output");
+      outputText = formatRun(res);
     } catch (e) {
       outputText = String(e?.message ?? e);
     } finally {

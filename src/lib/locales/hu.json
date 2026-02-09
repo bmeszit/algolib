@@ -30,7 +30,6 @@
       "stdout_label": "Kimenet",
       "stderr_label": "Hiba",
       "empty": "(üres)",
-      "no_output": "(nincs kimenet)",
       "time_label": "Idő",
       "time_unit_sec": "másodperc",
       "memory_label": "Memória",
