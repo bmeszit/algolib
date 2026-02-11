@@ -9,6 +9,6 @@ def rendezes(T):
 
 T = list(map(int, input().split()))
 MERES_KEZD()
-eredmeny = rendezes(T)
+eredmeny = rendezes(T.copy())
 MERES_VEG()
 print(eredmeny)

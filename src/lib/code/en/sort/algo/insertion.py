@@ -9,6 +9,6 @@ def sort(A):
 
 A = list(map(int, input().split()))
 MEASURE_START()
-result = sort(A)
+result = sort(A.copy())
 MEASURE_STOP()
 print(result)
