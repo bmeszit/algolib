@@ -2,31 +2,33 @@ import sys, io, traceback, time, tracemalloc
 
 # Global state for measurement hooks
 _measure_active = False
-_measure_start_time = None
-_measure_start_memory = None
-_measure_end_time = None
-_measure_end_memory = None
+_measure_time_start = None
+_measure_time_end = None
+_measure_mem_peak = None
 
 def _reset_measurement():
-    global _measure_active, _measure_start_time, _measure_start_memory, _measure_end_time, _measure_end_memory
+    global _measure_active, _measure_time_start, _measure_time_end, _measure_mem_peak
     _measure_active = False
-    _measure_start_time = None
-    _measure_start_memory = None
-    _measure_end_time = None
-    _measure_end_memory = None
+    _measure_time_start = None
+    _measure_time_end = None
+    _measure_mem_peak = None
 
 def _measure_start_hook():
-    global _measure_active, _measure_start_time, _measure_start_memory
+    global _measure_active, _measure_time_start
     if not _measure_active:
         _measure_active = True
-        _measure_start_time = time.perf_counter()
-        _measure_start_memory = tracemalloc.get_traced_memory()[0]
+        _measure_time_start = time.perf_counter()
+        
+        # RESET peak tracking by stopping and restarting tracemalloc!
+        tracemalloc.stop()
+        tracemalloc.start()
 
 def _measure_stop_hook():
-    global _measure_end_time, _measure_end_memory
+    global _measure_time_end, _measure_mem_peak
     if _measure_active:
-        _measure_end_time = time.perf_counter()
-        _measure_end_memory = tracemalloc.get_traced_memory()[1]
+        _measure_time_end = time.perf_counter()
+        current, peak = tracemalloc.get_traced_memory()
+        _measure_mem_peak = peak  # This is the peak since MEASURE_START
 
 def run_user_code_with_metrics(code: str, stdin_text: str | None, debug: bool = False, *, label: str = "<user_code>"):
     _reset_measurement()
@@ -66,11 +68,14 @@ def run_user_code_with_metrics(code: str, stdin_text: str | None, debug: bool = 
 
     sys.stdin, sys.stdout, sys.stderr = old_stdin, old_stdout, old_stderr
 
-    # Determine actual measurement times
-    if _measure_active and _measure_start_time is not None:
-        # Hooks were used
-        actual_time = (_measure_end_time or t1) - _measure_start_time
-        actual_memory = (_measure_end_memory or peak) - (_measure_start_memory or 0)
+    # Determine actual measurement times and memory
+    if _measure_active and _measure_time_start is not None:
+        # Hooks were used - measure only the section between hooks
+        actual_time = (_measure_time_end or t1) - _measure_time_start
+        
+        # Memory: We reset tracemalloc at MEASURE_START(), so the peak
+        # at MEASURE_STOP() is the peak since the reset = algorithm's peak!
+        actual_memory = _measure_mem_peak if _measure_mem_peak is not None else 0
     else:
         # No hooks used, measure everything
         actual_time = t1 - t0
