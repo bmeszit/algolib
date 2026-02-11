@@ -1,4 +1,4 @@
-def rendezes(T):
+def buborek_rendezes(T):
   n = len(T)
   for j in range(n-1, 0, -1):
     for i in range(0, j):
@@ -8,6 +8,6 @@ def rendezes(T):
 
 T = list(map(int, input().split()))
 MERES_KEZD()
-eredmeny = rendezes(T.copy())
+eredmeny = buborek_rendezes(T.copy())
 MERES_VEG()
 print(eredmeny)

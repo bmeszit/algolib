@@ -1,4 +1,4 @@
-def rendezes(T):
+def kivalasztasos_rendezes(T):
   n = len(T)
   for j in range(0, n-1):
     min_ertek = T[j]
@@ -12,6 +12,6 @@ def rendezes(T):
 
 T = list(map(int, input().split()))
 MERES_KEZD()
-eredmeny = rendezes(T.copy())
+eredmeny = kivalasztasos_rendezes(T.copy())
 MERES_VEG()
 print(eredmeny)

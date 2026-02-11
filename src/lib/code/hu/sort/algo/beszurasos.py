@@ -1,4 +1,4 @@
-def rendezes(T):
+def beszurasos_rendezes(T):
   n = len(T)
   for j in range(1, n):
     i = j
@@ -9,6 +9,6 @@ def rendezes(T):
 
 T = list(map(int, input().split()))
 MERES_KEZD()
-eredmeny = rendezes(T.copy())
+eredmeny = beszurasos_rendezes(T.copy())
 MERES_VEG()
 print(eredmeny)

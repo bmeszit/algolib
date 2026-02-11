@@ -29,17 +29,17 @@ def osszefesul(A, B):
       h=h+1
   return C
 
-def rendezes(T):
+def osszefesuleses_rendezes(T):
   n = len(T)
   
   if n>1:
-    A = rendezes(T[0 : n//2])
-    B = rendezes(T[n//2 : n])
+    A = osszefesuleses_rendezes(T[0 : n//2])
+    B = osszefesuleses_rendezes(T[n//2 : n])
     T = osszefesul(A, B)
   return T
 
 T = list(map(int, input().split()))
 MERES_KEZD()
-eredmeny = rendezes(T.copy())
+eredmeny = osszefesuleses_rendezes(T.copy())
 MERES_VEG()
 print(eredmeny)

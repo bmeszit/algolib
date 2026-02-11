@@ -20,21 +20,18 @@ def particional(T, eleje, vege):
   T[eleje], T[jobb] = T[jobb], T[eleje]
   return jobb
 
-def helyben_rendez(T, eleje, vege):
+def gyors_rendezes(T, eleje, vege):
   if not eleje<vege:
     return
   
   pivot_hely = particional(T, eleje, vege)
-  helyben_rendez(T, eleje, pivot_hely-1)
-  helyben_rendez(T, pivot_hely+1, vege)
-
-def rendezes(T):
-  n = len(T)
-  helyben_rendez(T, 0, n-1)
+  gyors_rendezes(T, eleje, pivot_hely-1)
+  gyors_rendezes(T, pivot_hely+1, vege)
   return T
 
 T = list(map(int, input().split()))
+n = len(T)
 MERES_KEZD()
-eredmeny = rendezes(T.copy())
+eredmeny = gyors_rendezes(T.copy(), 0, n-1)
 MERES_VEG()
 print(eredmeny)
