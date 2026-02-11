@@ -16,4 +16,7 @@ def binsrc(A, s):
 
 A = list(map(int, input().split()))
 s = int(input())
-print(binsrc(A, s))
+MEASURE_START()
+result = binsrc(A, s)
+MEASURE_STOP()
+print(result)

@@ -7,4 +7,7 @@ def linsrc(A, s):
 
 A = list(map(int, input().split()))
 s = int(input())
-print(linsrc(A, s))
+MEASURE_START()
+result = linsrc(A, s)
+MEASURE_STOP()
+print(result)

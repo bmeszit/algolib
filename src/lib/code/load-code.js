@@ -21,6 +21,8 @@ function loadHu() {
       },
       "generator": {
         "veletlen.py": { content: file("hu", "search/generator/veletlen.py") },
+        "vege.py": { content: file("hu", "search/generator/vege.py") },
+        "eleje.py": { content: file("hu", "search/generator/eleje.py") },
       },
       "input": {
         "input.txt": { content: file("hu", "search/input.txt") },
@@ -55,6 +57,8 @@ function loadEn() {
       },
       "generator": {
         "random.py": { content: file("en", "search/generator/random.py") },
+        "last.py": { content: file("en", "search/generator/last.py") },
+        "first.py": { content: file("en", "search/generator/first.py") },
       },
       "input": {
         "input.txt": { content: file("en", "search/input.txt") },
@@ -81,7 +85,7 @@ function loadEn() {
 }
 
 export function loadDefaultCode() {
-  return { version: 8, pages: { hu: loadHu(), en: loadEn() } };
+  return { version: 9, pages: { hu: loadHu(), en: loadEn() } };
 }
 
 export const defaultCode = loadDefaultCode();
