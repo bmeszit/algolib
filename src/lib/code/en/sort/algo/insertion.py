@@ -8,4 +8,7 @@ def sort(A):
   return A
 
 A = list(map(int, input().split()))
-print(sort(A))
+MEASURE_START()
+result = sort(A)
+MEASURE_STOP()
+print(result)

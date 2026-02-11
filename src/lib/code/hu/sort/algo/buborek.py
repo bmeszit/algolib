@@ -7,4 +7,7 @@ def rendezes(T):
   return T
 
 T = list(map(int, input().split()))
-print(rendezes(T))
+MERES_KEZD()
+eredmeny = rendezes(T)
+MERES_VEG()
+print(eredmeny)
