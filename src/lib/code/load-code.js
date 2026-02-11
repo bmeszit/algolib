@@ -35,6 +35,7 @@ function loadHu() {
         "kivalasztasos.py": { content: file("hu", "sort/algo/kivalasztasos.py") },
         "osszefesuleses.py": { content: file("hu", "sort/algo/osszefesuleses.py") },
         "gyors.py": { content: file("hu", "sort/algo/gyors.py") },
+        "gyors_nemhelyben.py": { content: file("hu", "sort/algo/gyors_nemhelyben.py") },
         "beepitett.py": { content: file("hu", "sort/algo/beepitett.py") },
       },
       "generator": {
@@ -72,6 +73,7 @@ function loadEn() {
         "selection.py": { content: file("en", "sort/algo/selection.py") },
         "merge.py": { content: file("en", "sort/algo/merge.py") },
         "quick.py": { content: file("en", "sort/algo/quick.py") },
+        "quick_notinplace.py": { content: file("en", "sort/algo/quick_notinplace.py") },
         "builtin.py": { content: file("en", "sort/algo/builtin.py") },
       },
       "generator": {
