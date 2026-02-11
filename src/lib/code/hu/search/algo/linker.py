@@ -7,4 +7,7 @@ def linker(T, s):
 
 T = list(map(int, input().split()))
 s = int(input())
-print(linker(T, s))
+MERES_KEZD()
+eredmeny = linker(T, s)
+MERES_VEG()
+print(eredmeny)
