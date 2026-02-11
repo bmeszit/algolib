@@ -11,4 +11,4 @@ def keresett(n):
 
 # 10000, 20000, ..., 20000 számból álló tesztesetek:
 meretek = [(i+1) * 10000 for i in range(20)]
-INPUTS = [" ".join(map(str, general(n))) + "\n" + str(keresett(n)) for n in meretek]
+BEMENETEK([" ".join(map(str, general(n))) + "\n" + str(keresett(n)) for n in meretek])

@@ -11,4 +11,4 @@ def searched(n):
 
 # Test cases with 10000, 20000, ..., 20000 numbers:
 meretek = [(i+1) * 10000 for i in range(20)]
-INPUTS = [" ".join(map(str, generate(n))) + "\n" + str(searched(n)) for n in meretek]
+INPUTS([" ".join(map(str, generate(n))) + "\n" + str(searched(n)) for n in meretek])
