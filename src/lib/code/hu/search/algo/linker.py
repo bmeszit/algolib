@@ -8,6 +8,6 @@ def linker(T, s):
 T = list(map(int, input().split()))
 s = int(input())
 MERES_KEZD()
-eredmeny = linker(T, s)
+eredmeny = linker(T.copy(), s)
 MERES_VEG()
 print(eredmeny)

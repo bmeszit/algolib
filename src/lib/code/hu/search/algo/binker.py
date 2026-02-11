@@ -17,6 +17,6 @@ def binker(T, s):
 T = list(map(int, input().split()))
 s = int(input())
 MERES_KEZD()
-eredmeny = binker(T, s)
+eredmeny = binker(T.copy(), s)
 MERES_VEG()
 print(eredmeny)

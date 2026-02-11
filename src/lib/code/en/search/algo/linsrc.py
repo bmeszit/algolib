@@ -8,6 +8,6 @@ def linsrc(A, s):
 A = list(map(int, input().split()))
 s = int(input())
 MEASURE_START()
-result = linsrc(A, s)
+result = linsrc(A.copy(), s)
 MEASURE_STOP()
 print(result)
