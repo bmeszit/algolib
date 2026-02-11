@@ -19,16 +19,21 @@ export function createCodeRepo(defaults, getLang) {
           const raw = localStorage.getItem(key(lang, pageId, type));
           pages[lang][pageId][type] = raw ? JSON.parse(raw) : defaults.pages[lang][pageId][type];
         }
+        saveFor(lang, pageId, type);
       }
     }
   }
 
   const version = Math.max(storedVersion, defaults.version);
   localStorage.setItem(VERSION_KEY, String(version));
+  
+  function saveFor(lang, pageId, type) {
+    localStorage.setItem(key(lang, pageId, type), JSON.stringify(pages[lang][pageId][type]));
+  }
 
   function save(pageId, type) {
     const lang = getLang();
-    localStorage.setItem(key(lang, pageId, type), JSON.stringify(pages[lang][pageId][type]));
+    saveFor(lang, pageId, type);
   }
 
   function list(pageId, type) {
