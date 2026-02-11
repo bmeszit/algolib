@@ -1,0 +1,5 @@
+T = list(map(int, input().split()))
+MERES_KEZD()
+eredmeny = sorted(T.copy())
+MERES_VEG()
+print(eredmeny)

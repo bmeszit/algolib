@@ -1,4 +1,4 @@
-def sort(A):
+def selection_sort(A):
   n = len(A)
   for j in range(0, n-1):
     min_value = A[j]
@@ -12,6 +12,6 @@ def sort(A):
 
 A = list(map(int, input().split()))
 MEASURE_START()
-result = sort(A.copy())
+result = selection_sort(A.copy())
 MEASURE_STOP()
 print(result)

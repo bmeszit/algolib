@@ -32,9 +32,10 @@ function loadHu() {
       "algo": {
         "buborek.py": { content: file("hu", "sort/algo/buborek.py") },
         "beszurasos.py": { content: file("hu", "sort/algo/beszurasos.py") },
+        "kivalasztasos.py": { content: file("hu", "sort/algo/kivalasztasos.py") },
         "osszefesuleses.py": { content: file("hu", "sort/algo/osszefesuleses.py") },
         "gyors.py": { content: file("hu", "sort/algo/gyors.py") },
-        "kivalasztasos.py": { content: file("hu", "sort/algo/kivalasztasos.py") },
+        "beepitett.py": { content: file("hu", "sort/algo/beepitett.py") },
       },
       "generator": {
         "veletlen.py": { content: file("hu", "sort/generator/veletlen.py") },
@@ -68,9 +69,10 @@ function loadEn() {
       "algo": {
         "bubble.py": { content: file("en", "sort/algo/bubble.py") },
         "insertion.py": { content: file("en", "sort/algo/insertion.py") },
+        "selection.py": { content: file("en", "sort/algo/selection.py") },
         "merge.py": { content: file("en", "sort/algo/merge.py") },
         "quick.py": { content: file("en", "sort/algo/quick.py") },
-        "selection.py": { content: file("en", "sort/algo/selection.py") },
+        "builtin.py": { content: file("en", "sort/algo/builtin.py") },
       },
       "generator": {
         "random.py": { content: file("en", "sort/generator/random.py") },
@@ -85,7 +87,7 @@ function loadEn() {
 }
 
 export function loadDefaultCode() {
-  return { version: 10, pages: { hu: loadHu(), en: loadEn() } };
+  return { version: 11, pages: { hu: loadHu(), en: loadEn() } };
 }
 
 export const defaultCode = loadDefaultCode();

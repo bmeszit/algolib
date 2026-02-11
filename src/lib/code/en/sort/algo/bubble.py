@@ -1,4 +1,4 @@
-def sort(A):
+def bubble_sort(A):
   n = len(A)
   for j in range(n-1, 0, -1):
     for i in range(0, j):
@@ -8,6 +8,6 @@ def sort(A):
 
 A = list(map(int, input().split()))
 MEASURE_START()
-result = sort(A.copy())
+result = bubble_sort(A.copy())
 MEASURE_STOP()
 print(result)

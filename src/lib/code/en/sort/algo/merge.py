@@ -29,17 +29,17 @@ def merge(A, B):
       h=h+1
   return C
 
-def sort(A):
+def merge_sort(A):
   n = len(A)
   
   if n>1:
-    A = sort(A[0 : n//2])
-    B = sort(A[n//2 : n])
+    A = merge_sort(A[0 : n//2])
+    B = merge_sort(A[n//2 : n])
     A = merge(A, B)
   return A
 
 A = list(map(int, input().split()))
 MEASURE_START()
-result = sort(A.copy())
+result = merge_sort(A.copy())
 MEASURE_STOP()
 print(result)

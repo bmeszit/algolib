@@ -1,4 +1,4 @@
-def sort(A):
+def insertion_sort(A):
   n = len(A)
   for j in range(1, n):
     i = j
@@ -9,6 +9,6 @@ def sort(A):
 
 A = list(map(int, input().split()))
 MEASURE_START()
-result = sort(A.copy())
+result = insertion_sort(A.copy())
 MEASURE_STOP()
 print(result)

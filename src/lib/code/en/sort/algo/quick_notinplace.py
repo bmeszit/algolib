@@ -33,6 +33,6 @@ def quick_sort(A, start, end):
 A = list(map(int, input().split()))
 n = len(T)
 MEASURE_START()
-result = sort(A.copy(), 0, n-1)
+result = quick_sort(A.copy(), 0, n-1)
 MEASURE_STOP()
 print(result)

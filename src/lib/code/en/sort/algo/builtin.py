@@ -1,0 +1,5 @@
+A = list(map(int, input().split()))
+MEASURE_START()
+result = sorted(A.copy())
+MEASURE_STOP()
+print(result)
