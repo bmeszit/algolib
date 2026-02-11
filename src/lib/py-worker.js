@@ -1,4 +1,3 @@
-// src/lib/py-worker.js
 import RUN_PY from "./code/helper/run.py?raw";
 
 const indexURL = "https://cdn.jsdelivr.net/pyodide/v0.29.1/full/";

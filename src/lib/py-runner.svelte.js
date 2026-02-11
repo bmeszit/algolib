@@ -1,4 +1,3 @@
-// src/lib/py-runner.svelte.js
 let _singleton = null;
 
 export function getPyRunner() {
