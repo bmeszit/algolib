@@ -286,7 +286,6 @@
   <div class="title">
     <h1>Scoreboard</h1>
     <div class="meta">
-      <div class="tz">Timezone: <b>Europe/Budapest</b></div>
       {#if loading}
         <div class="status">Loading…</div>
       {:else if errorMsg}
