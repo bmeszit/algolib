@@ -2,9 +2,9 @@
   import { nonpassive } from "svelte/legacy";
 
   const COLORS = {
-    acceptedOnTimeBg: "#2ecc71", // green
-    submittedBg: "#e74c3c", // red
-    acceptedLateBg: "#3498db", // blue
+    acceptedOnTimeBg: "#2ecc71",
+    submittedBg: "#e74c3c",
+    acceptedLateBg: "#3498db",
   };
 
   const API = {
@@ -59,7 +59,7 @@
 
   let loading = $state(true);
   let errorMsg = $state("");
-  let rawByHandle = $state(new Map()); // handle -> submissions array (result from API)
+  let rawByHandle = $state(new Map());
   let fetchedOnce = $state(false);
 
   function problemKey(contestId, index) {
@@ -68,16 +68,15 @@
 
   function formatDateTime(dateOrMs) {
     const date = typeof dateOrMs === "number" ? new Date(dateOrMs) : dateOrMs;
-    return date
-      .toLocaleString("sv-SE", {
-        timeZone: "Europe/Budapest",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-      });
+    return date.toLocaleString("sv-SE", {
+      timeZone: "Europe/Budapest",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
   }
 
   let problemsWithDeadlines = $derived(
@@ -103,21 +102,53 @@
     return json.result;
   }
 
+  function sleepMs(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  // Simple self rate-limit: ensure >= minGapMs between request *starts*.
+  // Also adds a tiny jitter to avoid syncing with other clients.
+  function makeRateLimiter(minGapMs) {
+    let lastStartMs = 0;
+    return async () => {
+      const now = Date.now();
+      const wait = Math.max(0, lastStartMs + minGapMs - now);
+      const jitter = Math.floor(Math.random() * 80);
+      if (wait + jitter > 0) {
+        await sleepMs(wait + jitter);
+      }
+      lastStartMs = Date.now();
+    };
+  }
+
+  async function fetchAllSequential(handles, { minGapMs }) {
+    const limit = makeRateLimiter(minGapMs);
+    const newMap = new Map();
+    const errors = [];
+
+    for (const h of handles) {
+      await limit();
+      try {
+        const subs = await fetchUserStatus(h);
+        newMap.set(h, subs);
+      } catch (e) {
+        newMap.set(h, []);
+        errors.push(e instanceof Error ? e.message : String(e));
+      }
+      rawByHandle = new Map(newMap);
+    }
+
+    return { newMap, errors };
+  }
+
   function computeCell(submissions, deadlineMs, contestId) {
-    // submissions: array filtered to this (user, problem)
     if (submissions.length === 0) {
-      return {
-        kind: "empty",
-        bg: "",
-        lines: [],
-        submissionId: null,
-      };
+      return { kind: "empty", bg: "", lines: [], submissionId: null };
     }
 
     const okSubs = submissions.filter((s) => s?.verdict === "OK");
     const hasOk = okSubs.length > 0;
 
-    // Oldest OK by creationTimeSeconds (if any)
     let oldestOkSec = Infinity;
     let oldestOkSubmission = null;
     for (const s of okSubs) {
@@ -128,7 +159,6 @@
       }
     }
 
-    // Latest submission by creationTimeSeconds
     let latest = null;
     let latestSec = -Infinity;
     for (const s of submissions) {
@@ -161,7 +191,6 @@
         };
       }
 
-      // Accepted exists but is late => shown as "Submitted, not accepted" in blue
       const latestMs = latestSec * 1000;
       const verdict = latest?.verdict ?? "NO_VERDICT";
       return {
@@ -179,7 +208,6 @@
       };
     }
 
-    // No OK at all => red
     const latestMs = latestSec * 1000;
     const verdict = latest?.verdict ?? "NO_VERDICT";
     return {
@@ -240,8 +268,6 @@
       return a.name.localeCompare(b.name);
     });
 
-    // Compute rowspan groups for score column.
-    // For each row i, groupSize[i] = n if this row starts group, else 0.
     const groupSize = new Array(out.length).fill(0);
     let i = 0;
     while (i < out.length) {
@@ -251,10 +277,7 @@
       i = j;
     }
 
-    return out.map((r, idx) => ({
-      ...r,
-      scoreRowspan: groupSize[idx],
-    }));
+    return out.map((r, idx) => ({ ...r, scoreRowspan: groupSize[idx] }));
   });
 
   $effect(() => {
@@ -268,27 +291,18 @@
       try {
         const uniqueHandles = Array.from(
           new Set(
-            PARTICIPANTS.map((p) => String(p.handle).trim()).filter(
-              (h) => h.length > 0,
-            ),
+            PARTICIPANTS.map((p) => String(p.handle).trim()).filter((h) => h.length > 0),
           ),
         );
 
-        const results = await Promise.all(
-          uniqueHandles.map(async (h) => {
-            const subs = await fetchUserStatus(h);
-            return [h, subs];
-          }),
-        );
+        const { newMap, errors } = await fetchAllSequential(uniqueHandles, {
+          minGapMs: 900,
+        });
 
-        // Create a new Map to trigger reactivity
-        const newMap = new Map();
-        for (const [h, subs] of results) {
-          newMap.set(h, subs);
-        }
         rawByHandle = newMap;
-      } catch (e) {
-        errorMsg = e instanceof Error ? e.message : String(e);
+        if (errors.length > 0) {
+          errorMsg = errors.join(" | ");
+        }
       } finally {
         loading = false;
       }
