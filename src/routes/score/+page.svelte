@@ -165,7 +165,7 @@
         bg: COLORS.acceptedLateBg,
         lines: [
           formatDateTime(latestMs),
-          String(verdict),
+          String(verdict) + "_LATE",
           `${count} submission${count !== 1 ? "s" : ""}`,
         ],
         submissionId: latest?.id,
