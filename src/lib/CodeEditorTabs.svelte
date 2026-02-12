@@ -6,6 +6,7 @@
   let { pageId, type, repo, activeCode = $bindable("") } = $props();
 
   let active = $state("");
+  let initialized = $state(false);
 
   let renaming = $state("");
   let renameValue = $state("");
@@ -14,13 +15,26 @@
   let tabs = $derived(repo.list(pageId, type));
   let content = $derived(active ? repo.get(pageId, type, active) : "");
 
+  // Initialize from activeCode prop
+  $effect(() => {
+    if (!initialized && activeCode && tabs.includes(activeCode)) {
+      active = activeCode;
+      initialized = true;
+    }
+  });
+
   $effect(() => {
     if (tabs.length === 0) {
       active = "";
       renaming = "";
+      initialized = false;
       return;
     }
-    if (active === "" || !tabs.includes(active)) active = tabs[0];
+    // Only auto-select tabs[0] if we haven't initialized yet and active is invalid
+    if (!initialized || (active !== "" && !tabs.includes(active))) {
+      active = tabs[0];
+      initialized = true;
+    }
     if (renaming && !tabs.includes(renaming)) renaming = "";
   });
 
