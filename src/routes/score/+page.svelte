@@ -1,19 +1,19 @@
 <script>
   const COLORS = {
-    acceptedOnTimeBg: '#2ecc71', // green
-    submittedBg: '#e74c3c', // red
-    acceptedLateBg: '#3498db' // blue
+    acceptedOnTimeBg: "#2ecc71", // green
+    submittedBg: "#e74c3c", // red
+    acceptedLateBg: "#3498db", // blue
   };
 
   const API = {
-    baseUrl: 'https://codeforces.com/api',
+    baseUrl: "https://codeforces.com/api",
     from: 1,
-    count: 10000
+    count: 10000,
   };
 
   const PARTICIPANTS = [
     { name: "Nemkin Viktória", handle: "nemkin" },
-    { name: "Klevis Imeri", handle: "klevis.cpp" }
+    { name: "Klevis Imeri", handle: "klevis.cpp" },
   ];
 
   const PROBLEMS = [
@@ -23,7 +23,7 @@
       index: "B",
       problemUrl: "https://codeforces.com/contest/118/problem/B",
       solutionUrl: "https://codeforces.com/contest/118/submission/362637816",
-      deadline: new Date("2026-02-20T23:59:59+01:00")
+      deadline: new Date("2026-02-20T23:59:59+01:00"),
     },
     {
       label: "1B",
@@ -31,7 +31,7 @@
       index: "C",
       problemUrl: "https://codeforces.com/contest/1374/problem/C",
       solutionUrl: "https://codeforces.com/contest/1374/submission/362649274",
-      deadline: new Date("2026-02-20T23:59:59+01:00")
+      deadline: new Date("2026-02-20T23:59:59+01:00"),
     },
     {
       label: "1C",
@@ -39,12 +39,12 @@
       index: "B",
       problemUrl: "https://codeforces.com/contest/1916/problem/B",
       solutionUrl: "https://codeforces.com/contest/1916/submission/362647570",
-      deadline: new Date("2026-02-20T23:59:59+01:00")
-    }
+      deadline: new Date("2026-02-20T23:59:59+01:00"),
+    },
   ];
 
   let loading = $state(true);
-  let errorMsg = $state('');
+  let errorMsg = $state("");
   let rawByHandle = $state(new Map()); // handle -> submissions array (result from API)
   let fetchedOnce = $state(false);
 
@@ -53,15 +53,17 @@
   }
 
   function formatDateTime(dateOrMs) {
-    const date = typeof dateOrMs === 'number' ? new Date(dateOrMs) : dateOrMs;
-    return date.toLocaleString('sv-SE', {
-      timeZone: 'Europe/Budapest',
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit'
-    }).replace(',', '');
+    const date = typeof dateOrMs === "number" ? new Date(dateOrMs) : dateOrMs;
+    return date
+      .toLocaleString("sv-SE", {
+        timeZone: "Europe/Budapest",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+      .replace(",", "");
   }
 
   let problemsWithDeadlines = $derived(
@@ -69,8 +71,8 @@
       ...p,
       key: problemKey(p.contestId, p.index),
       deadlineMs: p.deadline.getTime(),
-      formattedDeadline: formatDateTime(p.deadline)
-    }))
+      formattedDeadline: formatDateTime(p.deadline),
+    })),
   );
 
   async function fetchUserStatus(handle) {
@@ -78,10 +80,10 @@
       `${API.baseUrl}/user.status?handle=${encodeURIComponent(handle)}` +
       `&from=${encodeURIComponent(String(API.from))}` +
       `&count=${encodeURIComponent(String(API.count))}`;
-    const res = await fetch(url, { method: 'GET' });
+    const res = await fetch(url, { method: "GET" });
     if (!res.ok) throw new Error(`HTTP ${res.status} for handle ${handle}`);
     const json = await res.json();
-    if (!json || json.status !== 'OK' || !Array.isArray(json.result)) {
+    if (!json || json.status !== "OK" || !Array.isArray(json.result)) {
       throw new Error(`API error for handle ${handle}`);
     }
     return json.result;
@@ -91,14 +93,14 @@
     // submissions: array filtered to this (user, problem)
     if (submissions.length === 0) {
       return {
-        kind: 'empty',
-        bg: '',
+        kind: "empty",
+        bg: "",
         lines: [],
-        submissionId: null
+        submissionId: null,
       };
     }
 
-    const okSubs = submissions.filter((s) => s?.verdict === 'OK');
+    const okSubs = submissions.filter((s) => s?.verdict === "OK");
     const hasOk = okSubs.length > 0;
 
     // Oldest OK by creationTimeSeconds (if any)
@@ -106,7 +108,7 @@
     let oldestOkSubmission = null;
     for (const s of okSubs) {
       const t = s?.creationTimeSeconds;
-      if (typeof t === 'number' && t < oldestOkSec) {
+      if (typeof t === "number" && t < oldestOkSec) {
         oldestOkSec = t;
         oldestOkSubmission = s;
       }
@@ -117,7 +119,7 @@
     let latestSec = -Infinity;
     for (const s of submissions) {
       const t = s?.creationTimeSeconds;
-      if (typeof t === 'number' && t > latestSec) {
+      if (typeof t === "number" && t > latestSec) {
         latestSec = t;
         latest = s;
       }
@@ -131,35 +133,53 @@
 
       if (onTime) {
         return {
-          kind: 'accepted_on_time',
+          kind: "accepted_on_time",
           bg: COLORS.acceptedOnTimeBg,
-          lines: [formatDateTime(oldestOkMs), 'OK', `${count} submission${count !== 1 ? 's' : ''}`],
+          lines: [
+            formatDateTime(oldestOkMs),
+            "OK",
+            `${count} submission${count !== 1 ? "s" : ""}`,
+          ],
           submissionId: oldestOkSubmission?.id,
-          submissionUrl: oldestOkSubmission?.id ? `https://codeforces.com/contest/${contestId}/submission/${oldestOkSubmission.id}` : null
+          submissionUrl: oldestOkSubmission?.id
+            ? `https://codeforces.com/contest/${contestId}/submission/${oldestOkSubmission.id}`
+            : null,
         };
       }
 
       // Accepted exists but is late => shown as "Submitted, not accepted" in blue
       const latestMs = latestSec * 1000;
-      const verdict = latest?.verdict ?? 'NO_VERDICT';
+      const verdict = latest?.verdict ?? "NO_VERDICT";
       return {
-        kind: 'submitted_with_late_ok',
+        kind: "submitted_with_late_ok",
         bg: COLORS.acceptedLateBg,
-        lines: [formatDateTime(latestMs), String(verdict), `${count} submission${count !== 1 ? 's' : ''}`],
+        lines: [
+          formatDateTime(latestMs),
+          String(verdict),
+          `${count} submission${count !== 1 ? "s" : ""}`,
+        ],
         submissionId: latest?.id,
-        submissionUrl: latest?.id ? `https://codeforces.com/contest/${contestId}/submission/${latest.id}` : null
+        submissionUrl: latest?.id
+          ? `https://codeforces.com/contest/${contestId}/submission/${latest.id}`
+          : null,
       };
     }
 
     // No OK at all => red
     const latestMs = latestSec * 1000;
-    const verdict = latest?.verdict ?? 'NO_VERDICT';
+    const verdict = latest?.verdict ?? "NO_VERDICT";
     return {
-      kind: 'submitted_no_ok',
+      kind: "submitted_no_ok",
       bg: COLORS.submittedBg,
-      lines: [formatDateTime(latestMs), String(verdict), `${count} submission${count !== 1 ? 's' : ''}`],
+      lines: [
+        formatDateTime(latestMs),
+        String(verdict),
+        `${count} submission${count !== 1 ? "s" : ""}`,
+      ],
       submissionId: latest?.id,
-      submissionUrl: latest?.id ? `https://codeforces.com/contest/${contestId}/submission/${latest.id}` : null
+      submissionUrl: latest?.id
+        ? `https://codeforces.com/contest/${contestId}/submission/${latest.id}`
+        : null,
     };
   }
 
@@ -172,7 +192,7 @@
       for (const s of subs) {
         const cId = s?.problem?.contestId;
         const idx = s?.problem?.index;
-        if (typeof cId !== 'number' || typeof idx !== 'string') continue;
+        if (typeof cId !== "number" || typeof idx !== "string") continue;
         const k = problemKey(cId, idx);
         let arr = byKey.get(k);
         if (!arr) {
@@ -189,7 +209,7 @@
         const list = byKey.get(p.key) ?? [];
         const cell = computeCell(list, p.deadlineMs, p.contestId);
         cells.push(cell);
-        if (cell.kind === 'accepted_on_time') score += 1;
+        if (cell.kind === "accepted_on_time") score += 1;
       }
 
       out.push({
@@ -197,7 +217,7 @@
         handle: u.handle,
         profileUrl: `https://codeforces.com/profile/${encodeURIComponent(u.handle)}`,
         score,
-        cells
+        cells,
       });
     }
 
@@ -219,7 +239,7 @@
 
     return out.map((r, idx) => ({
       ...r,
-      scoreRowspan: groupSize[idx]
+      scoreRowspan: groupSize[idx],
     }));
   });
 
@@ -229,18 +249,22 @@
 
     (async () => {
       loading = true;
-      errorMsg = '';
+      errorMsg = "";
 
       try {
         const uniqueHandles = Array.from(
-          new Set(PARTICIPANTS.map((p) => String(p.handle).trim()).filter((h) => h.length > 0))
+          new Set(
+            PARTICIPANTS.map((p) => String(p.handle).trim()).filter(
+              (h) => h.length > 0,
+            ),
+          ),
         );
 
         const results = await Promise.all(
           uniqueHandles.map(async (h) => {
             const subs = await fetchUserStatus(h);
             return [h, subs];
-          })
+          }),
         );
 
         // Create a new Map to trigger reactivity
@@ -283,8 +307,18 @@
           {#each problemsWithDeadlines as p}
             <th class="colProblem">
               <div class="ph">
-                <a class="plabel" href={p.problemUrl} target="_blank" rel="noreferrer">{p.label}</a>
-                <a class="psol" href={p.solutionUrl} target="_blank" rel="noreferrer">(sol)</a>
+                <a
+                  class="plabel"
+                  href={p.problemUrl}
+                  target="_blank"
+                  rel="noreferrer">{p.label}</a
+                >
+                <a
+                  class="psol"
+                  href={p.solutionUrl}
+                  target="_blank"
+                  rel="noreferrer">(sol)</a
+                >
               </div>
               <div class="deadline">
                 <span class="dlabel">DL:</span>
@@ -314,14 +348,21 @@
               <td class="nameCell">{r.name}</td>
 
               <td class="handleCell">
-                <a href={r.profileUrl} target="_blank" rel="noreferrer">{r.handle}</a>
+                <a href={r.profileUrl} target="_blank" rel="noreferrer"
+                  >{r.handle}</a
+                >
               </td>
 
               {#each r.cells as c}
-                <td class="probCell" style={c.bg ? `background:${c.bg};` : ''}>
+                <td class="probCell" style={c.bg ? `background:${c.bg};` : ""}>
                   {#if c.lines.length > 0}
                     {#if c.submissionUrl}
-                      <a href={c.submissionUrl} target="_blank" rel="noreferrer" class="cellLink">
+                      <a
+                        href={c.submissionUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        class="cellLink"
+                      >
                         <div class="cellText">
                           {#each c.lines as line, li}
                             <div class="line">{line}</div>
@@ -349,7 +390,15 @@
 <style lang="scss">
   .wrap {
     padding: 16px;
-    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji",
+    font-family:
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      Segoe UI,
+      Roboto,
+      Helvetica,
+      Arial,
+      "Apple Color Emoji",
       "Segoe UI Emoji";
   }
 
@@ -491,7 +540,8 @@
       }
 
       .dval {
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          "Liberation Mono", "Courier New", monospace;
       }
     }
 
