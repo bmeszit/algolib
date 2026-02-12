@@ -10,12 +10,16 @@
   const API = {
     baseUrl: "https://codeforces.com/api",
     from: 1,
-    count: 10000,
+    count: 1000,
   };
 
   const PARTICIPANTS = [
-    { name: "Nemkin Viktória", handle: "nemkin" },
-    { name: "Klevis Imeri", handle: "klevis.cpp" },
+    { name: "nemkin", handle: "nemkin" },
+    { name: "klevis.cpp", handle: "klevis.cpp" },
+    { name: "tourist", handle: "tourist" },
+    { name: "dvpknsxp", handle: "dvpknsxp" },
+    { name: "M4rrk", handle: "M4rrk" },
+    { name: "gyomihaly", handle: "gyomihaly" },
   ];
 
   const PROBLEMS = [
