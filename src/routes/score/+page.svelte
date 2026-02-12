@@ -1,4 +1,6 @@
 <script>
+  import { nonpassive } from "svelte/legacy";
+
   const COLORS = {
     acceptedOnTimeBg: "#2ecc71", // green
     submittedBg: "#e74c3c", // red
@@ -40,6 +42,14 @@
       problemUrl: "https://codeforces.com/contest/1916/problem/B",
       solutionUrl: "https://codeforces.com/contest/1916/submission/362647570",
       deadline: new Date("2026-02-20T23:59:59+01:00"),
+    },
+    {
+      label: "Test-D",
+      contestId: 2068,
+      index: "F",
+      problemUrl: "https://codeforces.com/contest/2068/problem/F",
+      solutionUrl: null,
+      deadline: new Date("2025-03-15T15:20:00+01:00"),
     },
   ];
 
