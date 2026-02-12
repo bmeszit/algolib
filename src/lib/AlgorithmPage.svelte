@@ -8,41 +8,43 @@
   import { getPyRunner } from "$lib/py-runner.svelte.js";
   import { getAlgoRunState, setAlgoRunState } from "$lib/algo-cache.js";
 
-  const props = $props();
-  const pageId = $derived.by(() => props.page);
-
+  let { page } = $props();
+  const pageId = $derived.by(() => page);
   const codeRepo = getContext("codeRepo");
   const pyRunner = getPyRunner();
 
-  let activeFile = $state("");
-  let inputText = $state("");
-  let outputText = $state("");
+  const cachedState = $derived.by(() => getAlgoRunState(pageId));
+
+  let activeFile = $state(cachedState?.activeFile ?? "");
+  let inputText = $state(cachedState?.inputText ?? "");
+  let outputText = $state(cachedState?.outputText ?? "");
   let isRunning = $state(false);
+  let isHydrating = $state(false);
 
   const defaultInput = $derived.by(() => codeRepo.get(pageId, "input", "input.txt") ?? "");
-
-  let didInit = $state(false);
+  const activeSource = $derived.by(() => (activeFile ? codeRepo.get(pageId, "algo", activeFile) : ""));
 
   $effect(() => {
-    if (didInit) return;
-    didInit = true;
+    isHydrating = true;
 
-    const cached = getAlgoRunState(pageId);
-    if (cached) {
-      activeFile = cached.activeFile ?? "";
-      inputText = cached.inputText ?? "";
-      outputText = cached.outputText ?? "";
-      return;
+    const init = getAlgoRunState(pageId);
+    if (init) {
+      activeFile = init.activeFile ?? "";
+      inputText = init.inputText ?? "";
+      outputText = init.outputText ?? "";
+    } else {
+      activeFile = "";
+      inputText = defaultInput;
+      outputText = "";
     }
 
-    inputText = defaultInput;
+    isHydrating = false;
   });
 
   $effect(() => {
+    if (isHydrating) return;
     setAlgoRunState(pageId, { activeFile, inputText, outputText });
   });
-
-  const activeSource = $derived.by(() => (activeFile ? codeRepo.get(pageId, "algo", activeFile) : ""));
 
   function goBenchmarks() {
     goto(`${base}/${pageId}/benchmarks${appPage.url.search}`);
@@ -102,7 +104,7 @@
   <p>{$t(`algos.${pageId}.desc`)}</p>
 
   <div class="editor-section">
-    <CodeEditorTabs pageId={pageId} type="algo" repo={codeRepo} bind:activeCode={activeFile} />
+    <CodeEditorTabs {pageId} type="algo" repo={codeRepo} bind:activeCode={activeFile} />
   </div>
 
   <div class="run">
@@ -118,7 +120,9 @@
         class="inBox"
         rows="3"
         value={inputText}
-        oninput={(e) => (inputText = e.currentTarget.value)}
+        oninput={(e) => {
+          inputText = e.currentTarget.value;
+        }}
         spellcheck="false"
       ></textarea>
     </label>
