@@ -316,7 +316,7 @@
                   class="psol"
                   href={p.solutionUrl}
                   target="_blank"
-                  rel="noreferrer">(sol)</a
+                  rel="noreferrer">(Sol)</a
                 >
               </div>
               <div class="deadline">{p.formattedDeadline}</div>
