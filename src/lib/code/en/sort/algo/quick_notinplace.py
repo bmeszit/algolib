@@ -31,7 +31,7 @@ def quick_sort(A, start, end):
   return A
 
 A = list(map(int, input().split()))
-n = len(T)
+n = len(A)
 MEASURE_START()
 result = quick_sort(A.copy(), 0, n-1)
 MEASURE_STOP()
