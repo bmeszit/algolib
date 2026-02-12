@@ -320,10 +320,7 @@
                   rel="noreferrer">(sol)</a
                 >
               </div>
-              <div class="deadline">
-                <span class="dlabel">DL:</span>
-                <span class="dval">{p.formattedDeadline}</span>
-              </div>
+              <div class="deadline">{p.formattedDeadline}</div>
             </th>
           {/each}
         </tr>
@@ -533,16 +530,8 @@
       margin-top: 4px;
       font-size: 11px;
       color: #666;
-
-      .dlabel {
-        margin-right: 6px;
-        color: #777;
-      }
-
-      .dval {
-        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
           "Liberation Mono", "Courier New", monospace;
-      }
     }
 
     .scoreCell {
