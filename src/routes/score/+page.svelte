@@ -55,6 +55,14 @@
       solutionUrl: null,
       deadline: new Date("2025-03-15T15:20:00+01:00"),
     },
+    {
+      label: "Test-E",
+      contestId: 2179,
+      index: "E",
+      problemUrl: "https://codeforces.com/contest/2179/problem/E",
+      solutionUrl: null,
+      deadline: new Date("2025-03-15T15:20:00+01:00"),
+    },
   ];
 
   let loading = $state(true);
