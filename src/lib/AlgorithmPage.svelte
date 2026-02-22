@@ -119,7 +119,7 @@
     <label class="inLabel">
       <textarea
         class="inBox"
-        rows="3"
+        rows="5"
         value={inputText}
         oninput={(e) => {
           inputText = e.currentTarget.value;
