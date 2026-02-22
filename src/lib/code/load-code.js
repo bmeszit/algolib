@@ -50,6 +50,8 @@ function loadHu() {
     dfs: {
       "algo": {
         "dfs_verem_szmat.py": { content: file("hu", "dfs/algo/dfs_verem_szmat.py") },
+        "dfs_bsz2_szmat.py": { content: file("hu", "dfs/algo/dfs_bsz2_szmat.py") },
+        "dfs_rekurziv_szmat.py": { content: file("hu", "dfs/algo/dfs_rekurziv_szmat.py") },
       },
       "generator": {},
       "input": {
@@ -97,6 +99,8 @@ function loadEn() {
     dfs: {
       "algo": {
         "dfs_stack_amat.py": { content: file("hu", "dfs/algo/dfs_verem_szmat.py") },
+        "dfs_itc2_amat.py":  { content: file("hu", "dfs/algo/dfs_bsz2_szmat.py") },
+        "dfs_recursive_amat.py": { content: file("hu", "dfs/algo/dfs_rekurziv_szmat.py") },
       },
       "generator": {},
       "input": {

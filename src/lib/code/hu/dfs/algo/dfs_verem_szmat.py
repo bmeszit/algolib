@@ -17,7 +17,6 @@ def dfs(G, s):
   kovetkezo = stack()
   
   kovetkezo.push((s, csucs_tipus.bejarando))
-  elozo[s] = -1
   mszam[s] = 1
   
   MSZAM=1
