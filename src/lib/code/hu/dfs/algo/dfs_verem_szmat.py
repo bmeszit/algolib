@@ -3,7 +3,6 @@ from copy import deepcopy
 class stack(list):
   push = list.append
   pop = list.pop
-  def peek(self): return self[-1]
   def is_empty(self): return len(self) == 0
 
 BEJARANDO=1
