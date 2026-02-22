@@ -65,10 +65,10 @@
     let s = "";
 
     const output = stdout.trim() === "" ? $t("benchmarks.runner.empty") : stdout;
-    s += `${$t("benchmarks.runner.stdout_label")}:\n${output}\n\n`;
+    s += `${$t("benchmarks.runner.stdout_label")}:\n\n${output}\n\n`;
 
     if (stderr.trim() !== "") {
-      s += `${$t("benchmarks.runner.stderr_label")}:\n${stderr}\n\n`;
+      s += `${$t("benchmarks.runner.stderr_label")}:\n\n${stderr}\n\n`;
     }
 
     s += `${$t("benchmarks.runner.time_label")}:\n${timeSec} ${$t("benchmarks.runner.time_unit_sec")}\n\n`;
