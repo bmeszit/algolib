@@ -27,13 +27,11 @@ def dfs(G, s):
     while not kovetkezo.is_empty():
       aktiv_csucs, szulo_csucs, tipus = kovetkezo.pop()
 
-      
       if tipus == BEJARANDO:
         elozo[aktiv_csucs] = szulo_csucs
         MSZAM += 1; mszam[aktiv_csucs] = MSZAM
         
         kovetkezo.push((aktiv_csucs, None, BEFEJEZENDO))
-        
         for v in range(n-1, -1, -1):
           if G[aktiv_csucs][v] and not volt[v]:
             kovetkezo.push((v, aktiv_csucs, BEJARANDO)); volt[v]=True
