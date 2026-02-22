@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 class stack(list):
   push = list.append
   pop = list.pop
@@ -16,28 +18,36 @@ def dfs(G, s):
   bszam = [None]*n
   kovetkezo = stack()
   
-  kovetkezo.push((s, csucs_tipus.bejarando))
-  mszam[s] = 1
-  
-  MSZAM=1
+  MSZAM=0
   BSZAM=0
   
-  while not kovetkezo.is_empty():
-    aktiv_csucs, tipus = kovetkezo.pop()
+  def honnan(s):
+    nonlocal MSZAM, BSZAM, elozo, mszam, bszam, kovetkezo
     
-    if tipus == csucs_tipus.bejarando:
-      kovetkezo.push((aktiv_csucs, csucs_tipus.befejezendo))
-      for v in range(n-1, -1, -1):
-        if G[aktiv_csucs][v] and mszam[v] is None:
-          MSZAM += 1
-          mszam[v] = MSZAM
-          elozo[v] = aktiv_csucs
-          kovetkezo.push((v, csucs_tipus.bejarando))
-      
-    elif tipus == csucs_tipus.befejezendo:
-      BSZAM += 1
-      bszam[aktiv_csucs] = BSZAM
+    kovetkezo.push((s, csucs_tipus.bejarando))
+    MSZAM+=1; mszam[s] = MSZAM
   
+    while not kovetkezo.is_empty():
+      aktiv_csucs, tipus = kovetkezo.pop()
+      
+      if tipus == csucs_tipus.bejarando:
+        kovetkezo.push((aktiv_csucs, csucs_tipus.befejezendo))
+        for v in range(n-1, -1, -1):
+          if G[aktiv_csucs][v] and mszam[v] is None:
+            MSZAM += 1
+            mszam[v] = MSZAM
+            elozo[v] = aktiv_csucs
+            kovetkezo.push((v, csucs_tipus.bejarando))
+        
+      elif tipus == csucs_tipus.befejezendo:
+        BSZAM += 1
+        bszam[aktiv_csucs] = BSZAM
+   
+  honnan(s)
+  for v in range(n):
+    if mszam[v] is None:
+      honnan(v)
+     
   return elozo, mszam, bszam
 
 n, m = map(int, input().split())
@@ -48,7 +58,7 @@ for i in range(m):
 s = int(input())
 
 MERES_KEZD()
-elozo, mszam, bszam = dfs(G, s)
+elozo, mszam, bszam = dfs(deepcopy(G), s)
 MERES_VEG()
 
 print("Szülő csúcsok:"); print(elozo); print()

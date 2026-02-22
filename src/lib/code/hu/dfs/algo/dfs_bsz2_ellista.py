@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 def dfs(G, s):
   n = len(G)
   mszam = [None]*n; mszam[s] = 1
@@ -33,7 +35,7 @@ for i in range(m):
 s = int(input())
 
 MERES_KEZD()
-elozo, mszam, bszam = dfs(G, s)
+elozo, mszam, bszam = dfs(deepcopy(G), s)
 MERES_VEG()
 
 print("Szülő csúcsok:"); print(elozo); print()
