@@ -49,6 +49,14 @@
     "sort": {
       "title": "Rendezés",
       "desc": "Rendező algoritmusok."
+    },
+    "dfs": {
+      "title": "Mélységi bejárás (DFS)",
+      "desc": "A mélységi bejárás összehasonlítása éllistás és szomszédossági mátrixos gráfreprezentáció használatával."
+    },
+    "bfs": {
+      "title": "Szélességi bejárás (BFS)",
+      "desc": "A szélességi bejárás összehasonlítása éllistás és szomszédossági mátrixos gráfreprezentáció használatával."
     }
   }
 }

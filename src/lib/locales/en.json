@@ -50,6 +50,14 @@
     "sort": {
       "title": "Sort",
       "desc": "Sorting algorithms."
+    },
+    "dfs": {
+      "title": "Depth-first search (DFS)",
+      "desc": "Comparing depth-first search using edge list and adjacency matrix graph representation."
+    },
+    "bfs": {
+      "title": "Breadth-first search (BFS)",
+      "desc": "Comparing breadth-first search using edge list and adjacency matrix graph representation."
     }
   }
 }

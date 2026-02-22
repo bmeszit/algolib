@@ -46,6 +46,15 @@ function loadHu() {
       "input": {
         "input.txt": { content: file("hu", "sort/input.txt") },
       }
+    },
+    dfs: {
+      "algo": {
+        "dfs_verem_szmat.py": { content: file("hu", "dfs/algo/dfs_verem_szmat.py") },
+      },
+      "generator": {},
+      "input": {
+        "input.txt": { content: file("hu", "dfs/input.txt") },
+      }
     }
   };
 }
@@ -83,6 +92,15 @@ function loadEn() {
       },
       "input": {
         "input.txt": { content: file("en", "sort/input.txt") },
+      }
+    },
+    dfs: {
+      "algo": {
+        "dfs_stack_amat.py": { content: file("hu", "dfs/algo/dfs_verem_szmat.py") },
+      },
+      "generator": {},
+      "input": {
+        "input.txt": { content: file("hu", "dfs/input.txt") },
       }
     }
   };

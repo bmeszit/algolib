@@ -51,6 +51,7 @@
   }
 
   function restoreInput() {
+    codeRepo.reset?.(pageId, "input");
     inputText = defaultInput;
     outputText = "";
   }
