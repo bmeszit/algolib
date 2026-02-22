@@ -6,42 +6,40 @@ class stack(list):
   def peek(self): return self[-1]
   def is_empty(self): return len(self) == 0
 
-from enum import Enum
-class csucs_tipus(Enum):
-  bejarando = 1
-  befejezendo = 2
+BEJARANDO=1
+BEFEJEZENDO=2
 
 def dfs(G, s):
   n = len(G)
   elozo = [None]*n
   mszam = [None]*n
   bszam = [None]*n
+  volt = [False]*n
   kovetkezo = stack()
   
   MSZAM=0
   BSZAM=0
   
   def honnan(s):
-    nonlocal MSZAM, BSZAM, elozo, mszam, bszam, kovetkezo
+    nonlocal MSZAM, BSZAM
     
-    kovetkezo.push((s, csucs_tipus.bejarando))
-    MSZAM+=1; mszam[s] = MSZAM
-  
+    kovetkezo.push((s, None, BEJARANDO)); volt[s]=True
     while not kovetkezo.is_empty():
-      aktiv_csucs, tipus = kovetkezo.pop()
+      aktiv_csucs, szulo_csucs, tipus = kovetkezo.pop()
+
       
-      if tipus == csucs_tipus.bejarando:
-        kovetkezo.push((aktiv_csucs, csucs_tipus.befejezendo))
-        for v in reversed((G[aktiv_csucs])):
-          if mszam[v] is None:
-            MSZAM += 1
-            mszam[v] = MSZAM
-            elozo[v] = aktiv_csucs
-            kovetkezo.push((v, csucs_tipus.bejarando))
+      if tipus == BEJARANDO:
+        elozo[aktiv_csucs] = szulo_csucs
+        MSZAM += 1; mszam[aktiv_csucs] = MSZAM
         
-      elif tipus == csucs_tipus.befejezendo:
-        BSZAM += 1
-        bszam[aktiv_csucs] = BSZAM
+        kovetkezo.push((aktiv_csucs, None, BEFEJEZENDO))
+        
+        for v in reversed(G[aktiv_csucs]):
+          if not volt[v]:
+            kovetkezo.push((v, aktiv_csucs, BEJARANDO)); volt[v]=True
+        
+      elif tipus == BEFEJEZENDO:
+        BSZAM += 1; bszam[aktiv_csucs] = BSZAM
   
   honnan(s)
   for v in range(n):
