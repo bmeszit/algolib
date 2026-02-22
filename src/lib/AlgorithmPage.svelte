@@ -33,7 +33,7 @@
       inputText = init.inputText ?? "";
       outputText = init.outputText ?? "";
     } else {
-      activeFile = "";
+      //activeFile = "";
       inputText = defaultInput;
       outputText = "";
     }
