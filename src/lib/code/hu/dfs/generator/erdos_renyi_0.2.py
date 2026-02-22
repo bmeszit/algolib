@@ -13,7 +13,7 @@ def grafot_general(n, p):
   return(elek)
 
 p = 0.2
-meretek = [(i+1)*100 for i in range(7)]
+meretek = [(i+1)*100 for i in range(5)]
 
 for n in meretek:
   elek = grafot_general(n, p)
