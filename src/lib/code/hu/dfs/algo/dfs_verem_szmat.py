@@ -14,7 +14,6 @@ def dfs(G, s):
   elozo = [None]*n
   mszam = [None]*n
   bszam = [None]*n
-  volt = [False]*n
   kovetkezo = stack()
   
   MSZAM=0
@@ -23,19 +22,19 @@ def dfs(G, s):
   def honnan(s):
     nonlocal MSZAM, BSZAM
     
-    kovetkezo.push((s, None, BEJARANDO)); volt[s]=True
+    kovetkezo.push((s, None, BEJARANDO))
     while not kovetkezo.is_empty():
       aktiv_csucs, szulo_csucs, tipus = kovetkezo.pop()
 
-      if tipus == BEJARANDO:
+      if tipus == BEJARANDO and mszam[aktiv_csucs] is None:
         elozo[aktiv_csucs] = szulo_csucs
         MSZAM += 1; mszam[aktiv_csucs] = MSZAM
         
         kovetkezo.push((aktiv_csucs, None, BEFEJEZENDO))
         for v in range(n-1, -1, -1):
-          if G[aktiv_csucs][v] and not volt[v]:
-            kovetkezo.push((v, aktiv_csucs, BEJARANDO)); volt[v]=True
-        
+          if G[aktiv_csucs][v]:
+            kovetkezo.push((v, aktiv_csucs, BEJARANDO))
+
       elif tipus == BEFEJEZENDO:
         BSZAM += 1; bszam[aktiv_csucs] = BSZAM
   
