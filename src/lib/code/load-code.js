@@ -49,10 +49,10 @@ function loadHu() {
     },
     dfs: {
       "algo": {
-        "dfs_verem_ellista.py": { content: file("hu", "dfs/algo/dfs_verem_ellista.py") },
-        "dfs_verem_szmat.py": { content: file("hu", "dfs/algo/dfs_verem_szmat.py") },
         "dfs_bsz2_ellista.py": { content: file("hu", "dfs/algo/dfs_bsz2_ellista.py") },
         "dfs_bsz2_szmat.py": { content: file("hu", "dfs/algo/dfs_bsz2_szmat.py") },
+        "dfs_verem_ellista.py": { content: file("hu", "dfs/algo/dfs_verem_ellista.py") },
+        "dfs_verem_szmat.py": { content: file("hu", "dfs/algo/dfs_verem_szmat.py") },
         "dfs_rekurziv_ellista.py": { content: file("hu", "dfs/algo/dfs_rekurziv_ellista.py") },
         "dfs_rekurziv_szmat.py": { content: file("hu", "dfs/algo/dfs_rekurziv_szmat.py") },
       },
@@ -104,10 +104,10 @@ function loadEn() {
     },
     dfs: {
       "algo": {
-        "dfs_stack_elist.py": { content: file("hu", "dfs/algo/dfs_verem_ellista.py") },
-        "dfs_stack_amat.py": { content: file("hu", "dfs/algo/dfs_verem_szmat.py") },
         "dfs_itc2_elist.py": { content: file("hu", "dfs/algo/dfs_bsz2_ellista.py") },
         "dfs_itc2_amat.py":  { content: file("hu", "dfs/algo/dfs_bsz2_szmat.py") },
+        "dfs_stack_elist.py": { content: file("hu", "dfs/algo/dfs_verem_ellista.py") },
+        "dfs_stack_amat.py": { content: file("hu", "dfs/algo/dfs_verem_szmat.py") },
         "dfs_recursive_elist.py": { content: file("hu", "dfs/algo/dfs_rekurziv_ellista.py") },
         "dfs_recursive_amat.py": { content: file("hu", "dfs/algo/dfs_rekurziv_szmat.py") },
       },
@@ -123,7 +123,7 @@ function loadEn() {
 }
 
 export function loadDefaultCode() {
-  return { version: 12, pages: { hu: loadHu(), en: loadEn() } };
+  return { version: 13, pages: { hu: loadHu(), en: loadEn() } };
 }
 
 export const defaultCode = loadDefaultCode();
