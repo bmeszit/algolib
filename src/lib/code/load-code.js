@@ -54,7 +54,8 @@ function loadHu() {
         "dfs_rekurziv_szmat.py": { content: file("hu", "dfs/algo/dfs_rekurziv_szmat.py") },
       },
       "generator": {
-        "erdos_renyi_0.2.py": { content: file("hu", "dfs/generator/erdos_renyi_0.2.py") }
+        "erdos_renyi_0.2.py": { content: file("hu", "dfs/generator/erdos_renyi_0.2.py") },
+        "erdos_renyi_0.8.py": { content: file("hu", "dfs/generator/erdos_renyi_0.8.py") },
       },
       "input": {
         "input.txt": { content: file("hu", "dfs/input.txt") },
@@ -105,7 +106,8 @@ function loadEn() {
         "dfs_recursive_amat.py": { content: file("hu", "dfs/algo/dfs_rekurziv_szmat.py") },
       },
       "generator": {
-        "erdos_renyi_0.2.py": { content: file("hu", "dfs/generator/erdos_renyi_0.2.py") }
+        "erdos_renyi_0.2.py": { content: file("hu", "dfs/generator/erdos_renyi_0.2.py") },
+        "erdos_renyi_0.8.py": { content: file("hu", "dfs/generator/erdos_renyi_0.8.py") },
       },
       "input": {
         "input.txt": { content: file("hu", "dfs/input.txt") },
