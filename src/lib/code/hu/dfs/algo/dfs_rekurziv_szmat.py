@@ -9,8 +9,7 @@ def dfs(G, s):
   bszam=[None]*n
 
   def honnan(v):
-    nonlocal MSZAM
-    nonlocal BSZAM
+    nonlocal MSZAM, BSZAM
     MSZAM+=1; mszam[v]=MSZAM
     for u in range(n):
       if G[v][u] and mszam[u] is None:
