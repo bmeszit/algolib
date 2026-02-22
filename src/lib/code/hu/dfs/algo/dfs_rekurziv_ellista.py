@@ -26,9 +26,11 @@ def dfs(G, s):
   return elozo, mszam, bszam
 
 n, m = map(int, input().split())
+elek = []
 G = [[] for i in range(n)]
 for i in range(m):
   u, v = map(int, input().split())
+  elek.append((u, v))
   G[u].append(v)
 s = int(input())
 
@@ -39,3 +41,16 @@ MERES_VEG()
 print("Szülő csúcsok:"); print(elozo); print()
 print("Mélységi számok:"); print(mszam); print()
 print("Befejezési számok:"); print(bszam); print()
+
+for u, v in elek:
+  if  mszam[u] < mszam[v] and bszam[u] > bszam[v]:
+    if elozo[v] == u:
+      print(f"{u} -> {v}: Faél")
+    else:
+      print(f"{u} -> {v}: Előreél")
+  elif mszam[u] > mszam[v] and bszam[u] < bszam[v]:
+    print(f"{u} -> {v}: Visszaél")
+  elif mszam[u] > mszam[v] and bszam[u] > bszam[v]:
+    print(f"{u} -> {v}: Keresztél")
+  else:
+    print(f"{u} -> {v}: ??? Hibás a kód!")
