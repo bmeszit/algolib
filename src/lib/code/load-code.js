@@ -123,7 +123,7 @@ function loadEn() {
 }
 
 export function loadDefaultCode() {
-  return { version: 13, pages: { hu: loadHu(), en: loadEn() } };
+  return { version: 14, pages: { hu: loadHu(), en: loadEn() } };
 }
 
 export const defaultCode = loadDefaultCode();
