@@ -5,8 +5,8 @@ def dfs(G, s):
   elozo = [None]*n
   MSZAM = 1; BSZAM = 0; aktiv_csucs = s
   while True:
-    for v, van_el in enumerate(G[aktiv_csucs]):
-      if van_el and mszam[v] is None:
+    for v in range(n):
+      if G[aktiv_csucs][v] and mszam[v] is None:
         MSZAM += 1; mszam[v] = MSZAM
         elozo[v] = aktiv_csucs
         aktiv_csucs = v

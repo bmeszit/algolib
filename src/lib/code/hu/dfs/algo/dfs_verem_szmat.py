@@ -27,8 +27,8 @@ def dfs(G, s):
     
     if tipus == csucs_tipus.bejarando:
       kovetkezo.push((aktiv_csucs, csucs_tipus.befejezendo))
-      for v, van_el in reversed(list(enumerate((G[aktiv_csucs])))):
-        if van_el and mszam[v] is None:
+      for v in range(n-1, -1, -1):
+        if G[aktiv_csucs][v] and mszam[v] is None:
           MSZAM += 1
           mszam[v] = MSZAM
           elozo[v] = aktiv_csucs

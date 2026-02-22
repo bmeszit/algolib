@@ -10,8 +10,8 @@ def dfs(G, s):
     nonlocal MSZAM
     nonlocal BSZAM
     MSZAM+=1; mszam[v]=MSZAM
-    for u, van_el in enumerate(G[v]):
-      if van_el and mszam[u] is None:
+    for u in range(n):
+      if G[v][u] and mszam[u] is None:
         elozo[u] = v
         honnan(u)
     BSZAM+=1; bszam[v]=BSZAM
