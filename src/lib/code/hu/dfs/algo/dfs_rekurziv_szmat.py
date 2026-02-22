@@ -33,11 +33,6 @@ MERES_KEZD()
 elozo, mszam, bszam = dfs(G, s)
 MERES_VEG()
 
-print("Szülő csúcsok:")
-print(elozo)
-
-print("Mélységi számok:")
-print(mszam)
-
-print("Befejezési számok:")
-print(bszam)
+print("Szülő csúcsok:"); print(elozo)
+print("Mélységi számok:"); print(mszam)
+print("Befejezési számok:"); print(bszam)

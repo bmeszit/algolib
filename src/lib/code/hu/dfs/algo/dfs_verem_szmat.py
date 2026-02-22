@@ -27,7 +27,7 @@ def dfs(G, s):
     
     if tipus == csucs_tipus.bejarando:
       kovetkezo.push((aktiv_csucs, csucs_tipus.befejezendo))
-      for v, van_el in list(enumerate((G[aktiv_csucs]))):
+      for v, van_el in reversed(list(enumerate((G[aktiv_csucs])))):
         if van_el and mszam[v] is None:
           MSZAM += 1
           mszam[v] = MSZAM
@@ -51,11 +51,6 @@ MERES_KEZD()
 elozo, mszam, bszam = dfs(G, s)
 MERES_VEG()
 
-print("Szülő csúcsok:")
-print(elozo)
-
-print("Mélységi számok:")
-print(mszam)
-
-print("Befejezési számok:")
-print(bszam)
+print("Szülő csúcsok:"); print(elozo)
+print("Mélységi számok:"); print(mszam)
+print("Befejezési számok:"); print(bszam)
