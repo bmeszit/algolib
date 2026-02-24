@@ -2,45 +2,32 @@ from copy import deepcopy
 
 def dfs(G, s):
   n = len(G)
-  hol = [0]*n
-  globhol = 0
-  mszam = [None]*n; mszam[s] = 1
-  bszam = [None]*n
-  elozo = [None]*n
-  MSZAM = 1; BSZAM = 0; aktiv_csucs = s
+  mszam = [None]*n; bszam = [None]*n; elozo = [None]*n; kszom = [0]*n
+  mszam[s] = 1; MSZAM = 1; BSZAM = 0; v = s; kcsucs = 0
   while True:
-    while hol[aktiv_csucs] < n:
-      v = hol[aktiv_csucs]
-      hol[aktiv_csucs]+=1
-      if G[aktiv_csucs][v] and mszam[v] is None:
-        MSZAM += 1; mszam[v] = MSZAM
-        elozo[v] = aktiv_csucs
-        aktiv_csucs = v
-        break
+    while kszom[v]<n:
+      u = kszom[v]
+      if G[v][u] and mszam[u] is None:
+        MSZAM += 1; mszam[u] = MSZAM; elozo[u] = v; v = u; break
+      else: kszom[v] += 1
     else:
-      BSZAM += 1; bszam[aktiv_csucs] = BSZAM
-      if elozo[aktiv_csucs] != None:
-        aktiv_csucs = elozo[aktiv_csucs]
+      BSZAM += 1; bszam[v] = BSZAM
+      if elozo[v] != None: v = elozo[v]
       else:
-        while globhol < n:
-          v = globhol
-          globhol+=1
-          if mszam[v] is None:
-            aktiv_csucs = v
-            MSZAM += 1; mszam[aktiv_csucs] = MSZAM
-            break
-            
-        else:
-          break
+        while kcsucs<n:
+          if mszam[kcsucs] is None:
+            MSZAM += 1; mszam[kcsucs] = MSZAM; v = kcsucs; break
+          else: kcsucs+=1
+        else: break
   return elozo, mszam, bszam
 
 n, m = map(int, input().split())
 elek = []
 G = [[False] * n for i in range(n)]
 for i in range(m):
-  u, v = map(int, input().split())
-  elek.append((u, v))
-  G[u][v] = True
+  v, u = map(int, input().split())
+  elek.append((v, u))
+  G[v][u] = True
 s = int(input())
 
 MERES_KEZD()

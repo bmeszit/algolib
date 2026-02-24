@@ -12,8 +12,8 @@ def dfs(G, s):
   mszam = [None]*n
   bszam = [None]*n
   
-  kcs = stack() # Következő csúcs.
-  ksz = [0]*n   # Következő szomszéd.
+  kcsucs = stack()
+  kszom = [0]*n
   
   MSZAM=0
   BSZAM=0
@@ -22,24 +22,21 @@ def dfs(G, s):
     nonlocal MSZAM, BSZAM
     
     MSZAM += 1; mszam[s]=MSZAM
-    kcs.push(s)
-    while not kcs.is_empty():
-      v = kcs.peek()
-
-      while ksz[v]<n:
-        u = ksz[v]
-        
+    kcsucs.push(s)
+    
+    while not kcsucs.is_empty():
+      v = kcsucs.peek()
+      while kszom[v]<n:
+        u = kszom[v]
         if G[v][u] and mszam[u] is None:
           elozo[u] = v
           MSZAM += 1; mszam[u] = MSZAM
-          kcs.push(u)
+          kcsucs.push(u)
           break
-        else:
-          ksz[v] += 1
-
+        else: kszom[v] += 1
       else:
         BSZAM += 1; bszam[v]=BSZAM
-        kcs.pop()
+        kcsucs.pop()
           
   honnan(s)
   for v in range(n):
@@ -52,9 +49,9 @@ n, m = map(int, input().split())
 elek = []
 G = [[False] * n for i in range(n)]
 for i in range(m):
-  u, v = map(int, input().split())
-  elek.append((u, v))
-  G[u][v] = True
+  v, u = map(int, input().split())
+  elek.append((v, u))
+  G[v][u] = True
 s = int(input())
 
 MERES_KEZD()

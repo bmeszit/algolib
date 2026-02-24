@@ -28,9 +28,9 @@ n, m = map(int, input().split())
 elek = []
 G = [[False] * n for i in range(n)]
 for i in range(m):
-  u, v = map(int, input().split())
-  elek.append((u, v))
-  G[u][v] = True
+  v, u = map(int, input().split())
+  elek.append((v, u))
+  G[v][u] = True
 s = int(input())
 
 MERES_KEZD()

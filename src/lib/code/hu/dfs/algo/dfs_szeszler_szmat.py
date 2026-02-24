@@ -2,17 +2,13 @@ from copy import deepcopy
 
 def dfs(G, s):
   n = len(G)
-  hol = [0]*n
-  globhol = 0
   mszam = [None]*n; mszam[s] = 1
   bszam = [None]*n
   elozo = [None]*n
   MSZAM = 1; BSZAM = 0; aktiv_csucs = s
   while True:
-    while hol[aktiv_csucs] < len(G[aktiv_csucs]):
-      v = G[aktiv_csucs][hol[aktiv_csucs]]
-      hol[aktiv_csucs]+=1
-      if mszam[v] is None:
+    for v in range(n):
+      if G[aktiv_csucs][v] and mszam[v] is None:
         MSZAM += 1; mszam[v] = MSZAM
         elozo[v] = aktiv_csucs
         aktiv_csucs = v
@@ -22,25 +18,22 @@ def dfs(G, s):
       if elozo[aktiv_csucs] != None:
         aktiv_csucs = elozo[aktiv_csucs]
       else:
-        while globhol < n:
-          v = globhol
-          globhol+=1
+        for v in range(n):
           if mszam[v] is None:
             aktiv_csucs = v
             MSZAM += 1; mszam[aktiv_csucs] = MSZAM
             break
-            
         else:
           break
   return elozo, mszam, bszam
 
 n, m = map(int, input().split())
 elek = []
-G = [[] for i in range(n)]
+G = [[False] * n for i in range(n)]
 for i in range(m):
-  u, v = map(int, input().split())
-  elek.append((u, v))
-  G[u].append(v)
+  v, u = map(int, input().split())
+  elek.append((v, u))
+  G[v][u] = True
 s = int(input())
 
 MERES_KEZD()
