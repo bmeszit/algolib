@@ -3,17 +3,17 @@ from copy import deepcopy
 class stack(list):
   push = list.append
   pop = list.pop
+  def peek(self): return self[-1]
   def is_empty(self): return len(self) == 0
-
-BEJARANDO=1
-BEFEJEZENDO=2
 
 def dfs(G, s):
   n = len(G)
   elozo = [None]*n
   mszam = [None]*n
   bszam = [None]*n
-  kovetkezo = stack()
+  
+  kcs = stack() # Következő csúcs.
+  ksz = [0]*n   # Következő szomszéd.
   
   MSZAM=0
   BSZAM=0
@@ -21,21 +21,26 @@ def dfs(G, s):
   def honnan(s):
     nonlocal MSZAM, BSZAM
     
-    kovetkezo.push((s, None, BEJARANDO))
-    while not kovetkezo.is_empty():
-      aktiv_csucs, szulo_csucs, tipus = kovetkezo.pop()
+    MSZAM += 1; mszam[s]=MSZAM
+    kcs.push(s)
+    while not kcs.is_empty():
+      v = kcs.peek()
 
-      if tipus == BEJARANDO and mszam[aktiv_csucs] is None:
-        elozo[aktiv_csucs] = szulo_csucs
-        MSZAM += 1; mszam[aktiv_csucs] = MSZAM
+      while ksz[v]<len(G[v]):
+        u = G[v][ksz[v]]
         
-        kovetkezo.push((aktiv_csucs, None, BEFEJEZENDO))
-        for v in reversed(G[aktiv_csucs]):
-          kovetkezo.push((v, aktiv_csucs, BEJARANDO))
+        if mszam[u] is None:
+          elozo[u] = v
+          MSZAM += 1; mszam[u] = MSZAM
+          kcs.push(u)
+          break
+        else:
+          ksz[v] += 1
+
+      else:
+        BSZAM += 1; bszam[v]=BSZAM
+        kcs.pop()
         
-      elif tipus == BEFEJEZENDO:
-        BSZAM += 1; bszam[aktiv_csucs] = BSZAM
-  
   honnan(s)
   for v in range(n):
     if mszam[v] is None:
