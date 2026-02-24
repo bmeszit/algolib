@@ -51,12 +51,8 @@ function loadHu() {
       "algo": {
         "dfs_ellista.py": { content: file("hu", "dfs/algo/dfs_ellista.py") },
         "dfs_szmat.py": { content: file("hu", "dfs/algo/dfs_szmat.py") },
-        //"dfs_verem_ellista.py": { content: file("hu", "dfs/algo/dfs_verem_ellista.py") },
-        //"dfs_verem_szmat.py": { content: file("hu", "dfs/algo/dfs_verem_szmat.py") },
         "dfs_rekurziv_ellista.py": { content: file("hu", "dfs/algo/dfs_rekurziv_ellista.py") },
         "dfs_rekurziv_szmat.py": { content: file("hu", "dfs/algo/dfs_rekurziv_szmat.py") },
-        //"dfs_szeszler_ellista.py": { content: file("hu", "dfs/algo/dfs_szeszler_ellista.py") },
-        //"dfs_szeszler_szmat.py": { content: file("hu", "dfs/algo/dfs_szeszler_szmat.py") },
       },
       "generator": {
         "erdos_renyi_0.2.py": { content: file("hu", "dfs/generator/erdos_renyi_0.2.py") },
@@ -106,28 +102,24 @@ function loadEn() {
     },
     dfs: {
       "algo": {
-        "dfs_elist.py": { content: file("hu", "dfs/algo/dfs_ellista.py") },
-        "dfs_amat.py": { content: file("hu", "dfs/algo/dfs_szmat.py") },
-        //"dfs_stack_elist.py": { content: file("hu", "dfs/algo/dfs_verem_ellista.py") },
-        //"dfs_stack_amat.py": { content: file("hu", "dfs/algo/dfs_verem_szmat.py") },
-        "dfs_recursive_elist.py": { content: file("hu", "dfs/algo/dfs_rekurziv_ellista.py") },
-        "dfs_recursive_amat.py": { content: file("hu", "dfs/algo/dfs_rekurziv_szmat.py") },
-        //"dfs_szeszler_elist.py": { content: file("hu", "dfs/algo/dfs_szeszler_ellista.py") },
-        //"dfs_szeszler_amat.py": { content: file("hu", "dfs/algo/dfs_szeszler_szmat.py") },
+        "dfs_elist.py": { content: file("en", "dfs/algo/dfs_elist.py") },
+        "dfs_amat.py": { content: file("en", "dfs/algo/dfs_amat.py") },
+        "dfs_recursive_elist.py": { content: file("en", "dfs/algo/dfs_recursive_elist.py") },
+        "dfs_recursive_amat.py": { content: file("en", "dfs/algo/dfs_recursive_amat.py") },
       },
       "generator": {
-        "erdos_renyi_0.2.py": { content: file("hu", "dfs/generator/erdos_renyi_0.2.py") },
-        "erdos_renyi_0.8.py": { content: file("hu", "dfs/generator/erdos_renyi_0.8.py") },
+        "erdos_renyi_0.2.py": { content: file("en", "dfs/generator/erdos_renyi_0.2.py") },
+        "erdos_renyi_0.8.py": { content: file("en", "dfs/generator/erdos_renyi_0.8.py") },
       },
       "input": {
-        "input.txt": { content: file("hu", "dfs/input.txt") },
+        "input.txt": { content: file("en", "dfs/input.txt") },
       }
     }
   };
 }
 
 export function loadDefaultCode() {
-  return { version: 23, pages: { hu: loadHu(), en: loadEn() } };
+  return { version: 24, pages: { hu: loadHu(), en: loadEn() } };
 }
 
 export const defaultCode = loadDefaultCode();
