@@ -5,19 +5,18 @@ def dfs(G, s):
   mszam = [None]*n; bszam = [None]*n; elozo = [None]*n; kszom = [0]*n
   mszam[s] = 1; MSZAM = 1; BSZAM = 0; v = s; kcsucs = 0
   while True:
-    while kszom[v]<n:
-      u = kszom[v]
+    for u in range(kszom[v], n):
+      kszom[v]=u+1
       if G[v][u] and mszam[u] is None:
         MSZAM += 1; mszam[u] = MSZAM; elozo[u] = v; v = u; break
-      else: kszom[v] += 1
     else:
       BSZAM += 1; bszam[v] = BSZAM
       if elozo[v] != None: v = elozo[v]
       else:
-        while kcsucs<n:
-          if mszam[kcsucs] is None:
-            MSZAM += 1; mszam[kcsucs] = MSZAM; v = kcsucs; break
-          else: kcsucs+=1
+        for w in range(kcsucs, n):
+          kcsucs = w+1
+          if mszam[w] is None:
+            MSZAM += 1; mszam[w] = MSZAM; v = w; break
         else: break
   return elozo, mszam, bszam
 
