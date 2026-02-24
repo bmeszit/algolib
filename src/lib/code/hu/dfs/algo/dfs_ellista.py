@@ -21,11 +21,9 @@ def dfs(G, s):
   return elozo, mszam, bszam
 
 n, m = map(int, input().split())
-elek = []
 G = [[] for i in range(n)]
 for i in range(m):
   v, u = map(int, input().split())
-  elek.append((v, u))
   G[v].append(u)
 s = int(input())
 
