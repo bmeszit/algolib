@@ -51,6 +51,8 @@ function loadHu() {
       "algo": {
         "dfs_ellista.py": { content: file("hu", "dfs/algo/dfs_ellista.py") },
         "dfs_szmat.py": { content: file("hu", "dfs/algo/dfs_szmat.py") },
+        "dfs_ellista_range.py": { content: file("hu", "dfs/algo/dfs_ellista_range.py") },
+        "dfs_szmat_range.py": { content: file("hu", "dfs/algo/dfs_szmat_range.py") },
         "dfs_verem_ellista.py": { content: file("hu", "dfs/algo/dfs_verem_ellista.py") },
         "dfs_verem_szmat.py": { content: file("hu", "dfs/algo/dfs_verem_szmat.py") },
         "dfs_rekurziv_ellista.py": { content: file("hu", "dfs/algo/dfs_rekurziv_ellista.py") },
@@ -108,6 +110,8 @@ function loadEn() {
       "algo": {
         "dfs_elist.py": { content: file("hu", "dfs/algo/dfs_ellista.py") },
         "dfs_amat.py": { content: file("hu", "dfs/algo/dfs_szmat.py") },
+        "dfs_elist_range.py": { content: file("hu", "dfs/algo/dfs_ellista_range.py") },
+        "dfs_amat_range.py": { content: file("hu", "dfs/algo/dfs_szmat_range.py") },
         "dfs_stack_elist.py": { content: file("hu", "dfs/algo/dfs_verem_ellista.py") },
         "dfs_stack_amat.py": { content: file("hu", "dfs/algo/dfs_verem_szmat.py") },
         "dfs_recursive_elist.py": { content: file("hu", "dfs/algo/dfs_rekurziv_ellista.py") },
@@ -127,7 +131,7 @@ function loadEn() {
 }
 
 export function loadDefaultCode() {
-  return { version: 18, pages: { hu: loadHu(), en: loadEn() } };
+  return { version: 20, pages: { hu: loadHu(), en: loadEn() } };
 }
 
 export const defaultCode = loadDefaultCode();
