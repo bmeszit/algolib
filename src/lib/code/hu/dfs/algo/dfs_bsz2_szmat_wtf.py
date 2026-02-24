@@ -25,7 +25,7 @@ def dfs(G, s):
         while globhol < n:
           v = globhol
           globhol+=1
-          if mszam[v] == None:
+          if mszam[v] is None:
             aktiv_csucs = v
             MSZAM += 1; mszam[aktiv_csucs] = MSZAM
             break
