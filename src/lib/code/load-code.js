@@ -83,7 +83,7 @@ function loadHu() {
         "erdos_renyi_0.8.py": { content: file("en", "dfs/generator/erdos_renyi_0.8.py") },
       },
       "input": {
-        "input.txt": { content: file("en", "dfs/input.txt") },
+        "input.txt": { content: file("hu", "dfs_topo/input.txt") },
       }
     }
   };
@@ -160,7 +160,7 @@ function loadEn() {
         "erdos_renyi_0.8.py": { content: file("en", "dfs/generator/erdos_renyi_0.8.py") },
       },
       "input": {
-        "input.txt": { content: file("en", "dfs/input.txt") },
+        "input.txt": { content: file("hu", "dfs_topo/input.txt") },
       }
     }
   };
