@@ -153,14 +153,14 @@ function loadEn() {
     },
     dfs_topo: {
       "algo": {
-        "dfs_topo.py": { content: file("hu", "dfs_topo/algo/dfs_topo.py") },
+        "dfs_topo.py": { content: file("en", "dfs_topo/algo/dfs_topo.py") },
       },
       "generator": {
         "erdos_renyi_0.2.py": { content: file("en", "dfs/generator/erdos_renyi_0.2.py") },
         "erdos_renyi_0.8.py": { content: file("en", "dfs/generator/erdos_renyi_0.8.py") },
       },
       "input": {
-        "input.txt": { content: file("hu", "dfs_topo/input.txt") },
+        "input.txt": { content: file("en", "dfs_topo/input.txt") },
       }
     }
   };
