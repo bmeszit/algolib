@@ -34,22 +34,22 @@ MEASURE_START()
 prev, dtime, ftime = dfs(deepcopy(G), s)
 topo_order = sorted(range(n), key=lambda i: ftime[i], reverse=True)
 
-# Legrövidebb utak
+# Shortest paths
 dist = [infinity]*n; dist_prev = [None]*n
 dist[s] = 0
 
 for v in topo_order:
-  if dist[v] == infinity: continue # Nem elérhető s-ből.
+  if dist[v] == infinity: continue # Not reachable from s.
   for u, weight in G[v]:
     if dist[v] + weight < dist[u]:
       dist[u] = dist[v] + weight; dist_prev[u] = v
 
-# Leghosszabb utak
+# Longest paths
 maxpath = [-infinity]*n; maxpath_prev = [None]*n
 maxpath[s] = 0
 
 for v in topo_order:
-  if maxpath[v] == -infinity: continue # Nem elérhető s-ből.
+  if maxpath[v] == -infinity: continue # Not reachable from s.
   for u, weight in G[v]:
     if maxpath[v] + weight > maxpath[u]:
       maxpath[u] = maxpath[v] + weight; maxpath_prev[u] = v
