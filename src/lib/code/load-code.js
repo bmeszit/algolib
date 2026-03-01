@@ -129,14 +129,14 @@ function loadEn() {
     },
     dfs_ec: {
       "algo": {
-        "dfs_edgeclass.py": { content: file("hu", "dfs_ec/algo/dfs_elosztaly.py") },
+        "dfs_edgeclass.py": { content: file("en", "dfs_ec/algo/dfs_elosztaly.py") },
       },
       "generator": {
-        "erdos_renyi_0.2.py": { content: file("hu", "dfs_ec/generator/erdos_renyi_0.2.py") },
-        "erdos_renyi_0.8.py": { content: file("hu", "dfs_ec/generator/erdos_renyi_0.8.py") },
+        "erdos_renyi_0.2.py": { content: file("en", "dfs_ec/generator/erdos_renyi_0.2.py") },
+        "erdos_renyi_0.8.py": { content: file("en", "dfs_ec/generator/erdos_renyi_0.8.py") },
       },
       "input": {
-        "input.txt": { content: file("hu", "dfs_ec/input.txt") },
+        "input.txt": { content: file("en", "dfs_ec/input.txt") },
       }
     }
   };

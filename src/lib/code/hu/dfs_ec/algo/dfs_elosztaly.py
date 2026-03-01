@@ -1,4 +1,5 @@
 from copy import deepcopy
+
 def dfs(G, s):
   n = len(G)
   mszam = [None]*n; bszam = [None]*n; elozo = [None]*n; kszom = [0]*n
