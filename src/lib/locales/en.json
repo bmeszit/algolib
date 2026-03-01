@@ -59,6 +59,10 @@
       "title": "Depth-first search (DFS) with edge classification",
       "desc": "Showing how DFS classifies edges."
     },
+    "dfs_topo": {
+      "title": "Topological order (using DFS)",
+      "desc": "Algorithm for finding one possible topological ordering and shortest and longest paths."
+    },
     "bfs": {
       "title": "Breadth-first search (BFS)",
       "desc": "Comparing breadth-first search using edge list and adjacency matrix graph representation."

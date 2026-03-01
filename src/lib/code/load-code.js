@@ -67,11 +67,23 @@ function loadHu() {
         "dfs_elosztaly.py": { content: file("hu", "dfs_ec/algo/dfs_elosztaly.py") },
       },
       "generator": {
-        "erdos_renyi_0.2.py": { content: file("hu", "dfs_ec/generator/erdos_renyi_0.2.py") },
-        "erdos_renyi_0.8.py": { content: file("hu", "dfs_ec/generator/erdos_renyi_0.8.py") },
+        "erdos_renyi_0.2.py": { content: file("hu", "dfs/generator/erdos_renyi_0.2.py") },
+        "erdos_renyi_0.8.py": { content: file("hu", "dfs/generator/erdos_renyi_0.8.py") },
       },
       "input": {
         "input.txt": { content: file("hu", "dfs_ec/input.txt") },
+      }
+    },
+    dfs_topo: {
+      "algo": {
+        "dfs_topo.py": { content: file("hu", "dfs_topo/algo/dfs_topo.py") },
+      },
+      "generator": {
+        "erdos_renyi_0.2.py": { content: file("en", "dfs/generator/erdos_renyi_0.2.py") },
+        "erdos_renyi_0.8.py": { content: file("en", "dfs/generator/erdos_renyi_0.8.py") },
+      },
+      "input": {
+        "input.txt": { content: file("en", "dfs/input.txt") },
       }
     }
   };
@@ -132,11 +144,23 @@ function loadEn() {
         "dfs_edgeclass.py": { content: file("en", "dfs_ec/algo/dfs_edgeclass.py") },
       },
       "generator": {
-        "erdos_renyi_0.2.py": { content: file("en", "dfs_ec/generator/erdos_renyi_0.2.py") },
-        "erdos_renyi_0.8.py": { content: file("en", "dfs_ec/generator/erdos_renyi_0.8.py") },
+        "erdos_renyi_0.2.py": { content: file("en", "dfs/generator/erdos_renyi_0.2.py") },
+        "erdos_renyi_0.8.py": { content: file("en", "dfs/generator/erdos_renyi_0.8.py") },
       },
       "input": {
         "input.txt": { content: file("en", "dfs_ec/input.txt") },
+      }
+    },
+    dfs_topo: {
+      "algo": {
+        "dfs_topo.py": { content: file("hu", "dfs_topo/algo/dfs_topo.py") },
+      },
+      "generator": {
+        "erdos_renyi_0.2.py": { content: file("en", "dfs/generator/erdos_renyi_0.2.py") },
+        "erdos_renyi_0.8.py": { content: file("en", "dfs/generator/erdos_renyi_0.8.py") },
+      },
+      "input": {
+        "input.txt": { content: file("en", "dfs/input.txt") },
       }
     }
   };

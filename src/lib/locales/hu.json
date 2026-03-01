@@ -58,6 +58,10 @@
       "title": "Mélységi bejárás (DFS) élosztályozással",
       "desc": "Hogyan osztályozza a DFS az éleket?"
     },
+    "dfs_topo": {
+      "title": "Topologikus sorrend (DFS használatával)",
+      "desc": "Algoritmus egy lehetséges topologikus sorrend, illetve legrövidebb és leghosszabb utak megtalálására."
+    },
     "bfs": {
       "title": "Szélességi bejárás (BFS)",
       "desc": "A szélességi bejárás összehasonlítása éllistás és szomszédossági mátrixos gráfreprezentáció használatával."
