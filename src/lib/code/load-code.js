@@ -129,7 +129,7 @@ function loadEn() {
     },
     dfs_ec: {
       "algo": {
-        "dfs_edgeclass.py": { content: file("en", "dfs_ec/algo/dfs_elosztaly.py") },
+        "dfs_edgeclass.py": { content: file("en", "dfs_ec/algo/dfs_edgeclass.py") },
       },
       "generator": {
         "erdos_renyi_0.2.py": { content: file("en", "dfs_ec/generator/erdos_renyi_0.2.py") },
