@@ -61,6 +61,18 @@ function loadHu() {
       "input": {
         "input.txt": { content: file("hu", "dfs/input.txt") },
       }
+    },
+    dfs_ec: {
+      "algo": {
+        "dfs_elosztaly.py": { content: file("hu", "dfs_ec/algo/dfs_elosztaly.py") },
+      },
+      "generator": {
+        "erdos_renyi_0.2.py": { content: file("hu", "dfs_ec/generator/erdos_renyi_0.2.py") },
+        "erdos_renyi_0.8.py": { content: file("hu", "dfs_ec/generator/erdos_renyi_0.8.py") },
+      },
+      "input": {
+        "input.txt": { content: file("hu", "dfs_ec/input.txt") },
+      }
     }
   };
 }
@@ -113,6 +125,18 @@ function loadEn() {
       },
       "input": {
         "input.txt": { content: file("en", "dfs/input.txt") },
+      }
+    },
+    dfs_ec: {
+      "algo": {
+        "dfs_edgeclass.py": { content: file("hu", "dfs_ec/algo/dfs_elosztaly.py") },
+      },
+      "generator": {
+        "erdos_renyi_0.2.py": { content: file("hu", "dfs_ec/generator/erdos_renyi_0.2.py") },
+        "erdos_renyi_0.8.py": { content: file("hu", "dfs_ec/generator/erdos_renyi_0.8.py") },
+      },
+      "input": {
+        "input.txt": { content: file("hu", "dfs_ec/input.txt") },
       }
     }
   };

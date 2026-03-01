@@ -55,6 +55,10 @@
       "title": "Depth-first search (DFS)",
       "desc": "Comparing depth-first search using edge list and adjacency matrix graph representation."
     },
+    "dfs_ec": {
+      "title": "Depth-first search (DFS) with edge classification",
+      "desc": "Showing how DFS classifies edges."
+    },
     "bfs": {
       "title": "Breadth-first search (BFS)",
       "desc": "Comparing breadth-first search using edge list and adjacency matrix graph representation."

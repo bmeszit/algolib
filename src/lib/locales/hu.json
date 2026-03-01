@@ -54,6 +54,10 @@
       "title": "Mélységi bejárás (DFS)",
       "desc": "A mélységi bejárás összehasonlítása éllistás és szomszédossági mátrixos gráfreprezentáció használatával."
     },
+    "dfs_ec": {
+      "title": "Mélységi bejárás (DFS) élosztályozással",
+      "desc": "Hogyan osztályozza a DFS az éleket?"
+    },
     "bfs": {
       "title": "Szélességi bejárás (BFS)",
       "desc": "A szélességi bejárás összehasonlítása éllistás és szomszédossági mátrixos gráfreprezentáció használatával."

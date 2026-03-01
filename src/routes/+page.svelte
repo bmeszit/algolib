@@ -6,7 +6,8 @@
   const algorithms = [
     //{ id: 'search', slug: 'search' },
     //{ id: 'sort', slug: 'sort' },
-    { id: 'dfs', slug: 'dfs' }
+    { id: 'dfs', slug: 'dfs' },
+    //{ id: 'dfs_ec', slug: 'dfs_ec' }
   ];
 </script>
 
