@@ -11,7 +11,7 @@ def dfs(G, s):
       if mszam[u] is None:
         MSZAM += 1; mszam[u] = MSZAM; elozo[u] = v; v = u; break
       elif mszam[v] > mszam[u] and bszam[u] is None:
-        raise Exception(f"Nem aciklikus a gráf! Visszaél: {v} -> {u}.")
+        raise Exception(f"Nem aciklikus a gráf! Megtalált visszaél: {v} -> {u}.")
     else:
       BSZAM += 1; bszam[v] = BSZAM
       if elozo[v] != None: v = elozo[v]
