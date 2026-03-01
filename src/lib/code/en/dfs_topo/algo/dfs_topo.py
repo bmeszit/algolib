@@ -1,63 +1,63 @@
 from copy import deepcopy
-vegtelen = float('inf')
+infinity = float('inf')
 
 def dfs(G, s):
   n = len(G)
-  mszam = [None]*n; bszam = [None]*n; elozo = [None]*n; kszom = [0]*n
-  mszam[s] = 1; MSZAM = 1; BSZAM = 0; v = s; kcsucs = 0
+  dtime = [None]*n; ftime = [None]*n; prev = [None]*n; nextu = [0]*n
+  dtime[s] = 1; DTIME = 1; FTIME = 0; v = s; nextv = 0
   while True:
-    for i in range(kszom[v], len(G[v])):
-      u, _ = G[v][i]; kszom[v] = i+1
-      if mszam[u] is None:
-        MSZAM += 1; mszam[u] = MSZAM; elozo[u] = v; v = u; break
-      elif mszam[v] > mszam[u] and bszam[u] is None:
-        raise Exception(f"Nem aciklikus a gráf! Visszaél: {v} -> {u}.")
+    for i in range(nextu[v], len(G[v])):
+      u, _ = G[v][i]; nextu[v] = i+1
+      if dtime[u] is None:
+        DTIME += 1; dtime[u] = DTIME; prev[u] = v; v = u; break
+      elif dtime[v] > dtime[u] and ftime[u] is None:
+        raise Exception(f"Graph is not acyclic! Found back edge: {v} -> {u}.")
     else:
-      BSZAM += 1; bszam[v] = BSZAM
-      if elozo[v] != None: v = elozo[v]
+      FTIME += 1; ftime[v] = FTIME
+      if prev[v] != None: v = prev[v]
       else:
-        for w in range(kcsucs, n):
-          kcsucs = w+1
-          if mszam[w] is None:
-            MSZAM += 1; mszam[w] = MSZAM; v = w; break
+        for w in range(nextv, n):
+          nextv = w+1
+          if dtime[w] is None:
+            DTIME += 1; dtime[w] = DTIME; v = w; break
         else: break
-  return elozo, mszam, bszam
+  return prev, dtime, ftime
 
 n, m = map(int, input().split())
 G = [[] for i in range(n)]
 for i in range(m):
-  v, u, suly = map(int, input().split())
-  G[v].append((u, suly))
+  v, u, weight = map(int, input().split())
+  G[v].append((u, weight))
 s = int(input())
 
-MERES_KEZD()
-elozo, mszam, bszam = dfs(deepcopy(G), s)
-topo_sorrend = sorted(range(n), key=lambda i: bszam[i], reverse=True)
+MEASURE_START()
+prev, dtime, ftime = dfs(deepcopy(G), s)
+topo_order = sorted(range(n), key=lambda i: ftime[i], reverse=True)
 
 # Legrövidebb utak
-tav = [vegtelen]*n; tav_elozo = [None]*n
-tav[s] = 0
+dist = [infinity]*n; dist_prev = [None]*n
+dist[s] = 0
 
-for v in topo_sorrend:
-  if tav[v] == vegtelen: continue # Nem elérhető s-ből.
-  for u, suly in G[v]:
-    if tav[v] + suly < tav[u]:
-      tav[u] = tav[v] + suly; tav_elozo[u] = v
+for v in topo_order:
+  if dist[v] == infinity: continue # Nem elérhető s-ből.
+  for u, weight in G[v]:
+    if dist[v] + weight < dist[u]:
+      dist[u] = dist[v] + weight; dist_prev[u] = v
 
 # Leghosszabb utak
-maxut = [-vegtelen]*n; maxut_elozo = [None]*n
-maxut[s] = 0
+maxpath = [-infinity]*n; maxpath_prev = [None]*n
+maxpath[s] = 0
 
-for v in topo_sorrend:
-  if maxut[v] == -vegtelen: continue # Nem elérhető s-ből.
-  for u, suly in G[v]:
-    if maxut[v] + suly > maxut[u]:
-      maxut[u] = maxut[v] + suly; maxut_elozo[u] = v
+for v in topo_order:
+  if maxpath[v] == -infinity: continue # Nem elérhető s-ből.
+  for u, weight in G[v]:
+    if maxpath[v] + weight > maxpath[u]:
+      maxpath[u] = maxpath[v] + weight; maxpath_prev[u] = v
 
-MERES_VEG()
+MEASURE_STOP()
 
-print("Topologikus sorrend:"); print(topo_sorrend); print()
-print("Legrövidebb utak:"); print(tav); print()
-print("Legrövidebb utak szülői:"); print(tav_elozo); print()
-print("Leghosszabb utak:"); print(maxut); print()
-print("Leghosszabb utak szülői:"); print(maxut_elozo); print()
+print("Topological order:"); print(topo_order); print()
+print("Shortest paths:"); print(dist); print()
+print("Parents for the shortest paths:"); print(dist_prev); print()
+print("Longest paths:"); print(maxpath); print()
+print("Parents for the longest paths:"); print(maxpath_prev); print()
