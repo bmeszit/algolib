@@ -1,6 +1,14 @@
 from copy import deepcopy
 vegtelen = float('inf')
 
+def grafot_megfordit(G):
+  n = len(G)
+  G_ford = [[] for v in range(n)]
+  for v in range(n):
+    for u, suly in G[v]:
+      G_ford[u].append((v, suly))
+  return G_ford
+
 def dfs(G, s):
   n = len(G)
   mszam = [None]*n; bszam = [None]*n; elozo = [None]*n; kszom = [0]*n
@@ -34,25 +42,25 @@ MERES_KEZD()
 elozo, mszam, bszam = dfs(deepcopy(G), s)
 topo_sorrend = sorted(range(n), key=lambda i: bszam[i], reverse=True)
 
+G_beelek = grafot_megfordit(G)
+
 # Legrövidebb utak
 tav = [vegtelen]*n; tav_elozo = [None]*n
 tav[s] = 0
 
 for v in topo_sorrend:
-  if tav[v] == vegtelen: continue # Nem elérhető s-ből.
-  for u, suly in G[v]:
-    if tav[v] + suly < tav[u]:
-      tav[u] = tav[v] + suly; tav_elozo[u] = v
+  for u, suly in G_beelek[v]:
+    if tav[u] + suly < tav[v]:
+      tav[v] = tav[u] + suly; tav_elozo[v] = u
 
 # Leghosszabb utak
 maxut = [-vegtelen]*n; maxut_elozo = [None]*n
 maxut[s] = 0
 
 for v in topo_sorrend:
-  if maxut[v] == -vegtelen: continue # Nem elérhető s-ből.
-  for u, suly in G[v]:
-    if maxut[v] + suly > maxut[u]:
-      maxut[u] = maxut[v] + suly; maxut_elozo[u] = v
+  for u, suly in G_beelek[v]:
+    if maxut[u] + suly > maxut[v]:
+      maxut[v] = maxut[u] + suly; maxut_elozo[v] = u
 
 MERES_VEG()
 

@@ -1,6 +1,14 @@
 from copy import deepcopy
 infinity = float('inf')
 
+def reverse_graph(G):
+  n = len(G)
+  G_rev = [[] for v in range(n)]
+  for v in range(n):
+    for u, weight in G[v]:
+      G_rev[u].append((v, weight))
+  return G_rev
+
 def dfs(G, s):
   n = len(G)
   dtime = [None]*n; ftime = [None]*n; prev = [None]*n; nextu = [0]*n
@@ -34,25 +42,25 @@ MEASURE_START()
 prev, dtime, ftime = dfs(deepcopy(G), s)
 topo_order = sorted(range(n), key=lambda i: ftime[i], reverse=True)
 
+G_inedges = reverse_graph(G)
+
 # Shortest paths
 dist = [infinity]*n; dist_prev = [None]*n
 dist[s] = 0
 
 for v in topo_order:
-  if dist[v] == infinity: continue # Not reachable from s.
-  for u, weight in G[v]:
-    if dist[v] + weight < dist[u]:
-      dist[u] = dist[v] + weight; dist_prev[u] = v
+  for u, weight in G_inedges[v]:
+    if dist[u] + weight < dist[v]:
+      dist[v] = dist[u] + weight; dist_prev[v] = u
 
 # Longest paths
 maxpath = [-infinity]*n; maxpath_prev = [None]*n
 maxpath[s] = 0
 
 for v in topo_order:
-  if maxpath[v] == -infinity: continue # Not reachable from s.
-  for u, weight in G[v]:
-    if maxpath[v] + weight > maxpath[u]:
-      maxpath[u] = maxpath[v] + weight; maxpath_prev[u] = v
+  for u, weight in G_inedges[v]:
+    if maxpath[u] + weight > maxpath[v]:
+      maxpath[v] = maxpath[u] + weight; maxpath_prev[v] = u
 
 MEASURE_STOP()
 
