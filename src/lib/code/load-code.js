@@ -79,8 +79,8 @@ function loadHu() {
         "dfs_topo.py": { content: file("hu", "dfs_topo/algo/dfs_topo.py") },
       },
       "generator": {
-        "erdos_renyi_0.2.py": { content: file("en", "dfs/generator/erdos_renyi_0.2.py") },
-        "erdos_renyi_0.8.py": { content: file("en", "dfs/generator/erdos_renyi_0.8.py") },
+        "erdos_renyi_0.2.py": { content: file("hu", "dfs_topo/generator/erdos_renyi_0.2.py") },
+        "erdos_renyi_0.8.py": { content: file("hu", "dfs_topo/generator/erdos_renyi_0.8.py") },
       },
       "input": {
         "input.txt": { content: file("hu", "dfs_topo/input.txt") },
@@ -156,8 +156,8 @@ function loadEn() {
         "dfs_topo.py": { content: file("en", "dfs_topo/algo/dfs_topo.py") },
       },
       "generator": {
-        "erdos_renyi_0.2.py": { content: file("en", "dfs/generator/erdos_renyi_0.2.py") },
-        "erdos_renyi_0.8.py": { content: file("en", "dfs/generator/erdos_renyi_0.8.py") },
+        "erdos_renyi_0.2.py": { content: file("en", "dfs_topo/generator/erdos_renyi_0.2.py") },
+        "erdos_renyi_0.8.py": { content: file("en", "dfs_topo/generator/erdos_renyi_0.8.py") },
       },
       "input": {
         "input.txt": { content: file("en", "dfs_topo/input.txt") },
@@ -167,7 +167,7 @@ function loadEn() {
 }
 
 export function loadDefaultCode() {
-  return { version: 26, pages: { hu: loadHu(), en: loadEn() } };
+  return { version: 28, pages: { hu: loadHu(), en: loadEn() } };
 }
 
 export const defaultCode = loadDefaultCode();
