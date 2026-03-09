@@ -1,22 +1,18 @@
 import random
 rng = random.Random(42)
 
-# Erdős-Rényi directed graph generator.
-# Uses a random permutation: edges going in the right direction can be negative,
-# edges going against it are always positive, so no negative cycles.
+# Erdős-Rényi directed graph generator with potential-based weights.
+# Each vertex gets a random potential phi(v). Edge weight = phi(u) - phi(v) + extra,
+# where extra >= 0. Any cycle's total weight = sum of extras >= 0, so no negative cycles,
+# but individual edges can be negative when phi(v) > phi(u) + extra.
 def generate_graph(n, p):
-  perm = list(range(n))
-  rng.shuffle(perm)
-  pos = [0] * n
-  for i, v in enumerate(perm): pos[v] = i
+  phi = [rng.randint(-20, 20) for _ in range(n)]
   edges = []
   for u in range(n):
     for v in range(n):
       if u != v and rng.random() < p:
-        if pos[u] < pos[v]:
-          weight = rng.randint(-20, 50)
-        else:
-          weight = rng.randint(1, 50)
+        extra = rng.randint(0, 30)
+        weight = phi[u] - phi[v] + extra
         edges.append((u, v, weight))
   return edges
 

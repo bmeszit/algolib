@@ -1,22 +1,18 @@
 import random
 rng = random.Random(42)
 
-# Erdős-Rényi irányított gráf generátor.
-# Egy véletlen permutációt használ: a jó irányba mutató élek lehetnek negatívak is,
-# az ellentétes irányú élek mindig pozitívak, így negatív kör nem keletkezhet.
+# Erdős-Rényi irányított gráf generátor potenciál alapú súlyozással.
+# Minden csúcshoz rendelünk egy véletlen phi(v) potenciált. Él súlya = phi(u) - phi(v) + extra,
+# ahol extra >= 0. Bármely kör összsúlya = az extra-k összege >= 0, így negatív kör
+# nem keletkezhet, de egyes élek lehetnek negatívak, ha phi(v) > phi(u) + extra.
 def generate_graph(n, p):
-  perm = list(range(n))
-  rng.shuffle(perm)
-  pos = [0] * n
-  for i, v in enumerate(perm): pos[v] = i
+  phi = [rng.randint(-20, 20) for _ in range(n)]
   edges = []
   for u in range(n):
     for v in range(n):
       if u != v and rng.random() < p:
-        if pos[u] < pos[v]:
-          weight = rng.randint(-20, 50)
-        else:
-          weight = rng.randint(1, 50)
+        extra = rng.randint(0, 30)
+        weight = phi[u] - phi[v] + extra
         edges.append((u, v, weight))
   return edges
 
