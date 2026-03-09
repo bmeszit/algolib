@@ -77,7 +77,7 @@
     },
     "mindist": {
       "title": "Shortest path algorithms comparison",
-      "desc": "Single-source shortest paths in a directed graph with positive edge weights: comparing Dijkstra, Bellman-Ford and DFS+topological sort."
+      "desc": "Single-source shortest paths in a DAG with positive edge weights: comparing DFS+topological sort, Dijkstra and Bellman-Ford."
     }
   }
 }

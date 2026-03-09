@@ -76,7 +76,7 @@
     },
     "mindist": {
       "title": "Legrövidebb út algoritmusok összehasonlítása",
-      "desc": "Egyforrású legrövidebb utak pozitív élsúlyozású irányított gráfban: Dijkstra, Bellman-Ford és DFS+topologikus sorrend összehasonlítása."
+      "desc": "Egyforrású legrövidebb utak pozitív élsúlyozású DAG-ban: DFS+topologikus sorrend alapú, Dijkstra és Bellman-Ford összehasonlítása."
     }
   }
 }
