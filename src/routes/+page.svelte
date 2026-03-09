@@ -10,7 +10,8 @@
     { id: 'dfs_ec', slug: 'dfs_ec' },
     { id: 'dfs_topo', slug: 'dfs_topo' },
     //{ id: 'dijkstra', slug: 'dijkstra' },
-    //{ id: 'bf', slug: 'bf' }
+    //{ id: 'bf', slug: 'bf' },
+    //{ id: 'mindist', slug: 'mindist' }
   ];
 </script>
 

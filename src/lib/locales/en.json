@@ -74,6 +74,10 @@
     "bf": {
       "title": "Bellman-Ford algorithm",
       "desc": "Single-source shortest paths in directed graphs, allowing negative edge weights but no negative cycles."
+    },
+    "mindist": {
+      "title": "Shortest path algorithms comparison",
+      "desc": "Single-source shortest paths in a directed graph with positive edge weights: comparing Dijkstra, Bellman-Ford and DFS+topological sort."
     }
   }
 }

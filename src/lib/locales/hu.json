@@ -73,6 +73,10 @@
     "bf": {
       "title": "Bellman-Ford-algoritmus",
       "desc": "Egyforrású legrövidebb utak irányított gráfban, negatív élsúlyok esetén is, de negatív összsúlyú kör nélkül."
+    },
+    "mindist": {
+      "title": "Legrövidebb út algoritmusok összehasonlítása",
+      "desc": "Egyforrású legrövidebb utak pozitív élsúlyozású irányított gráfban: Dijkstra, Bellman-Ford és DFS+topologikus sorrend összehasonlítása."
     }
   }
 }

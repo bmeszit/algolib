@@ -111,6 +111,23 @@ function loadHu() {
       "input": {
         "input.txt": { content: file("hu", "bf/input.txt") },
       }
+    },
+    mindist: {
+      "algo": {
+        "dfs_topo_ellista.py": { content: file("hu", "mindist/algo/dfs_topo_ellista.py") },
+        "dfs_topo_szmat.py": { content: file("hu", "mindist/algo/dfs_topo_szmat.py") },
+        "dijkstra_ellista.py": { content: file("hu", "dijkstra/algo/dijkstra_ellista.py") },
+        "dijkstra_szmat.py": { content: file("hu", "dijkstra/algo/dijkstra_szmat.py") },
+        "bellman_ford_ellista.py": { content: file("hu", "bf/algo/bellman_ford_ellista.py") },
+        "bellman_ford_szmat.py": { content: file("hu", "bf/algo/bellman_ford_szmat.py") },
+      },
+      "generator": {
+        "erdos_renyi_0.2.py": { content: file("hu", "mindist/generator/erdos_renyi_0.2.py") },
+        "erdos_renyi_0.8.py": { content: file("hu", "mindist/generator/erdos_renyi_0.8.py") },
+      },
+      "input": {
+        "input.txt": { content: file("hu", "mindist/input.txt") },
+      }
     }
   };
 }
@@ -214,12 +231,29 @@ function loadEn() {
       "input": {
         "input.txt": { content: file("en", "bf/input.txt") },
       }
+    },
+    mindist: {
+      "algo": {
+        "dfs_topo_elist.py": { content: file("en", "mindist/algo/dfs_topo_elist.py") },
+        "dfs_topo_amat.py": { content: file("en", "mindist/algo/dfs_topo_amat.py") },
+        "dijkstra_elist.py": { content: file("en", "dijkstra/algo/dijkstra_elist.py") },
+        "dijkstra_amat.py": { content: file("en", "dijkstra/algo/dijkstra_amat.py") },
+        "bellman_ford_elist.py": { content: file("en", "bf/algo/bellman_ford_elist.py") },
+        "bellman_ford_amat.py": { content: file("en", "bf/algo/bellman_ford_amat.py") },
+      },
+      "generator": {
+        "erdos_renyi_0.2.py": { content: file("en", "mindist/generator/erdos_renyi_0.2.py") },
+        "erdos_renyi_0.8.py": { content: file("en", "mindist/generator/erdos_renyi_0.8.py") },
+      },
+      "input": {
+        "input.txt": { content: file("en", "mindist/input.txt") },
+      }
     }
   };
 }
 
 export function loadDefaultCode() {
-  return { version: 33, pages: { hu: loadHu(), en: loadEn() } };
+  return { version: 35, pages: { hu: loadHu(), en: loadEn() } };
 }
 
 export const defaultCode = loadDefaultCode();
