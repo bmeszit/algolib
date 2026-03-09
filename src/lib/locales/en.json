@@ -66,6 +66,10 @@
     "bfs": {
       "title": "Breadth-first search (BFS)",
       "desc": "Comparing breadth-first search using edge list and adjacency matrix graph representation."
+    },
+    "dijkstra": {
+      "title": "Dijkstra's algorithm",
+      "desc": "Single-source shortest paths in directed graphs with non-negative edge weights."
     }
   }
 }

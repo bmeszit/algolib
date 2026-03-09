@@ -65,6 +65,10 @@
     "bfs": {
       "title": "Szélességi bejárás (BFS)",
       "desc": "A szélességi bejárás összehasonlítása éllistás és szomszédossági mátrixos gráfreprezentáció használatával."
+    },
+    "dijkstra": {
+      "title": "Dijkstra-algoritmus",
+      "desc": "Egyforrású legrövidebb utak irányított gráfban, nemnegatív élsúlyokkal."
     }
   }
 }

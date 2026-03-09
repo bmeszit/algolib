@@ -85,6 +85,18 @@ function loadHu() {
       "input": {
         "input.txt": { content: file("hu", "dfs_topo/input.txt") },
       }
+    },
+    dijkstra: {
+      "algo": {
+        "dijkstra.py": { content: file("hu", "dijkstra/algo/dijkstra.py") },
+      },
+      "generator": {
+        "erdos_renyi_0.2.py": { content: file("hu", "dijkstra/generator/erdos_renyi_0.2.py") },
+        "erdos_renyi_0.8.py": { content: file("hu", "dijkstra/generator/erdos_renyi_0.8.py") },
+      },
+      "input": {
+        "input.txt": { content: file("hu", "dijkstra/input.txt") },
+      }
     }
   };
 }
@@ -162,12 +174,24 @@ function loadEn() {
       "input": {
         "input.txt": { content: file("en", "dfs_topo/input.txt") },
       }
+    },
+    dijkstra: {
+      "algo": {
+        "dijkstra.py": { content: file("en", "dijkstra/algo/dijkstra.py") },
+      },
+      "generator": {
+        "erdos_renyi_0.2.py": { content: file("en", "dijkstra/generator/erdos_renyi_0.2.py") },
+        "erdos_renyi_0.8.py": { content: file("en", "dijkstra/generator/erdos_renyi_0.8.py") },
+      },
+      "input": {
+        "input.txt": { content: file("en", "dijkstra/input.txt") },
+      }
     }
   };
 }
 
 export function loadDefaultCode() {
-  return { version: 28, pages: { hu: loadHu(), en: loadEn() } };
+  return { version: 29, pages: { hu: loadHu(), en: loadEn() } };
 }
 
 export const defaultCode = loadDefaultCode();

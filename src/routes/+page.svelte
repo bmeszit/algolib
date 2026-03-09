@@ -8,7 +8,8 @@
     //{ id: 'sort', slug: 'sort' },
     { id: 'dfs', slug: 'dfs' },
     { id: 'dfs_ec', slug: 'dfs_ec' },
-    { id: 'dfs_topo', slug: 'dfs_topo' }
+    { id: 'dfs_topo', slug: 'dfs_topo' },
+    //{ id: 'dijkstra', slug: 'dijkstra' }
   ];
 </script>
 
