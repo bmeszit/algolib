@@ -21,4 +21,4 @@ for n in sizes:
   for u, v, weight in edges:
     lines.append(f"{u} {v} {weight}")
   lines.append(f"0")
-  INPUT("\n".join(lines))
+  BEMENET("\n".join(lines))
