@@ -17,7 +17,7 @@ def generate_graph(n, p):
   return edges
 
 p = 0.8
-sizes = [(i+1)*100 for i in range(5)]
+sizes = [(i+1)*50 for i in range(5)]
 
 for n in sizes:
   edges = generate_graph(n, p)
