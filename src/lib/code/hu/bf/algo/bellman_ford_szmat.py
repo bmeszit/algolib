@@ -9,14 +9,13 @@ def bellman_ford(G, s):
     tav_uj = [None] * n; tav_uj[s] = 0
     elozo_uj = [None] * n
     for v in range(n):
-      if v == s:
-        continue
+      if v == s: continue
       tav_uj[v] = tav[v]
       elozo_uj[v] = elozo[v]
       for u in range(n):
         if tav[u] + G[u][v] < tav_uj[v]:
-            tav_uj[v] = tav[u] + G[u][v]
-            elozo_uj[v] = u
+          tav_uj[v] = tav[u] + G[u][v]
+          elozo_uj[v] = u
     tav = tav_uj
     elozo = elozo_uj
 

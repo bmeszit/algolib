@@ -9,14 +9,13 @@ def bellman_ford(G, s):
     dist_new = [None] * n; dist_new[s] = 0
     prev_new = [None] * n
     for v in range(n):
-      if v == s:
-        continue
+      if v == s: continue
       dist_new[v] = dist[v]
       prev_new[v] = prev[v]
       for u in range(n):
         if dist[u] + G[u][v] < dist_new[v]:
-            dist_new[v] = dist[u] + G[u][v]
-            prev_new[v] = u
+          dist_new[v] = dist[u] + G[u][v]
+          prev_new[v] = u
     dist = dist_new
     prev = prev_new
 

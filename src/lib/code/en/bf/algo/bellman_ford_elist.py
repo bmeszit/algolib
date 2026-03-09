@@ -17,8 +17,7 @@ def bellman_ford(G_in, s):
     dist_new = [None] * n; dist_new[s] = 0
     prev_new = [None] * n
     for v in range(n):
-      if v == s:
-        continue
+      if v == s: continue
       dist_new[v] = dist[v]
       prev_new[v] = prev[v]
       for u, weight in G_in[v]:
