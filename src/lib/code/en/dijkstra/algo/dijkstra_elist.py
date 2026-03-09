@@ -3,11 +3,10 @@ infinity = float('inf')
 def dijkstra(G, s):
   n = len(G)
   dist = [infinity] * n; dist[s] = 0
-  prev = [None] * n; done = [False] * n
+  prev = [None] * n; done = [False] * n; done[s] = True
   v = s
 
   for _ in range(n-1):
-    done[v] = True
     for u, weight in G[v]:
       if not done[u]:
         if dist[v] + weight < dist[u]:
@@ -19,8 +18,8 @@ def dijkstra(G, s):
       if not done[u] and dist[u] < infinity:
         if v is None or dist[u] < dist[v]:
           v = u
-    if v is None:
-      break
+    if v is not None: done[v] = True
+    else: break
 
   return dist, prev
 

@@ -3,11 +3,10 @@ vegtelen = float('inf')
 def dijkstra(G, s):
   n = len(G)
   tav = [vegtelen] * n; tav[s] = 0
-  elozo = [None] * n; kesz = [False] * n
+  elozo = [None] * n; kesz = [False] * n; kesz[s] = True
   v = s
 
   for _ in range(n-1):
-    kesz[v] = True
     for u in range(n):
       if not kesz[u]:
         if tav[v] + G[v][u] < tav[u]:
@@ -19,8 +18,8 @@ def dijkstra(G, s):
       if not kesz[u] and tav[u] < vegtelen:
         if v is None or tav[u] < tav[v]:
           v = u
-    if v is None:
-      break
+    if v is not None: kesz[v] = True
+    else: break
 
   return tav, elozo
 
