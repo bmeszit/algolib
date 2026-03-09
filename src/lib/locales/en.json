@@ -70,6 +70,10 @@
     "dijkstra": {
       "title": "Dijkstra's algorithm",
       "desc": "Single-source shortest paths in directed graphs with non-negative edge weights."
+    },
+    "bf": {
+      "title": "Bellman-Ford algorithm",
+      "desc": "Single-source shortest paths in directed graphs, allowing negative edge weights but no negative cycles."
     }
   }
 }

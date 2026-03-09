@@ -69,6 +69,10 @@
     "dijkstra": {
       "title": "Dijkstra-algoritmus",
       "desc": "Egyforrású legrövidebb utak irányított gráfban, nemnegatív élsúlyokkal."
+    },
+    "bf": {
+      "title": "Bellman-Ford-algoritmus",
+      "desc": "Egyforrású legrövidebb utak irányított gráfban, negatív élsúlyok esetén is, de negatív összsúlyú kör nélkül."
     }
   }
 }

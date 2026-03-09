@@ -97,6 +97,18 @@ function loadHu() {
       "input": {
         "input.txt": { content: file("hu", "dijkstra/input.txt") },
       }
+    },
+    bf: {
+      "algo": {
+        "bellman_ford.py": { content: file("hu", "bf/algo/bellman_ford.py") },
+      },
+      "generator": {
+        "erdos_renyi_0.2.py": { content: file("hu", "bf/generator/erdos_renyi_0.2.py") },
+        "erdos_renyi_0.8.py": { content: file("hu", "bf/generator/erdos_renyi_0.8.py") },
+      },
+      "input": {
+        "input.txt": { content: file("hu", "bf/input.txt") },
+      }
     }
   };
 }
@@ -186,12 +198,24 @@ function loadEn() {
       "input": {
         "input.txt": { content: file("en", "dijkstra/input.txt") },
       }
+    },
+    bf: {
+      "algo": {
+        "bellman_ford.py": { content: file("en", "bf/algo/bellman_ford.py") },
+      },
+      "generator": {
+        "erdos_renyi_0.2.py": { content: file("en", "bf/generator/erdos_renyi_0.2.py") },
+        "erdos_renyi_0.8.py": { content: file("en", "bf/generator/erdos_renyi_0.8.py") },
+      },
+      "input": {
+        "input.txt": { content: file("en", "bf/input.txt") },
+      }
     }
   };
 }
 
 export function loadDefaultCode() {
-  return { version: 29, pages: { hu: loadHu(), en: loadEn() } };
+  return { version: 30, pages: { hu: loadHu(), en: loadEn() } };
 }
 
 export const defaultCode = loadDefaultCode();
