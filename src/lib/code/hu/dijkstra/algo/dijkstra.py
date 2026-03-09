@@ -4,8 +4,16 @@ def dijkstra(G, s):
   n = len(G)
   tav = [vegtelen] * n; tav[s] = 0
   elozo = [None] * n; kesz = [False] * n
+  v = s
 
   for _ in range(n-1):
+    kesz[v] = True
+    for u, suly in G[v]:
+      if not kesz[u]:
+        if tav[v] + suly < tav[u]:
+          tav[u] = tav[v] + suly
+          elozo[u] = v
+
     v = None
     for u in range(n):
       if not kesz[u] and tav[u] < vegtelen:
@@ -14,12 +22,6 @@ def dijkstra(G, s):
     if v is None:
       break
 
-    kesz[v] = True
-    for u, suly in G[v]:
-      if not kesz[u]:
-        if tav[v] + suly < tav[u]:
-          tav[u] = tav[v] + suly
-          elozo[u] = v
   return tav, elozo
 
 n, m = map(int, input().split())

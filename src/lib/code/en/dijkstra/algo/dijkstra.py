@@ -4,8 +4,16 @@ def dijkstra(G, s):
   n = len(G)
   dist = [infinity] * n; dist[s] = 0
   prev = [None] * n; done = [False] * n
+  v = s
 
   for _ in range(n-1):
+    done[v] = True
+    for u, weight in G[v]:
+      if not done[u]:
+        if dist[v] + weight < dist[u]:
+          dist[u] = dist[v] + weight
+          prev[u] = v
+
     v = None
     for u in range(n):
       if not done[u] and dist[u] < infinity:
@@ -14,12 +22,6 @@ def dijkstra(G, s):
     if v is None:
       break
 
-    done[v] = True
-    for u, weight in G[v]:
-      if not done[u]:
-        if dist[v] + weight < dist[u]:
-          dist[u] = dist[v] + weight
-          prev[u] = v
   return dist, prev
 
 n, m = map(int, input().split())
