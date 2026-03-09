@@ -88,7 +88,8 @@ function loadHu() {
     },
     dijkstra: {
       "algo": {
-        "dijkstra.py": { content: file("hu", "dijkstra/algo/dijkstra.py") },
+        "dijkstra_ellista.py": { content: file("hu", "dijkstra/algo/dijkstra_ellista.py") },
+        "dijkstra_szmat.py": { content: file("hu", "dijkstra/algo/dijkstra_szmat.py") },
       },
       "generator": {
         "erdos_renyi_0.2.py": { content: file("hu", "dijkstra/generator/erdos_renyi_0.2.py") },
@@ -100,7 +101,8 @@ function loadHu() {
     },
     bf: {
       "algo": {
-        "bellman_ford.py": { content: file("hu", "bf/algo/bellman_ford.py") },
+        "bellman_ford_ellista.py": { content: file("hu", "bf/algo/bellman_ford_ellista.py") },
+        "bellman_ford_szmat.py": { content: file("hu", "bf/algo/bellman_ford_szmat.py") },
       },
       "generator": {
         "erdos_renyi_0.2.py": { content: file("hu", "bf/generator/erdos_renyi_0.2.py") },
@@ -189,7 +191,8 @@ function loadEn() {
     },
     dijkstra: {
       "algo": {
-        "dijkstra.py": { content: file("en", "dijkstra/algo/dijkstra.py") },
+        "dijkstra_elist.py": { content: file("en", "dijkstra/algo/dijkstra_elist.py") },
+        "dijkstra_amat.py": { content: file("en", "dijkstra/algo/dijkstra_amat.py") },
       },
       "generator": {
         "erdos_renyi_0.2.py": { content: file("en", "dijkstra/generator/erdos_renyi_0.2.py") },
@@ -201,7 +204,8 @@ function loadEn() {
     },
     bf: {
       "algo": {
-        "bellman_ford.py": { content: file("en", "bf/algo/bellman_ford.py") },
+        "bellman_ford_elist.py": { content: file("en", "bf/algo/bellman_ford_elist.py") },
+        "bellman_ford_amat.py": { content: file("en", "bf/algo/bellman_ford_amat.py") },
       },
       "generator": {
         "erdos_renyi_0.2.py": { content: file("en", "bf/generator/erdos_renyi_0.2.py") },
@@ -215,7 +219,7 @@ function loadEn() {
 }
 
 export function loadDefaultCode() {
-  return { version: 30, pages: { hu: loadHu(), en: loadEn() } };
+  return { version: 31, pages: { hu: loadHu(), en: loadEn() } };
 }
 
 export const defaultCode = loadDefaultCode();
