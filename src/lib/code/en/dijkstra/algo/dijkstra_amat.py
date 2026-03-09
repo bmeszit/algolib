@@ -6,7 +6,7 @@ def dijkstra(G, s):
   prev = [None] * n; done = [False] * n; done[s] = True
   v = s
 
-  for _ in range(n-1):
+  while True:
     for u in range(n):
       if not done[u]:
         if dist[v] + G[v][u] < dist[u]:

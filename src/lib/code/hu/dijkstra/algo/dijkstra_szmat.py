@@ -6,7 +6,7 @@ def dijkstra(G, s):
   elozo = [None] * n; kesz = [False] * n; kesz[s] = True
   v = s
 
-  for _ in range(n-1):
+  while True:
     for u in range(n):
       if not kesz[u]:
         if tav[v] + G[v][u] < tav[u]:
