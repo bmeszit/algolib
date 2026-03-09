@@ -40,16 +40,18 @@ s = int(input())
 
 MERES_KEZD()
 elozo, mszam, bszam = dfs(deepcopy(G), s)
-topo_sorrend = sorted(range(n), key=lambda i: bszam[i], reverse=True)
+topo_sorrend = [None] * n
+for v in range(n):
+  topo_sorrend[n - bszam[v]] = v
 
-G_beelek = grafot_megfordit(G)
+G_be = grafot_megfordit(G)
 
 # Legrövidebb utak
 tav = [vegtelen]*n; tav_elozo = [None]*n
 tav[s] = 0
 
 for v in topo_sorrend:
-  for u, suly in G_beelek[v]:
+  for u, suly in G_be[v]:
     if tav[u] + suly < tav[v]:
       tav[v] = tav[u] + suly; tav_elozo[v] = u
 
@@ -58,7 +60,7 @@ maxut = [-vegtelen]*n; maxut_elozo = [None]*n
 maxut[s] = 0
 
 for v in topo_sorrend:
-  for u, suly in G_beelek[v]:
+  for u, suly in G_be[v]:
     if maxut[u] + suly > maxut[v]:
       maxut[v] = maxut[u] + suly; maxut_elozo[v] = u
 
