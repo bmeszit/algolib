@@ -13,13 +13,12 @@ def dijkstra(G, s):
           dist[u] = dist[v] + weight
           prev[u] = v
 
-    v = None
+    min_dist = infinity; v = None
     for u in range(n):
-      if not done[u] and dist[u] < infinity:
-        if v is None or dist[u] < dist[v]:
-          v = u
-    if v is not None: done[v] = True
-    else: break
+      if not done[u] and dist[u] < min_dist:
+        min_dist = dist[u]; v = u
+    if v is None: break
+    done[v] = True
 
   return dist, prev
 

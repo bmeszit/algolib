@@ -13,13 +13,12 @@ def dijkstra(G, s):
           tav[u] = tav[v] + suly
           elozo[u] = v
 
-    v = None
+    min_tav = vegtelen; v = None
     for u in range(n):
-      if not kesz[u] and tav[u] < vegtelen:
-        if v is None or tav[u] < tav[v]:
-          v = u
-    if v is not None: kesz[v] = True
-    else: break
+      if not kesz[u] and tav[u] < min_tav:
+        min_tav = tav[u]; v = u
+    if v is None: break
+    kesz[v] = True
 
   return tav, elozo
 
