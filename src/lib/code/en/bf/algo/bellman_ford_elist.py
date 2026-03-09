@@ -1,3 +1,4 @@
+from copy import deepcopy
 infinity = float('inf')
 
 def reverse_graph(G):
@@ -39,7 +40,7 @@ s = int(input())
 G_in = reverse_graph(G)
 
 MEASURE_START()
-dist, prev = bellman_ford(G_in, s)
+dist, prev = bellman_ford(deepcopy(G_in), s)
 MEASURE_STOP()
 
 print("Shortest paths:"); print(dist); print()

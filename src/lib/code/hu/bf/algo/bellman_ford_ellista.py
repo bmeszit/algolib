@@ -1,3 +1,4 @@
+from copy import deepcopy
 vegtelen = float('inf')
 
 def grafot_megfordit(G):
@@ -39,7 +40,7 @@ s = int(input())
 G_be = grafot_megfordit(G)
 
 MERES_KEZD()
-tav, elozo = bellman_ford(G_be, s)
+tav, elozo = bellman_ford(deepcopy(G_be), s)
 MERES_VEG()
 
 print("Legrövidebb utak:"); print(tav); print()

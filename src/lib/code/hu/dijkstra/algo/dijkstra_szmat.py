@@ -1,3 +1,4 @@
+from copy import deepcopy
 vegtelen = float('inf')
 
 def dijkstra(G, s):
@@ -30,7 +31,7 @@ for i in range(m):
 s = int(input())
 
 MERES_KEZD()
-tav, elozo = dijkstra(G, s)
+tav, elozo = dijkstra(deepcopy(G), s)
 MERES_VEG()
 
 print("Legrövidebb utak:"); print(tav); print()

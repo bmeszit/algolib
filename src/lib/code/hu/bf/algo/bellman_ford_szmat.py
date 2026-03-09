@@ -1,3 +1,4 @@
+from copy import deepcopy
 vegtelen = float('inf')
 
 def bellman_ford(G, s):
@@ -29,7 +30,7 @@ for i in range(m):
 s = int(input())
 
 MERES_KEZD()
-tav, elozo = bellman_ford(G, s)
+tav, elozo = bellman_ford(deepcopy(G), s)
 MERES_VEG()
 
 print("Legrövidebb utak:"); print(tav); print()

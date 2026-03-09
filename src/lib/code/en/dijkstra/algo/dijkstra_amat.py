@@ -1,3 +1,4 @@
+from copy import deepcopy
 infinity = float('inf')
 
 def dijkstra(G, s):
@@ -30,7 +31,7 @@ for i in range(m):
 s = int(input())
 
 MEASURE_START()
-dist, prev = dijkstra(G, s)
+dist, prev = dijkstra(deepcopy(G), s)
 MEASURE_STOP()
 
 print("Shortest paths:"); print(dist); print()

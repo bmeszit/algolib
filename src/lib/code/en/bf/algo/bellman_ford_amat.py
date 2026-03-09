@@ -1,3 +1,4 @@
+from copy import deepcopy
 infinity = float('inf')
 
 def bellman_ford(G, s):
@@ -29,7 +30,7 @@ for i in range(m):
 s = int(input())
 
 MEASURE_START()
-dist, prev = bellman_ford(G, s)
+dist, prev = bellman_ford(deepcopy(G), s)
 MEASURE_STOP()
 
 print("Shortest paths:"); print(dist); print()
