@@ -32,6 +32,7 @@ function loadHu() {
       "algo": {
         "buborek.py": { content: file("hu", "sort/algo/buborek.py") },
         "beszurasos.py": { content: file("hu", "sort/algo/beszurasos.py") },
+        "beszurasos_binker.py": { content: file("hu", "sort/algo/beszurasos_binker.py") },
         "kivalasztasos.py": { content: file("hu", "sort/algo/kivalasztasos.py") },
         "osszefesuleses.py": { content: file("hu", "sort/algo/osszefesuleses.py") },
         "gyors.py": { content: file("hu", "sort/algo/gyors.py") },
@@ -152,6 +153,8 @@ function loadEn() {
       "algo": {
         "bubble.py": { content: file("en", "sort/algo/bubble.py") },
         "insertion.py": { content: file("en", "sort/algo/insertion.py") },
+        "insertion_binsrc.py": { content: file("en", "sort/algo/insertion_binsrc.py") },
+        "insertion_linked.py": { content: file("en", "sort/algo/insertion_linked.py") },
         "selection.py": { content: file("en", "sort/algo/selection.py") },
         "merge.py": { content: file("en", "sort/algo/merge.py") },
         "quick.py": { content: file("en", "sort/algo/quick.py") },
@@ -253,7 +256,7 @@ function loadEn() {
 }
 
 export function loadDefaultCode() {
-  return { version: 35, pages: { hu: loadHu(), en: loadEn() } };
+  return { version: 36, pages: { hu: loadHu(), en: loadEn() } };
 }
 
 export const defaultCode = loadDefaultCode();
