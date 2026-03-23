@@ -154,7 +154,6 @@ function loadEn() {
         "bubble.py": { content: file("en", "sort/algo/bubble.py") },
         "insertion.py": { content: file("en", "sort/algo/insertion.py") },
         "insertion_binsrc.py": { content: file("en", "sort/algo/insertion_binsrc.py") },
-        "insertion_linked.py": { content: file("en", "sort/algo/insertion_linked.py") },
         "selection.py": { content: file("en", "sort/algo/selection.py") },
         "merge.py": { content: file("en", "sort/algo/merge.py") },
         "quick.py": { content: file("en", "sort/algo/quick.py") },
