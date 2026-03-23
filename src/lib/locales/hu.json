@@ -67,11 +67,11 @@
       "desc": "A szélességi bejárás összehasonlítása éllistás és szomszédossági mátrixos gráfreprezentáció használatával."
     },
     "dijkstra": {
-      "title": "Dijkstra-algoritmus",
+      "title": "Dijkstra algoritmus",
       "desc": "Egyforrású legrövidebb utak irányított gráfban, nemnegatív élsúlyokkal."
     },
     "bf": {
-      "title": "Bellman-Ford-algoritmus",
+      "title": "Bellman-Ford algoritmus",
       "desc": "Egyforrású legrövidebb utak irányított gráfban, negatív élsúlyok esetén is, de negatív összsúlyú kör nélkül."
     },
     "mindist": {
