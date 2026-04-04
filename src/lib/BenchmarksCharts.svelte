@@ -4,7 +4,7 @@
 
   let { bench } = $props();
 
-  let Scatter = $state(null);
+  let Bar = $state(null);
   let ready = $state(false);
 
   let timeCmp = $state(null);
@@ -22,17 +22,17 @@
 
       const {
         Chart: ChartJS,
+        CategoryScale,
         LinearScale,
-        PointElement,
-        LineElement,
+        BarElement,
         Tooltip,
         Legend,
         Title
       } = chartjs;
 
-      ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend, Title);
+      ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend, Title);
 
-      Scatter = svelteChart.Scatter;
+      Bar = svelteChart.Bar;
       ready = true;
       dpr = window.devicePixelRatio || 1;
     })();
@@ -78,24 +78,22 @@
   let algoNames = $derived.by(() => Object.keys(bench?.timeSec ?? {}).sort());
 
   let timeData = $derived.by(() => ({
+    labels: inputSizes.map(x => String(x)),
     datasets: algoNames.map((name, i) => ({
       label: name,
-      data: inputSizes.map((x, j) => ({ x, y: Number(bench?.timeSec?.[name]?.[j] ?? NaN) })),
+      data: inputSizes.map((x, j) => Number(bench?.timeSec?.[name]?.[j] ?? NaN)),
       backgroundColor: colorForIndex(i),
-      borderColor: colorForIndex(i),
-      showLine: false,
-      pointRadius: 3
+      borderColor: colorForIndex(i)
     }))
   }));
 
   let memData = $derived.by(() => ({
+    labels: inputSizes.map(x => String(x)),
     datasets: algoNames.map((name, i) => ({
       label: name,
-      data: inputSizes.map((x, j) => ({ x, y: Number(bench?.memoryBytes?.[name]?.[j] ?? NaN) })),
+      data: inputSizes.map((x, j) => Number(bench?.memoryBytes?.[name]?.[j] ?? NaN)),
       backgroundColor: colorForIndex(i),
-      borderColor: colorForIndex(i),
-      showLine: false,
-      pointRadius: 3
+      borderColor: colorForIndex(i)
     }))
   }));
 
@@ -103,34 +101,82 @@
     responsive: true,
     maintainAspectRatio: false,
     devicePixelRatio: dpr,
-    plugins: { legend: { position: "bottom" } },
+    plugins: { 
+      legend: { 
+        position: "bottom",
+        labels: {
+          font: { size: 18 }
+        }
+      }
+    },
     scales: {
-      x: { type: "linear", title: { display: true, text: $t("benchmarks.axes.x_input_size_chars") } }
+      x: { 
+        title: { 
+          display: true, 
+          text: $t("benchmarks.axes.x_input_size_chars"),
+          font: { size: 18 }
+        },
+        ticks: {
+          font: { size: 16 }
+        }
+      }
     }
   }));
 
   let timeOptions = $derived.by(() => ({
     ...baseOptions,
-    plugins: { ...baseOptions.plugins, title: { display: true, text: $t("benchmarks.charts.time_title") + ": " + bench.generatorName  } },
+    plugins: { 
+      ...baseOptions.plugins, 
+      title: { 
+        display: true, 
+        text: $t("benchmarks.charts.time_title") + ": " + bench.generatorName,
+        font: { size: 20 }
+      } 
+    },
     scales: {
       ...baseOptions.scales,
-      y: { title: { display: true, text: $t("benchmarks.axes.y_time_sec") } } 
+      y: { 
+        title: { 
+          display: true, 
+          text: $t("benchmarks.axes.y_time_sec"),
+          font: { size: 18 }
+        },
+        ticks: {
+          font: { size: 16 }
+        }
+      } 
     }
   }));
 
   let memOptions = $derived.by(() => ({
     ...baseOptions,
-    plugins: { ...baseOptions.plugins, title: { display: true, text: $t("benchmarks.charts.memory_title") + ": " + bench.generatorName } },
+    plugins: { 
+      ...baseOptions.plugins, 
+      title: { 
+        display: true, 
+        text: $t("benchmarks.charts.memory_title") + ": " + bench.generatorName,
+        font: { size: 20 }
+      } 
+    },
     scales: {
       ...baseOptions.scales,
-      y: { title: { display: true, text: $t("benchmarks.axes.y_memory_bytes") } }
+      y: { 
+        title: { 
+          display: true, 
+          text: $t("benchmarks.axes.y_memory_bytes"),
+          font: { size: 18 }
+        },
+        ticks: {
+          font: { size: 16 }
+        }
+      }
     }
   }));
 
   let stderrText = $derived.by(() => String(bench?.stderr ?? "").trim());
 </script>
 
-{#if ready && bench && Scatter}
+{#if ready && bench && Bar}
   {#if stderrText !== ""}
     <pre class="err">{$t("benchmarks.errors.stderr_title")}:<br><br>{stderrText}</pre>
   {/if}
@@ -138,11 +184,11 @@
   {#key redrawKey}
     <div class="charts">
       <div class="chartBox">
-        <Scatter bind:this={timeCmp} data={timeData} options={timeOptions} />
+        <Bar bind:this={timeCmp} data={timeData} options={timeOptions} />
       </div>
 
       <div class="chartBox">
-        <Scatter bind:this={memCmp} data={memData} options={memOptions} />
+        <Bar bind:this={memCmp} data={memData} options={memOptions} />
       </div>
     </div>
   {/key}
